@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Demo Ilevia - Prochain passage</title>
+</head>
+<body>
+<form id="ilevia">
+    <div>
+        <label for="select-station">Votre station</label>
+        <select id="select-station">
+            <option>-- Liste des stations --</option>
+        </select>
+    </div>
+</form>
+
+<table id="next-bus">
+    <thead>
+    <tr>
+        <th>Ligne</th>
+        <th>Direction</th>
+        <th>Prochain passage</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td colspan="3">No data</td>
+    </tr>
+    </tbody>
+</table>
+
+<p id="last-refresh">Dernier rafraîchissement à <span></span></p>
+
+<script src="dist/main.js"></script>
+</body>
+</html>
