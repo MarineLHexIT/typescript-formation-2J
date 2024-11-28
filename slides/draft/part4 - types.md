@@ -945,3 +945,164 @@ const userObj: UserObject = { id: 1, firstName: "John", lastName: "Doe" };
 - Atelier : 15 minutes.
 
 ---
+
+### **Slides avec textes à l’oral pour les Enums**
+
+---
+
+#### **Slide 1 : Qu’est-ce qu’un Enum ?**
+**Titre** : Introduction aux Enums
+
+- **Contenu de la slide** :
+    - Un enum est un moyen de définir un groupe de valeurs constantes liées.
+    - Pourquoi utiliser des Enums ?
+        - Meilleure lisibilité et maintenance du code.
+        - Permet d'éviter les erreurs liées à des valeurs magiques.
+        - Facilite la gestion des valeurs limitées pour des propriétés ou des états.
+
+**À l’oral** :
+> "Un enum, ou *enumeration*, est un outil très pratique pour gérer des valeurs constantes et prévisibles dans vos projets. Imaginez par exemple que vous deviez représenter les statuts d'une tâche ou les directions sur une boussole. Au lieu de jongler avec des chaînes de caractères ou des nombres, qui peuvent vite devenir sources d'erreurs, vous utilisez un enum pour centraliser et sécuriser ces valeurs."
+
+---
+
+#### **Slide 2 : Types d’Enums**
+**Titre** : Deux types d’Enums
+
+- **Contenu de la slide** :
+    1. **Enums numériques** :
+        - Les valeurs sont des entiers implicites (autoincrémentés) ou explicites.
+        - Exemple :
+          ```typescript
+          enum Direction {
+            North = 0,
+            East = 1,
+            South = 2,
+            West = 3,
+          }
+          ```
+    2. **Enums chaînes de caractères** :
+        - Chaque valeur est une chaîne explicitement définie.
+        - Exemple :
+          ```typescript
+          enum Direction {
+            North = "North",
+            East = "East",
+            South = "South",
+            West = "West",
+          }
+          ```
+
+**À l’oral** :
+> "En TypeScript, il existe deux types principaux d'enums. D'abord, les *enums numériques*, où les valeurs sont des entiers. Soit vous laissez TypeScript générer des entiers automatiquement, soit vous les définissez manuellement. Ensuite, on a les *enums chaînes de caractères*, où vous attribuez explicitement une chaîne à chaque valeur. Les enums chaînes sont souvent préférés car ils sont plus lisibles lors du débogage."
+
+---
+
+#### **Slide 3 : Utiliser des Enums**
+**Titre** : Comment utiliser un Enum ?
+
+- **Contenu de la slide** :
+    - Déclaration d’un enum :
+      ```typescript
+      enum Status {
+        Pending = "Pending",
+        InProgress = "In Progress",
+        Completed = "Completed"
+      }
+      ```
+    - Accéder à ses valeurs :
+      ```typescript
+      const currentStatus: Status = Status.Pending;
+      console.log(currentStatus); // "Pending"
+      ```
+    - Utilisation dans une fonction :
+      ```typescript
+      function getStatusMessage(status: Status): string {
+        switch (status) {
+          case Status.Pending:
+            return "En attente...";
+          case Status.InProgress:
+            return "En cours...";
+          case Status.Completed:
+            return "Terminé !";
+        }
+      }
+      ```
+
+**À l’oral** :
+> "Voici un exemple concret pour manipuler des enums dans votre code. Vous déclarez un enum, ici pour les statuts d'une tâche. Ensuite, vous pouvez y accéder directement pour assigner une valeur ou, comme dans notre fonction, utiliser un *switch* pour adapter le comportement de votre application selon le statut."
+
+---
+
+#### **Slide 4 : Bonnes pratiques avec les Enums**
+**Titre** : Quand utiliser les Enums ?
+
+- **Contenu de la slide** :
+    - Utilisez un enum lorsque :
+        - Vous manipulez des valeurs constantes liées.
+        - Vous voulez éviter les erreurs de frappe avec des chaînes de caractères ou des nombres.
+        - Vous avez besoin de parcourir un ensemble fermé de valeurs.
+    - Exemple typique : gestion des rôles utilisateur, des statuts d’application, des directions, etc.
+
+**À l’oral** :
+> "Les enums sont idéaux dans des contextes où vous travaillez avec un ensemble fermé de valeurs constantes, comme des statuts ou des rôles. Ils permettent de réduire les erreurs de frappe et améliorent la lisibilité du code. Cependant, n’abusez pas des enums si d'autres alternatives, comme des types union, pourraient suffire."
+
+---
+
+#### **Slide 5 : Limites des Enums**
+**Titre** : Les limites des Enums
+
+- **Contenu de la slide** :
+    - Flexibilité limitée dans des cas complexes.
+    - Augmentation de la taille des bundles JS (notamment avec des enums numériques).
+    - Moins ergonomiques que des alternatives comme les **types union**.
+
+**À l’oral** :
+> "Les enums sont utiles, mais ils ne sont pas parfaits. Ils peuvent augmenter la taille de vos fichiers JavaScript, surtout avec des enums numériques. Pour des scénarios plus complexes ou légers, les types union, que nous verrons dans la partie Concepts avancés, peuvent être une meilleure option."
+
+---
+
+#### **Slide 6 : Exercice 1**
+**Titre** : Créer un Enum pour les statuts d’une tâche
+
+- **Consigne de la slide** :
+    - Définir un enum `Status` avec les valeurs suivantes :
+        - `Pending`
+        - `InProgress`
+        - `Completed`
+    - Écrire une fonction `getStatusMessage` qui retourne :
+        - `"En attente"` pour `Pending`.
+        - `"En cours"` pour `InProgress`.
+        - `"Terminé"` pour `Completed`.
+
+**À l’oral** :
+> "Pour cet exercice, vous allez créer un enum pour gérer les statuts d'une tâche et écrire une fonction associée. Pensez à utiliser un *switch* ou une structure conditionnelle appropriée pour renvoyer le message correspondant à chaque statut."
+
+---
+
+#### **Slide 7 : Corrigé de l’exercice**
+**Titre** : Solution de l’exercice
+
+- **Solution de la slide** :
+  ```typescript
+  enum Status {
+    Pending = "Pending",
+    InProgress = "In Progress",
+    Completed = "Completed"
+  }
+
+  function getStatusMessage(status: Status): string {
+    switch (status) {
+      case Status.Pending:
+        return "En attente";
+      case Status.InProgress:
+        return "En cours";
+      case Status.Completed:
+        return "Terminé";
+    }
+  }
+  ```
+
+**À l’oral** :
+> "Voici une solution possible pour cet exercice. Notez que l’utilisation d’un enum centralise les valeurs et garantit qu’aucune erreur de frappe n’intervienne. En cas d’ajout de nouveaux statuts, vous modifiez simplement l’enum et le code reste cohérent."
+
+---

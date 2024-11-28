@@ -50,7 +50,8 @@
     - Configuration simple et support natif de TypeScript avec `ts-jest`.
     - Fonctionnalités riches : mocks, snapshots, couverture de code.
     - Communauté active et plugins.
-  ```  
+
+
 - **Exemple de test avec Jest :**
   ```typescript
   function divide(a: number, b: number): number {
@@ -79,7 +80,8 @@
 - **Points forts :**
     - Flexibilité pour les projets avec des besoins spécifiques.
     - `Chai` offre des assertions lisibles et puissantes.
-  ```  
+  
+
 - **Exemple de test avec Mocha :**
   ```typescript
   import { expect } from 'chai';
