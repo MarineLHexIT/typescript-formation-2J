@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",  // Extend root tsconfig
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist"               // Override output directory if necessary
+  },
+  "include": ["src/**/*"],            // Include the demo-specific files
+  "exclude": ["node_modules", "dist"] // Exclude node_modules and dist
+}
+

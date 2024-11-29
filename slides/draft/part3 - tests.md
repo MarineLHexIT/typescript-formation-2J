@@ -178,6 +178,7 @@
 2. Exemple de fichier de test (`sum.test.ts`) :
    ```typescript
    import { sum } from './sum';
+   import { describe, expect, test } from '@jest/globals';
 
    test('sum adds two numbers', () => {
      expect(sum(1, 2)).toBe(3);

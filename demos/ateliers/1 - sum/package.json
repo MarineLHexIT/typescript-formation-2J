@@ -1,0 +1,24 @@
+{
+  "name": "ateliers - demo sum",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "author": "Marine LANCIEN",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "@types/jest": "^29.5.14",
+    "install": "^0.13.0",
+    "jest": "^29.7.0",
+    "npm": "^10.9.1",
+    "test": "^3.3.0",
+    "ts-jest": "^29.2.5"
+  }
+}
