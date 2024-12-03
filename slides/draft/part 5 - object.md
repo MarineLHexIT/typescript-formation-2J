@@ -84,8 +84,130 @@
 "Les interfaces imposent un contrat clair pour les objets, réduisant les erreurs d'intégration."
 
 ---
+Voici une proposition pour deux slides sur l'héritage en TypeScript, avec un texte concis et du code d'exemple, ainsi que le texte à prononcer :
 
-### Slide 4: **Génériques : Introduction enrichie**
+---
+
+### Slide 4: **L’héritage en Typescript**
+**Titre :**  L'héritage en TypeScript
+**Contenu :**
+
+- TypeScript permet l'héritage de classes via le mot-clé `extends`.
+- Une classe enfant peut hériter des propriétés et méthodes d'une classe parente.
+
+```typescript
+class Animal {
+  constructor(public name: string) {}
+
+  speak() {
+    console.log(`${this.name} fait un bruit`);
+  }
+}
+
+class Dog extends Animal {
+  speak() {
+    console.log(`${this.name} aboie`);
+  }
+}
+
+const dog = new Dog('Rex');
+dog.speak();  // Affiche "Rex aboie"
+```
+
+**Texte à prononcer :**
+"L'héritage en TypeScript permet à une classe enfant d'hériter des propriétés et des méthodes d'une classe parente, ce qui facilite la réutilisation du code. Ici, la classe `Dog` hérite de la classe `Animal`, mais elle peut aussi redéfinir ses propres méthodes, comme la méthode `speak`."
+
+---
+
+### Slide 5: **Accès aux propriétés et méthodes**
+**Titre :**  L’accès aux propriétés et méthodes
+**Contenu :**
+
+- Le constructeur d’une classe enfant doit appeler le constructeur de la classe parente avec `super()`.
+- Les propriétés et méthodes de la classe parente sont accessibles avec `this`.
+
+```typescript
+class Animal {
+  constructor(public name: string, public age: number) {}
+
+  describe() {
+    console.log(`${this.name} a ${this.age} ans`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name: string, age: number, public breed: string) {
+    super(name, age);  // Appel du constructeur de la classe parente
+  }
+
+  describe() {
+    super.describe();  // Appel de la méthode parente
+    console.log(`C'est un ${this.breed}`);
+  }
+}
+
+const dog = new Dog('Rex', 5, 'Labrador');
+dog.describe();  
+// Affiche "Rex a 5 ans"
+// Affiche "C'est un Labrador"
+```
+
+**Texte à prononcer :**
+"Lorsqu'une classe enfant possède un constructeur, il doit appeler le constructeur de la classe parente avec `super()`. Cela permet de bien initialiser les propriétés héritées. Dans cet exemple, la classe `Dog` appelle `super(name, age)` pour initialiser les propriétés de la classe parente `Animal`."
+
+---
+
+Voici une proposition pour une slide résumant les différences entre l'héritage en TypeScript et en JavaScript :
+
+---
+
+### Slide 6: **Différences entre Javascript et Typescript**
+**Titre :**   Différences entre l’héritage en TypeScript et JavaScript
+**Contenu :**
+
+### 1. **Héritage en JavaScript (ES6)**
+- Basé sur des classes et prototypes.
+- Pas de vérification de types.
+- Exemple : `class Dog extends Animal { ... }`
+
+### 2. **Héritage en TypeScript**
+- Similaire à JavaScript avec classes et prototypes.
+- Vérification des types au moment de la compilation.
+- Possibilité d'utiliser des **interfaces** et des **mixins** pour des fonctionnalités supplémentaires.
+
+### 3. **Exemple en TypeScript :**
+
+```typescript
+class Animal {
+  constructor(public name: string) {}
+}
+
+class Dog extends Animal {
+  breed: string;
+
+  constructor(name: string, breed: string) {
+    super(name);
+    this.breed = breed;
+  }
+}
+
+const dog = new Dog('Rex', 'Labrador');
+```
+
+### **Différences principales :**
+- **Vérification statique des types** en TypeScript.
+- **Interfaces** et **mixins** pour enrichir l'héritage en TypeScript.
+
+---
+
+**Texte à prononcer :**
+"En JavaScript, l'héritage repose sur les prototypes et les classes, sans vérification des types. En TypeScript, l'héritage fonctionne de la même manière, mais avec une vérification des types au moment de la compilation, ce qui permet d'éviter les erreurs de type. TypeScript offre aussi la possibilité d'utiliser des interfaces et des mixins pour étendre l'héritage, ce qui n'est pas possible en JavaScript natif."
+
+---
+
+Cela résume bien la différence entre les deux langages au niveau de l'héritage.
+
+### Slide 7: **Génériques : Introduction**
 **Titre :** Les Génériques pour plus de flexibilité  
 **Contenu :**
 - **Pourquoi ?**
@@ -120,7 +242,7 @@
 
 ---
 
-### Slide 5: **Génériques avancés : Contraintes**
+### Slide 8: **Génériques avancés : Contraintes**
 **Titre :** Génériques avec des contraintes  
 **Contenu :**
 - **Pourquoi ajouter des contraintes ?** Pour limiter les types autorisés :
@@ -140,7 +262,7 @@
 
 ---
 
-### Slide 6: **Quiz : Objets et Génériques**
+### Slide 9: **Quiz : Objets et Génériques**
 **Titre :** Testez vos connaissances !  
 **Questions :**
 1. Quels sont les modificateurs d'accès en TypeScript ?
