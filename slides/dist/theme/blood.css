@@ -46,6 +46,9 @@ section.has-light-background, section.has-light-background h1, section.has-light
   --r-overlay-element-fg-color: 0, 0, 0;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 .reveal section.quizz ol {
   list-style-type: upper-alpha;
 }

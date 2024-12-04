@@ -1,5 +1,8 @@
-.reveal section.quizz {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
+.reveal section.quizz {
 
   ol {
     list-style-type: upper-alpha;

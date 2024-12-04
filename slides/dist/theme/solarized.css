@@ -44,6 +44,9 @@ html * {
   --r-overlay-element-fg-color: 240, 240, 240;
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 .reveal section.quizz ol {
   list-style-type: upper-alpha;
 }
