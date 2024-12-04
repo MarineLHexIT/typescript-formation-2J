@@ -43,6 +43,10 @@ section.has-light-background, section.has-light-background h1, section.has-light
   --r-overlay-element-fg-color: 0, 0, 0;
 }
 
+.reveal section.quizz ol {
+  list-style-type: upper-alpha;
+}
+
 .reveal-viewport {
   background: #002b36;
   background-color: var(--r-background-color);

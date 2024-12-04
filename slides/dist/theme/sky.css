@@ -45,6 +45,10 @@ section.has-dark-background, section.has-dark-background h1, section.has-dark-ba
   --r-overlay-element-fg-color: 240, 240, 240;
 }
 
+.reveal section.quizz ol {
+  list-style-type: upper-alpha;
+}
+
 .reveal-viewport {
   background: #add9e4;
   background: -moz-radial-gradient(center, circle cover, #f7fbfc 0%, #add9e4 100%);

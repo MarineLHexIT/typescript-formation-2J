@@ -44,6 +44,10 @@ html * {
   --r-overlay-element-fg-color: 240, 240, 240;
 }
 
+.reveal section.quizz ol {
+  list-style-type: upper-alpha;
+}
+
 .reveal-viewport {
   background: #fdf6e3;
   background-color: var(--r-background-color);
