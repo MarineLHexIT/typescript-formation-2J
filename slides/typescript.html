@@ -63,14 +63,16 @@
             <div class="flex flex-row gap-5 items-start">
                 <p class="text-right">
                     Rendez vous sur <a href="https://qruiz.net/Q/?zbvZT3">https://qruiz.net/</a> <br/>
-                    ou bien scannez le QR Code ci-contre
+                    ou bien scannez le QR Code ci-contre.<br/>
                 </p>
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://qruiz.net/Q/?zbvZT3"
                      class="r-fit-text"
                      alt="QR Code menant à l’adresse https://qruiz.net/Q/?zbvZT3"/>
             </div>
             <aside class="notes">
-                Cette évaluation contient des questions à propos de Javascript et de Typescript. Il n’y a pas de questions pièges, et il est tout à fait normale d’ignorer les réponses à certaines de ces questions : nous y répondrons durant la formation.
+                Cette évaluation, personnelle et anonyme, contient des questions à propos de Javascript et de
+                Typescript. Il n’y a pas de questions pièges, et il est tout à fait normale d’ignorer les réponses à
+                certaines de ces questions : nous y répondrons durant la formation.
             </aside>
         </section>
 
@@ -236,6 +238,155 @@
                     <li class="fragment strike" data-fragment-index="1">Non</li>
                 </ol>
             </section>
+        </section>
+
+        <!-- Environnement et sOutillage -->
+        <section>
+            <h1 class="r-fit-text">Environnement et outillage</h1>
+            <aside class="notes">Passons maintenant à la configuration pratique. Nous allons installer Node.JS,
+                configurer un projet, et aborder l’intégration côté serveur.
+            </aside>
+            <ul>
+                <li class="fragment">Installer Node.JS et Typescript</li>
+                <li class="fragment">Intégration dans les IDE</li>
+                <li class="fragment">Intégrer Typescript dans des projets existants</li>
+                <li class="fragment">Ajouter Typescript côté serveur</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Installer Node.js</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Prérequis : </strong> Node.js pour exécuter du JS ou du TS sur votre machine.
+                </li>
+                <li class="fragment">
+                    <strong>Installer Node.js</strong>
+                    <ul>
+                        <li class="fragment">
+                            Rendez-vous sur <a href="https://nodejs.org">nodejs.org</a> et téléchargez la version LTS
+                            (Long Term Support) et suivez les instructions
+                        </li>
+                        <li class="fragment">
+                            Vérifiez l’installation :
+                            <pre>
+                                <code data-trim data-noescape class="hljs language-bash">
+                                    node --version
+                                    npm --version
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Si Node.js n’est pas déjà installé sur votre machine, vous devez d’abord l’installer. Node.js est
+                essentiel pour exécuter votre code TypeScript, et npm (le gestionnaire de paquets) sera utilisé pour
+                installer TypeScript et d’autres dépendances.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Installation de Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Créer un projet</strong>
+                    <ul>
+                        <li>Créer un dossier et s’y placer</li>
+                        <li>
+                            Dans un terminal :
+                            <pre>
+                                <code data-trim data-noescape class="hljs language-bash">
+                                    npm init // initialise le dossier
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Installer Typescript localement</strong>
+                    <pre>
+                        <code data-trim data-noescape class="hljs language-bash">
+                            npm install -D typescript
+                            npx tsc --version // Vérifie que l’installation s’est bien passé
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Initialiser un projet Typescript</strong>
+                    <pre>
+                        <code data-trim data-noescape class="hljs language-bash">
+                            npx tsc --init
+                        </code>
+                    </pre>
+                </li>
+
+            </ul>
+
+            <aside class="notes">
+                Une fois Node.js installé, nous allons commencer à créer notre projet.
+                Il est possible d’installer Typescript globalement ou localement.
+                Nous allons l’installer localement, au sein d’un projet.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les IDE au service de Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>IDE populaires</strong>
+                    <ul>
+                        <li>Visual Studio Code (VS Code) : léger, gratuit, et extensible</li>
+                        <li>Webstorm : puissant, riche en fonctionnalité, payant</li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Alternatives</strong>
+                    <ul>
+                        <li>Sublime Text : nécessite des plugins</li>
+                        <li>Vim / NéoVim : nécessite une configuration avancée</li>
+                        <li>Notepad++ : compatible mais dispose de peu de fonctionnalités</li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Bien que Typescript soit compatible avec la plupart des éditeurs de textes et environnements de
+                développement, certains offrent une meilleure prise en charge, notamment grâce à l’auto-complétion et à
+                la détection d’erreur en temps réel.
+                Personnellement j’utilise Webstorm mais on va aussi regarder du côté de Visual Studio Code.
+            </aside>
+        </section>
+
+        <section data-markdown>
+            <textarea data-template>
+## Configurer Visual Studio Code pour Typescript 1/2
+
+1. **Étape 1 : Installer VS Code**
+    - Téléchargez depuis [code.visualstudio.com](https://code.visualstudio.com).
+
+2. **Étape 2 : Installer les extensions nécessaires**
+    - **TypeScript and JavaScript Language Features** (intégré).
+    - **ESLint** (si vous utilisez un linter).
+
+Note:
+Visual Studio Code est extrêmement bien intégré avec TypeScript. L’installation de base suffit pour démarrer, mais des extensions comme ESLint ou Prettier peuvent améliorer encore votre expérience.
+
+---
+## Configurer Visual Studio Code pour Typescript 2/2
+
+3. **Étape 3 : Personnaliser `settings.json` (optionnel)**
+    - Exemple de configuration :
+    ```json
+    {
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "editor.formatOnSave": true,
+    "eslint.validate": ["javascript", "typescript"]
+    }
+    ```
+4. **Étape 4 : Activer le mode de vérification stricte dans `tsconfig.json`**
+    - Ajoutez `"strict": true` dans votre configuration.
+        </textarea>
+
         </section>
     </div>
 </div>
