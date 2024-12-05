@@ -1448,6 +1448,716 @@ To open last HTML report run:
                 Les enums sont utiles, mais ils ne sont pas parfaits. Ils peuvent augmenter la taille de vos fichiers JavaScript, surtout avec des enums numériques. Pour des scénarios plus complexes ou légers, les types union, que nous verrons dans la partie Concepts avancés, peuvent être une meilleure option.
             </aside>
         </section>
+
+        <section>
+            <h2>Récapitulatif</h2>
+            <ul>
+                <li class="fragment">
+                    Des types primitifs <code>number</code>, <code>string</code>, etc.
+                </li>
+                <li class="fragment">Typescript reconnaît les types grâce à <strong>l’inférence</strong></li>
+                <li class="fragment">
+                    Typage dans les fonctions (paramètres et retours)
+                </li>
+                <li class="fragment">
+                    Structure complexes : <code>Array</code>, <code>tuple</code>, <code>enum</code>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Les objets -->
+        <section>
+            <h1 class="r-fit-text">Les objets en Typescript</h1>
+            <p>En <strong>Javascript</strong>, les objets sont dynamiques mais risquent des erreurs de structure et de
+                type.</p>
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    const car = { brand: "Toyota", model: "Corolla" };
+                    car.year = "2020"; // Pas d'erreur, mais incohérence !
+                </code>
+            </pre>
+        </section>
+
+        <section>
+            <h2>Sécurité et contrôle avec Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Définition exacte</strong> de la structure (classes, interface, <code>type</code>)
+                </li>
+                <li class="fragment">
+                    <strong>Vérification statique</strong> à la compilation
+                </li>
+                <li class="fragment">
+                    <strong>Modèles réutilisables</strong> grâce aux génériques.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Les classes</h2>
+            <ul class="r-stack">
+                <li class="fragment fade-in-then-out">
+                    <strong>En Javascript</strong> : classes depuis ES6, sans vérification statique
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            class Person {
+                              constructor(name, age) {
+                                this.name = name;
+                                this.age = age;
+                              }
+                            }
+                            const alice = new Person("Alice", "trente"); // Erreur silencieuse
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment fade-in">
+                    <strong>En Typescript</strong>
+                    <ul>
+                        <li>Vérification des types</li>
+                        <li>
+                            Modificateurs d’accès (
+                            <code>private</code>,
+                            <code>protected</code>,
+                            <code>public</code>
+                            )
+                        </li>
+                        <li>Typage des propriétés et des méthodes</li>
+                    </ul>
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            class Person {
+                              private name: string;
+                              protected age: number;
+
+                              constructor(name: string, age: number) {
+                                this.name = name;
+                                this.age = age;
+                              }
+
+                              public greet(): string {
+                                return `Hello, my name is ${this.name}.`;
+                              }
+                            }
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les classes TypeScript offrent une structure plus robuste et permettent d'éviter des erreurs dès le
+                développement.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Qu’est-ce que sont les interfaces ?</h2>
+            <ul>
+                <li>Établit <strong>contrat</strong> entre les objets et les méthodes</li>
+                <li>Réduit les erreurs d’intégrations</li>
+            </ul>
+            <ul class="r-stack">
+                <li class="fragment fade-in-then-out">
+                    <strong>En Javascript : </strong>pas d’équivalent natif pour définir des structures précises
+                </li>
+                <li class="fragment fade-in">
+                    <strong>En Typescript : </strong>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript"
+                              data-line-numbers="1-5|7-8|11-15|17|18-22|24-29">
+                            interface Car {
+                              readonly brand: string;
+                              model: string;
+                              year: number;
+                            }
+
+                            function printCar(car: Car) {
+                              console.log(`${car.brand} ${car.model} - ${car.year}`);
+                            }
+
+                            const myCar:Car = {
+                              brand: "Honda",
+                              model: "Corolla",
+                              year: 2020
+                            }
+
+                            printCar(myCar); // Fonctionne
+                            printCar({
+                              brand: "Honda",
+                              model: "Corolla",
+                              year: 2020
+                            }); // Fonctionne aussi
+
+                            printCar({
+                              brand: "Honda",
+                              model: "Corolla",
+                              year: 2020,
+                              color: "red"
+                            }); // Erreur
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les interfaces définissent un contrat entre les objets, les méthodes, etc. en déclarant les propriétés
+                attendues ainsi que leur type, mais elles n’implémentent rien.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Implémenter une interface</h2>
+            <ul>
+                <li class="fragment">Une classe peut implémenter une ou plusieurs interfaces
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers="1-5|11-22|7|23-24">
+                            interface CarInterface {
+                              readonly brand: string;
+                              model: string;
+                              year: number;
+                            }
+
+                            function printCar(car: CarInterface) {
+                              console.log(`${car.brand} ${car.model} - ${car.year}`);
+                            }
+
+                            class Honda implements CarInterface {
+
+                              public readonly brand: string = "Honda";
+                              public model: string;
+                              public year: number;
+
+                              constructor(model: string, year: number) {
+                                this.model = model;
+                                this.year = year;
+                              }
+                            }
+
+                            const myCar = new Honda("Corolla", 2020);
+                            printCar(myCar); // Fonctionne
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>L’héritage en Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    Typescript permet l’héritage de classes via le mot-clefs <code>extends</code>
+                </li>
+                <li class="fragment">
+                    Une classe enfant héritera des propriétés et méthodes d’une classe parent.
+                </li>
+            </ul>
+            <pre class="fragment w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-13|15-16">
+                    class Animal {
+                      constructor(public name: string) {}
+
+                      speak() {
+                        console.log(`${this.name} fait un bruit`);
+                      }
+                    }
+
+                    class Dog extends Animal {
+                      speak() {
+                        console.log(`${this.name} aboie`);
+                      }
+                    }
+
+                    const dog = new Dog('Rex');
+                    dog.speak();  // Affiche "Rex aboie"
+                </code>
+            </pre>
+
+            <aside class="notes">
+                L'héritage en TypeScript permet à une classe enfant d'hériter des propriétés et des méthodes d'une
+                classe parente, ce qui facilite la réutilisation du code. Ici, la classe Dog hérite de la classe Animal,
+                mais elle peut aussi redéfinir ses propres méthodes, comme la méthode speak
+            </aside>
+        </section>
+
+        <section>
+            <h2>L’héritage en Typescript 2/2</h2>
+            <ul>
+                <li class="fragment">
+                    Similaire à Javascript :
+                    <ul>
+                        <li>
+                            <code>super()</code> pour appeler la méthode parente
+                        </li>
+                        <li>
+                            Propriétés et méthodes de la classe parente accessible via <code>this</code>
+                        </li>
+                        <li>
+                            Pas d’héritage multiple, pas d’interface
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    Apport de Typescript
+                    <ul>
+                        <li>Vérification des types à la compilation</li>
+                        <li>Possibilité d’utiliser des <strong>interfaces</strong> et des <strong>mixins</strong> pour
+                            des fonctionnalités supplémentaires
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                En JavaScript, l'héritage repose sur les prototypes et les classes, sans vérification des types. En
+                TypeScript, l'héritage fonctionne de la même manière, mais avec une vérification des types au moment de
+                la compilation, ce qui permet d'éviter les erreurs de type. TypeScript offre aussi la possibilité
+                d'utiliser des interfaces et des mixins pour étendre l'héritage, ce qui n'est pas possible en JavaScript
+                natif.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les Génériques pour plus de flexibilité</h2>
+            <figure>
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                        function wrap
+                        <T>(value: T): T[] {
+                          return [value];
+                        }
+                        const wrapped = wrap<number>(42); // Type précis : number[]
+                    </script>
+                </code>
+            </pre>
+                <figcaption>Qu’est-ce que ce <code>T</code> ? Que signifie-t-il ?</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>Définition d’un Générique</h2>
+            <ul>
+                <li class="fragment">
+                    Fonctionne comme un <strong>placeholder</strong>
+                </li>
+                <li class="fragment">
+                    Permet de passer un <strong>type</strong> à une méthode ou un objet
+                </li>
+            </ul>
+            <pre class="fragment w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-13|15|16-17|18">
+                    <script type="text/template">
+                    function makeState
+                    <T>(value: T) {
+                      let state: T = value;
+
+                      function getState() {
+                        return state;
+                      }
+                      function setState(value: T) {
+                        state = value;
+                      }
+                      return {getState, setState};
+                    }
+
+                    const state = makeState<number>(5);
+
+                    console.log(state.getState()); // 5
+                    state.setState(10);
+                    console.log(state.getState()); // 10
+                    state.setState("10"); // Erreur
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Les génériques permettent une flexibilité tout en maintenant la rigueur des types.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Génériques avec des contraintes</h2>
+            <ul>
+                <li class="fragment">
+                    <code>T</code> peut donc correspondre à n’importe quel type
+                </li>
+                <li class="fragment">
+                    Mais il est aussi possible d’apporter des contraintes afin de limiter les types autorisés :
+
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                            function logLength
+                            <T extends { length: number }>(
+                                value: T
+                              ): void {
+                              console.log(value.length);
+                            }
+
+                            logLength("Hello"); // OK
+                            logLength([1, 2, 3]); // OK
+                            logLength(42); // Erreur
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <code>T</code> est un usage standard, mais il est possible d’utiliser n’import quel nom, e.g. <code>TBase</code>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                            function logLength
+                            <TBase extends { length: number }>(value: TBase): void { … }
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les contraites permettent de conserver la flexibilité tout en limitant les erreurs d’usage.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Récapitulatif</h2>
+            <ul>
+                <li>Des objets qui bénéficient du typage statique</li>
+                <li>Amélioration des classes</li>
+                <li>Ajout des interfaces</li>
+                <li>Héritage amélioré</li>
+                <li>Générique : plus de flexibilité</li>
+            </ul>
+        </section>
+
+        <!-- Modules -->
+        <section>
+            <h1 class="r-fit-text">Les Modules</h1>
+            <h2 class="r-fit-text">La boîte à outil du développement Typescript</h2>
+        </section>
+
+        <section>
+            <h2>Qu’est-ce qu’un module ?</h2>
+            <ul>
+                <li class="fragment">
+                    Un <strong>module</strong> est un fichier contenant du code réutilisable
+                </li>
+                <li class="fragment">
+                    Cela permet de
+                    <ul>
+                        <li>découper le code en blocs logiques</li>
+                        <li>Réutiliser des fonctions ou des objets</li>
+                        <li>Faciliter la maintenance et la collaboration</li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    Les modules favorisent :
+                    <ul>
+                        <li>
+                            <strong>la lisibilité</strong> : le code est mieux organisé
+                        </li>
+                        <li>
+                            <strong>la réusabilité</strong> : les fonctions sont partagées entre plusieurs fichiers
+                        </li>
+                        <li>
+                            <strong>l’évolutivité</strong> : il est facile d’ajouter de nouvelles fonctionnalités sans
+                            casser le code existant
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Un module est comme une boîte à outils. En Typescript, chaque fichier est un module. Ils simplifient la
+                collaboration et rendent vos projets évolutifs.
+            </aside>
+        </section>
+        <section>
+            <h2>Comprendre les types de modules</h2>
+
+            <ul class="r-stack">
+                <li class="fragment fade-in-then-out">
+                    <strong>CommonJS (CJS)</strong>
+                    <ul>
+                        <li>
+                            Historiquement utilisé par Node.js
+                        </li>
+                        <li>
+                            Chargement synchrone
+                        </li>
+                        <li>
+                            Syntaxe
+                            <pre class="w-full">
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    <script type="text/template">
+                                    const math = require('./math'); // Import
+                                    module.exports = math;         // Export
+                                    </script>
+                                </code>
+                            </pre>
+                        </li>
+                        <li>
+                            <strong>Avantage</strong> : compatibilité avec Node.js
+                        </li>
+                        <li>
+                            <strong>Limites</strong> : Moins performant avec les outils modernes
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment fade-in">
+                    <strong>ES Modules (ESM)</strong>
+                    <ul>
+                        <li>
+                            Standard moderne (ECMAScript 2015+)
+                        </li>
+                        <li>
+                            Chargement asynchrone
+                        </li>
+                        <li>
+                            Syntaxe :
+                            <pre class="w-full">
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    <script type="text/template">
+                                    import { add } from './math';   // Import
+                                    export const PI = 3.14;        // Export
+                                    </script>
+                                </code>
+                            </pre>
+                        </li>
+                        <li>
+                            <strong>Avantages</strong> : Meilleure optimisation, support natif dans les navigateurs
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les ES Modules sont le standard recommandé aujourd’hui. Cependant, certains anciens projets utilisent
+                encore CommonJS, donc il est utile de connaître les deux.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Import / export</h2>
+            <ul>
+                <li>
+                    Les <strong>exports</strong> permettent de rendre code accessible dans d’autres fichiers
+                </li>
+                <li>
+                    Les <strong>imports</strong> permettent d’utiliser ce code
+                </li>
+                <li>
+                    Avec ES Modules, il y a les <strong>import/export nommés</strong> et les <strong>import/export par
+                    défaut</strong>
+                </li>
+            </ul>
+            <aside class="notes">
+                En TypeScript, les modules fonctionnent grâce aux exports et imports. Voyons leurs différentes
+                variantes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Import / Export nommé</h2>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Export nommé</strong> : exporte plusieurs entités d’un module
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        export const PI = 3.14;
+                        export function add(a: number, b: number): number {
+                        return a + b;
+                        }
+                        </script>
+                    </code>
+                </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Import nommé</strong> : importer les entités nécessaires :
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        import { PI, add } from './math';
+                        console.log(add(2, 3), PI);
+                        </script>
+                    </code>
+                </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les exports nommés permettent de partager plusieurs fonctionnalités par fichier. À l'importation, vous
+                sélectionnez ce dont vous avez besoin.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Importer tout le contenu d’un module</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    import * as Utils from './utils';
+                    console.log(Utils.add(2, 3)); // 5
+                    console.log(Utils.PI); // 3.14
+                    </script>
+                </code>
+            </pre>
+            <p>À utiliser quand un fichier contient plusieurs utilitaires liés.<br/>
+                Mais attention aux performances. </p>
+            <aside class="notes">
+                L’import global est utile pour regrouper tout ce qu’un module offre, mais peut réduire la clarté si vous
+                importez trop d’éléments.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Import / Export par défaut</h2>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Export par défaut</strong> : exporter une entité unique (souvent une clases ou une fonction principale)
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        export default class Greeter {
+                            greet(name: string) {
+                                return `Hello, ${name}`;
+                            }
+                        }
+                        </script>
+                    </code>
+                </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Import par défaut</strong> : import sans accolades
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        import Greeter from './Greeter';
+                        const greeter = new Greeter();
+                        console.log(greeter.greet("Alice"));
+                        </script>
+                    </code>
+                </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Utilisez l’export par défaut quand un fichier représente une seule fonctionnalité principale.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Mélanger les types d’export</h2>
+            <p>
+                Il est possible de mélanger <strong>exports nommés</strong> et <strong>export par défaut</strong> dans un même fichier.
+            </p>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    // Export
+                    export const PI = 3.14;
+                    export const add = (a: number, b: number): number => a + b;
+                    export default function subtract(a: number, b: number): number {
+                    return a - b;
+                    }
+
+                    // Import
+                    import subtract, { PI, add } from './math';
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Dans certains cas, vous pouvez combiner les deux types d’exports. Cependant, pour plus de lisibilité, évitez les mélanges dans des modules complexes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Renommer un export</h2>
+            <aside class="notes">
+                Parfois, les modules peuvent exporter des fonctions ou des objets qui portent les mêmes noms. Pour éviter d’écraser nos imports nous pouvons renommer les entités.
+            </aside>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-4|6-9|11-16">
+                    <script type="text/template">
+                    // math.ts
+                    export function sum(a: number, b: number): number {
+                        return a + b;
+                    }
+
+                    // utils.ts
+                    export function sum(numbers: number[]): number {
+                        return numbers.reduce((number, sum) => sum + number, 0);
+                    }
+
+                    // index.ts
+                    import { sum } from "./math";
+                    import { sum as arraySum } from "./utils";
+
+                    sum(3, 4);
+                    arraySum([3, 4, 5, 7]);
+                    </script>
+                </code>
+            </pre>
+        </section>
+
+        <section>
+            <h2>Structurer un projet Typescript</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape>
+                    ├── src/            // Fichiers source TypeScript
+                    │   ├── modules/    // Sous-modules organisés
+                    │   │   ├── math.ts
+                    │   │   ├── string.ts
+                    │   └── index.ts    // Point d’entrée
+                    ├── tests/          // Tests unitaires
+                    ├── dist/           // Fichiers compilés JavaScript
+                    ├── tsconfig.json   // Configuration TypeScript
+                    └── package.json    // Dépendances du projet
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Une bonne structure simplifie la navigation dans le code</li>
+                <li class="fragment">Elle facilite la collaboration en équipe</li>
+                <li class="fragment">Elle prépare à l’intégration avec des outils comme Jest ou ESLint</li>
+            </ul>
+            <aside class="notes">Organiser un projet de manière logique rend le développement plus fluide et facilite le partage du code. Voici une structure standard qui fonctionne pour des projets simples comme complexes.</aside>
+        </section>
+
+        <section>
+            <h2>Structurer un projet Typescript</h2>
+            <h3>Configurer <code>tsconfig.json</code></h3>
+            <pre class="w-full">
+                <code data-trim data-noescape class="json">
+                {
+                    "compilerOptions": {
+                        …
+                        rootDir: "./src",
+                        outDir: "./dist",
+                    },
+                    "include": ["./src/**/*.ts", "./test/**/*.ts"], // Inclure le code source et les tests
+                    "exclude": ["node_modules", "dist"]
+                }
+                </code>
+            </pre>
+            <aside class="notes">
+                Avec une configuration semblable à celle-ci, vous pouvez structurer vos fichiers sources dans un dossier <code>/src</code>, vos fichiers tests dans un dossier <code>/tests</code> et la compilation de ces fichiers sera dans le dossier <code>/dist</code>
+            </aside>
+        </section>
+
+        <section>
+            <h2>Modules et organisation : récapitulatif</h2>
+            <ul>
+                <li>
+                    <strong>Types de modules : </strong> CommonJS et ES Modules (préférez ESM)
+                </li>
+                <li>
+                    <strong>Exports et imports</strong>
+                    <ul>
+                        <li>Nommés pour plusieurs entités</li>
+                        <li>Par défaut pour une entité unique</li>
+                        <li>Tout importer si nécessaire (mais attention aux performances)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Organisation d’un projet :</strong> une structure claire avec <code>src/</code>, <code>tests/</code> et <code>dist/</code>
+                </li>
+            </ul>
+        </section>
     </div>
 </div>
 
