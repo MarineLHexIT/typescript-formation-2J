@@ -8,7 +8,7 @@
 
     <link rel="stylesheet" href="dist/reset.css">
     <link rel="stylesheet" href="dist/reveal.css">
-    <link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/theme/my-black.css">
 
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -386,7 +386,217 @@ Visual Studio Code est extrêmement bien intégré avec TypeScript. L’installa
 4. **Étape 4 : Activer le mode de vérification stricte dans `tsconfig.json`**
     - Ajoutez `"strict": true` dans votre configuration.
         </textarea>
+        </section>
 
+        <section>
+            <h2>Typescript côté navigateur</h2>
+        </section>
+
+        <section>
+            <h2>Les avantages de Typescript côté serveur</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Meilleure maintenabilité : </strong>
+                    Systèmes complexes mieux structurés grâce aux types
+                </li>
+                <li class="fragment">
+                    <strong>Moins d’erreurs : </strong>
+                    Détection des erreurs au moment du développement.
+                </li>
+                <li class="fragment">
+                    <strong>Écosystème riche : </strong>
+                    Support étendu dans des frameworks comme Express, NestJS, etc.
+                </li>
+                <li class="fragment">
+                    <strong>Interopérabilité facile : </strong>
+                    Compatible avec tout Javascript et Node.js
+                </li>
+            </ul>
+            <aside class="notes">
+                Les avantages de Typescript que nous avons vus s’appliquent tout à fait côté serveur.
+            </aside>
+        </section>
+
+        <section data-markdown>
+            <textarea data-template>
+## Configurer un serveur Node.js avec Typescript (1/4)
+
+- **Étape 1 : Initialiser un projet Node.js**
+    - Commande pour créer un nouveau projet :
+      ```bash
+      npm init -y
+      ```
+    - Installez TypeScript et ses dépendances :
+      ```bash
+      npm install typescript ts-node @types/node --save-dev
+      ```
+
+---
+## Configurer un serveur Node.js avec Typescript (2/4)
+
+- **Étape 2 : Configurer `tsconfig.json`**
+    - Commande pour générer un fichier de configuration :
+      ```bash
+      npx tsc --init
+      ```
+    - Exemple de fichier :
+      ```json
+      {
+        "compilerOptions": {
+          "target": "ES2020", // La version de JavaScript ciblée après compilation
+          "module": "commonjs", // Le système de modules utilisé, ici pour Node.js
+          "outDir": "./dist", // Le dossier où seront placés les fichiers compilés
+          "rootDir": "./src", // Le dossier racine contenant le code source TypeScript
+          "strict": true, // Active un ensemble de vérifications strictes (recommandé)
+          "esModuleInterop": true // Permet une meilleure interopérabilité avec les modules CommonJS
+        }
+      }
+      ```
+
+Note:
+Le fichier `tsconfig.json` est essentiel pour adapter le compilateur TypeScript à votre projet. Configurez-le selon vos besoins, notamment pour définir où les fichiers compilés seront placés.
+---
+## Configurer un serveur Node.js avec Typescript (3/4)
+
+
+- **Étape 3 : Créer un fichier de démarrage**
+    - Exemple : `src/server.ts`
+      ```typescript
+      import express from 'express'; // Import de la bibliothèque Express
+
+      const app = express(); // Création d'une application Express
+      const port = 3000; // Port d'écoute du serveur
+
+      // Route GET qui renvoie un message simple
+      app.get('/', (req, res) => {
+        res.send('Hello, TypeScript!');
+      });
+
+      // Démarrage du serveur avec une fonction de callback
+      app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+      });
+      ```
+    - Installer les dépendances
+    ```bash
+    npm install express
+    npm install --save-dev @types/express
+    ```
+---
+## Configurer un serveur Node.js avec Typescript (4/4)
+
+- **Étape 4 : Lancer le serveur**
+    - Utilisez `ts-node` pour démarrer directement en TypeScript :
+      ```bash
+      npx ts-node src/server.ts
+      ```
+    - Compilez puis exécutez en JavaScript si nécessaire :
+      ```bash
+      npx tsc && node dist/server.js
+      ```
+
+Notes:
+Voici un serveur minimal utilisant TypeScript avec Express. En plus de renforcer la robustesse de votre projet, cette configuration est facilement extensible pour des cas d’usage plus complexes.
+            </textarea>
+        </section>
+        <section>
+            <h2>Déboguer comme un pro avec les Source Map</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Qu’est-ce qu’un Source Map ?</strong>
+                    <ul>
+                        <li>
+                            Fichier généré lors de la compilation Typescript vers Javascript
+                        </li>
+                        <li>
+                            Permet de relier le code Javascript compilé au code Typescript d’origine
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Activation : </strong>
+                    <ul>
+                        <li>
+                            Ajouter dans <code>tsconfig.json</code>
+                            <pre>
+                                <code data-trim data-noescape class="json language-json">
+                                {
+                                    "sourceMap": true
+                                }
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les Source Maps sont des fichiers magiques qui vous permettent de déboguer votre code TypeScript
+                directement, même après compilation. Ils font le lien entre le JavaScript exécuté et le code TypeScript
+                original. Pour les activer, ajoutez simplement `sourceMap: true` dans votre configuration.
+            </aside>
+        </section>
+        <section>
+            <h2>Avantage du Source Map</h2>
+            <ul class="fragment">
+                <li>Debugger directement le code Typescript dans les navigateurs ou outils comme VS Code.</li>
+            </ul>
+            <div class="flex flex-row gap-5 items-baseline">
+                <figure class="w-1/2">
+                    <img src="images/console_js.png" alt=""/>
+                    <figcaption>
+                        Aperçu du code JS dans le navigateur
+                    </figcaption>
+                </figure>
+                <figure class="w-1/2">
+                    <img src="images/console_ts.png" alt=""/>
+                    <figcaption>
+                        Aperçu du code Typescript dans le navigateur
+                    </figcaption>
+                </figure>
+            </div>
+            <aside class="notes">
+                Le Source Map va permettre au navigateur de connaître votre code Typescript et vous guider plus facilement en cas d’erreur.
+
+                Quelle(s) différence(s) voyez-vous dans les aperçus ?
+            </aside>
+        </section>
+        <section>
+            <h2>Atelier</h2>
+            <p class="r-fix-text">
+                À partir de ce que l’on vient de voir, mettre en place des dossiers de travail pour Typescript.
+            </p>
+            <ul>
+                <li>
+                    Initialiser avec <code>npm</code> puis installer <strong>typescript</strong>
+                </li>
+                <li>
+                    Initialiser avec <code>tsc</code>
+                </li>
+                <li>
+                    Configurer vos fichiers <code>package.json</code> et <code>tsconfig.json</code>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Récapitulatif</h2>
+            <ul>
+                <li>
+                    Typescript : facile à installer avec <code>npm</code>
+                </li>
+                <li>
+                    <code>tsconfig.json</code> : le cœur de la configuration
+                </li>
+                <li>
+                    IDE modernes compatibles et pourvus de fonctionnalités pour aider à l’écriture de code Typescript
+                </li>
+                <li>
+                    Les Sources Map : outils indispensables pour le débogage.
+                </li>
+            </ul>
+            <aside class="notes">
+                Pour résumer, TypeScript est simple à configurer et bénéficie d’outils modernes pour rendre le développement agréable. Avec une configuration solide et un bon IDE, vous êtes prêts à écrire du code TypeScript comme des pros.
+            </aside>
         </section>
     </div>
 </div>
