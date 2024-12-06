@@ -2533,7 +2533,7 @@ To open last HTML report run:
         </section>
 
         <section>
-            <h2>Types Unions</h2>
+            <h2>Type "Union"</h2>
 
             <pre class="w-full">
                 <code data-trim data-noescape class="typescript" data-line-numbers="1">
@@ -2558,15 +2558,123 @@ To open last HTML report run:
                 <li class="fragment">
                     <strong>Syntaxe</strong> : le symbole <code>|</code>
                 </li>
-                <li>
+                <li class="fragment">
                     <strong>Simplification</strong> des signatures de fonction et <strong>flexibilité</strong>
                 </li>
+                <li class="fragment">Le <code>|</code> doit se lire comme un <strong>"ou"</strong></li>
             </ul>
 
             <aside class="notes">
                 L’union est un élément que l’on retrouver très souvent car il simplifie les signatures ; cependant, cela impose plus de contrôle, donc il faut faire attention à ne pas combiner trop de type.
 
                 Il est bien sûr possible de combiner des types complexes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Type "Intersection"</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-8|10|12-16|18-21">
+                    <script type="text/template">
+                        type Circle = {
+                            radius: number;
+                            center: [number, number]
+                        }
+
+                        type Colorful = {
+                            color: string
+                        }
+
+                        type ColorfulCircle = Circle & Colorful;
+
+                        const c:ColorfulCircle = {
+                            center: [0, 0],
+                            radius: 10,
+                            color: "blue"
+                        };
+
+                        const colorfulSquare: {width: number} & Colorful = {
+                            width: 10,
+                            color: "red"
+                        }
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Type s’accaparant l’ensemble des propriétés des types combinés</li>
+                <li class="fragment"><strong>Syntaxe</strong> : le symbole <code>&</code></li>
+                <li class="fragment">Une <strong>intersection</strong> créé un nouveau type</li>
+            </ul>
+            <aside class="notes">
+                L’intersection est un autre moyen de combiner les types mais cette fois-ci, en créant un nouveau type à partir de l’ensemble de toutes les caractéristiques des types combinés.
+                Cela peut être utile pour réutiliser des types existants.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Types conditionnels</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1|3-4">
+                    <script type="text/template">
+                        type IsString<T> = T extends string ? true : false;
+
+                        type Test1 = IsString<string>; // true
+                        type Test2 = IsString<number>; // false
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Type déterminé dynamiquement selon une condition</li>
+                <li class="fragment"><strong>Syntaxe</strong> : une condition ternaire <code>T extends U ? X : Y</code>
+                <li class="fragment">Utile particulièrement avec les générique</li>
+            </ul>
+            <aside class="notes">
+                Les types conditionnels permettent de rendre les types dynamiques en fonction de règles spécifiques. Ils sont très puissants dans des bibliothèques génériques et des outils fortement typés, mais leur lisibilité peut rapidement devenir un problème.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Types mappés</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-3|5-6">
+                    <script type="text/template">
+                        type ReadOnly<T> = {
+                            readonly [K in keyof T]: T[K];
+                        };
+
+                        type Point = { x: number; y: number };
+                        type ReadOnlyPoint = ReadOnly<Point>;
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Transforme un type en appliquant des modifications à ses clefs ou valeurs</li>
+                <li class="fragment"><strong>Syntaxe</strong> : <code>{ [K in keys]: ValueType }</code>
+            </ul>
+            <aside class="notes">
+                Les types mappés sont particulièrement utiles pour créer des variantes des types existants (readonly, optional). Cependant, ils nécessitent de bien comprendre les clés et les indices de TypeScript.
+            </aside>
+        </section>
+        <section>
+            <h2>Infer</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-8|10|12-16|18-21">
+                    <script type="text/template">
+                        type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+                        function getMessage(): string {
+                            return 'Hello';
+                        }
+
+                        type MessageReturn = ReturnType<typeof getMessage>; // string
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Extrait des types spécifiques d’un type complexe</li>
+            </ul>
+            <aside class="notes">
+                infer est une fonctionnalité avancée permettant d’extraire des parties spécifiques d’un type, particulièrement utile dans les bibliothèques fortement typées. Toutefois, sa syntaxe peut sembler intimidante pour les débutants.
             </aside>
         </section>
     </div>
