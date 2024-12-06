@@ -1149,9 +1149,9 @@ To open last HTML report run:
             <aside class="notes">"TypeScript permet d'utiliser des types complexes dans vos fonctions, comme des objets
                 ou des tableaux. Cela vous aide à mieux structurer et sécuriser votre code."
             </aside>
-            <ul>
-                <li>
-                    <figure>
+            <ul class="w-full">
+                <li class="w-full">
+                    <figure class="w-full">
                         <figcaption>Avec des objets</figcaption>
                         <pre>
                             <code data-trim data-noescape class="typescript" data-line-numbers>
@@ -1183,7 +1183,7 @@ To open last HTML report run:
         </section>
 
         <section>
-            <h2>Introduction aux Arrays</h2>
+            <h2>Le typage des tableaux</h2>
             <ul>
                 <li class="fragment">
                     Un tableau : regroupe plusieurs valeurs sous une même variable.
@@ -1215,10 +1215,10 @@ To open last HTML report run:
                 <li class="fragment">
                     Type prédéfini <code>readonly</code> pour empêcher les modifications
                     <pre>
-                                <code data-trim data-noescape class="typescript" data-line-numbers>
-                                    const readonlyNumbers: readonly number[] = [1, 2, 3];
-                                </code>
-                            </pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            const readonlyNumbers: readonly number[] = [1, 2, 3];
+                        </code>
+                    </pre>
                 </li>
             </ul>
             <aside class="notes">
@@ -2320,7 +2320,7 @@ To open last HTML report run:
         </section>
 
         <section>
-            <h2>Avantages des mexins</h2>
+            <h2>Avantages des mixins</h2>
             <ul>
                 <li class="fragment">
                     <strong>Réutilisabilité</strong> : encapsulation de fonctionnalités spécifiques, facilement applicables à différentes classes
@@ -2356,6 +2356,219 @@ To open last HTML report run:
         </section>
 
         <!-- Type definition -->
+        <section>
+            <h1 class="r-fit-text">Définition de types</h1>
+            <h2 class="r-fit-text">Typer les bibliothèques externes</h2>
+        </section>
+
+        <section>
+            <h2>Fichiers de déclaration</h2>
+            <aside class="notes">
+                Souvent dans le cadre de nos projet, nous utilisons des bibliothèques externes, qui sont parfois écrites en Typescript, parfois en Javascript. Dans ce dernier cas, comment Typescript est capable de savoir qui existe ou non ?
+            </aside>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                       // Librarie Math
+                       Math.min(5, 7, 12, 29, 13, 2, 11);
+                       Math.mix(5, 7, 12, 29, 13, 2, 11); // TS2339: Property 'mix' does not exist on type 'Math'.
+                       Math.min("Toto", "Titi", "Tata"); //TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Définition pré-existantes</strong> : Typescript possède des déclarations pour toutes les API standards du moteur Javascript
+                </li>
+                <li class="fragment">
+                    <strong>Installer des types</strong> : dans le cadre de bibliothèques externes, il est possible d’installer les types avec <code>npm install @types/&lt;package&gt;</code>
+                </li>
+                <li class="fragment">
+                    <strong>Créer son propre fichier <code>.d.ts</code></strong> :
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                               // my-library.d.ts
+                               declare module 'my-library' {
+                                 export function myFunction(param: string): boolean;
+                               }
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Concepts avancés -->
+        <section>
+            <h1 class="r-fix-text">Concepts avancés</h1>
+            <h2>Pour aller plus loin, et pour mieux comprendre les bibliothèques qu’on utilise…</h2>
+        </section>
+
+        <section>
+            <h2>
+                Les décorateurs
+            </h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                        function Log(target: any, key: string) {
+                            console.log(`${key} a été accédé`);
+                        }
+
+                        class Exemple {
+                            @Log
+                            prop: string = 'Hello';
+                        }
+
+                        const example = new Exemple();
+                        example.prop = "World"; // prop a été accédé
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">
+                    Un <strong>décorateur</strong> est une fonction spéciale annotant une classe, méthode ou propriété
+                </li>
+                <li class="fragment">
+                    <strong>Syntaxe</strong> : préfixée par <code>@</code>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les décorateurs permettent d’ajouter ou de modifier des comportements sans altérer directement le code annoté. Leur principal usage se trouve dans les frameworks comme Angular pour gérer des métadonnées ou des injections de dépendance. En revanche, ils nécessitent une configuration avancée, car ils ne sont disponibles qu’en mode expérimental.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Une fonction expérimentale</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="json">
+                    <script type="text/template">
+                       {
+                           "compilerOptions": {
+                               "target": "ES5",
+                               "experimentalDecorators": true
+                           }
+                       }
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Pour faire fonctionner les décorateurs, il est nécessaire d’activer l’option experimentalDecorators dans les options.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les <em>Decorator Factory</em></h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Factory</strong> : une fonction retournant un décorateur
+                </li>
+                <li class="fragment">
+                    <strong>Objectif</strong> : personnaliser le décorateur
+                </li>
+            </ul>
+            <pre class="w-full fragment">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1|2-9|13|18">
+                    <script type="text/template">
+                        function logFactory(output: string) {
+                            return function (target: any, key: string) {
+                                if (output === "console") {
+                                    console.log(`${key} a été accédé`);
+                                }
+                                else if (output === "file") {
+                                    // another thing
+                                }
+                            }
+                        }
+
+                        class Exemple {
+                            @logFactory("console")
+                            prop: string = 'Hello';
+                        }
+
+                        const example = new Exemple();
+                        example.prop = "World"; // prop a été accédé
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Les décorateurs peuvent être paramétrés afin de répondre à un besoin plutôt qu’un autre. Un outil de log qui écrit dans un fichier ou dans la console ?
+            </aside>
+        </section>
+
+        <section>
+            <h2>Pros and cons</h2>
+            <table class="w-full">
+                <thead>
+                <tr>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <ul class="fragment">
+                            <li>Réduction de code</li>
+                            <li>Extensibilité via de simples annotations</li>
+                            <li>Idéal dans les frameworks</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="fragment">
+                            <li>Syntaxe peu intuitive</li>
+                            <li>Nécessite un support expérimental</li>
+                            <li>Pas adapté à tous les projets</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <aside class="notes">
+                Les décorateurs sont recommandés dans des contextes standardisés et ne seront sûrement pas utilisé dans un projet Typescript relativement simple.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Types Unions</h2>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1">
+                    <script type="text/template">
+                        type ID = number | string;
+
+                        function printId(id: ID) {
+                            if (typeof id === 'string') {
+                                console.log(id.toUpperCase());
+                            } else {
+                                console.log(id);
+                            }
+                        }
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Union</strong> : type combinant plusieurs possibilités
+                </li>
+                <li class="fragment">
+                    <strong>Syntaxe</strong> : le symbole <code>|</code>
+                </li>
+                <li>
+                    <strong>Simplification</strong> des signatures de fonction et <strong>flexibilité</strong>
+                </li>
+            </ul>
+
+            <aside class="notes">
+                L’union est un élément que l’on retrouver très souvent car il simplifie les signatures ; cependant, cela impose plus de contrôle, donc il faut faire attention à ne pas combiner trop de type.
+
+                Il est bien sûr possible de combiner des types complexes.
+            </aside>
+        </section>
     </div>
 </div>
 
