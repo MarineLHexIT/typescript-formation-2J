@@ -1494,9 +1494,109 @@ To open last HTML report run:
         </section>
 
         <section>
+            <h2>
+                Utiliser les <code>type</code>
+            </h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="||1-6|8-14" data-fragment-index="1">
+                    <script type="text/template">
+                        type User = {
+                            firstName: string;
+                            lastName: string;
+                            age: number;
+                            kind?: string;
+                        }
+
+                        const user:User = {
+                            firstName: "Marine",
+                            lastName: "Lancien",
+                            age: 36
+                        };
+
+                        user.kind = "Formatrice";
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Structurer un objet Javascript avec <code>type</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    <strong>Définir un type: </strong> <code>type &lt;Type&gt; : { … }</code>
+                </li>
+                <li class="fragment" data-fragment-index="3">
+                    <strong>Utiliser un type : </strong> <code>const monType:Type = { … }</code>
+                </li>
+            </ul>
+
+            <aside class="notes">
+                De la même façon que l’on type nos variables, on peut typer un objet avec le mot clef <code>type</code>. Cela permet de définir un ensemble de propriétés nécessaires ou facultatives pour que notre objet soit considéré comme valide.
+            </aside>
+        </section>
+
+        <section>
+            <h2>
+                Propriétés facultatives
+            </h2>
+            <div class="flex flex-row w-full gap-5 h-full">
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="3,8">
+                            <script type="text/template">
+                                type User = {
+                                    name: string;
+                                    kind: string | undefined;
+                                }
+
+                                const user:User = {
+                                    name: "Marine LANCIEN",
+                                    kind: undefined
+                                };
+
+                                console.log(user.kind); // undefined
+                                user.kind = "Formatrice";
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Avec <code>null</code> ou <code>undefined</code>
+                    </figcaption>
+                </figure>
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="3,11">
+                            <script type="text/template">
+                                type User = {
+                                    name: string;
+                                    kind?: string;
+                                }
+
+                                const user:User = {
+                                    name: "Marine LANCIEN"
+                                };
+
+                                console.log(user.kind); // undefined
+                                user.kind = "Formatrice";
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Avec le symbole <code>?</code>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <aside class="notes">
+                Par défaut, un <code>type</code> définit des propriétés qui sont nécessaires pour valider un objet.
+                Il est cependant possible de dire qu’une propriété est facultative ; il existe deux façons différentes de l’écrire, soit en utilisant l’union pour définir plusieurs types pour une valeur, soit en utilisant le <code>?</code>.
+            </aside>
+        </section>
+
+        <section>
             <h2>Les classes</h2>
             <ul class="r-stack">
-                <li class="fragment fade-in-then-out">
+                <li class="fragment fade-out" data-fragment-index="1">
                     <strong>En Javascript</strong> : classes depuis ES6, sans vérification statique
                     <pre>
                         <code data-trim data-noescape class="typescript" data-line-numbers>
@@ -1510,7 +1610,7 @@ To open last HTML report run:
                         </code>
                     </pre>
                 </li>
-                <li class="fragment fade-in">
+                <li class="fragment" data-fragment-index="1">
                     <strong>En Typescript</strong>
                     <ul>
                         <li>Vérification des types</li>
@@ -1553,12 +1653,10 @@ To open last HTML report run:
             <ul>
                 <li>Établit <strong>contrat</strong> entre les objets et les méthodes</li>
                 <li>Réduit les erreurs d’intégrations</li>
-            </ul>
-            <ul class="r-stack">
-                <li class="fragment fade-in-then-out">
+                <li class="fragment">
                     <strong>En Javascript : </strong>pas d’équivalent natif pour définir des structures précises
                 </li>
-                <li class="fragment fade-in">
+                <li class="fragment">
                     <strong>En Typescript : </strong>
                     <pre class="w-full">
                         <code data-trim data-noescape class="typescript"
@@ -1603,53 +1701,124 @@ To open last HTML report run:
         </section>
 
         <section>
-            <h2>Implémenter une interface</h2>
-            <ul>
-                <li class="fragment">Une classe peut implémenter une ou plusieurs interfaces
-                    <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers="1-5|11-22|7|23-24">
-                            interface CarInterface {
-                              readonly brand: string;
-                              model: string;
-                              year: number;
-                            }
+            <h2>
+                <code>Interface</code> VS <code>Type</code>
+            </h2>
 
-                            function printCar(car: CarInterface) {
-                              console.log(`${car.brand} ${car.model} - ${car.year}`);
-                            }
+            <div class="flex flex-row w-full gap-5 h-full mb-1.5">
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                                interface UserInterface {
+                                    name:string;
+                                    age: number;
+                                    kind?: string
+                                }
 
-                            class Honda implements CarInterface {
-
-                              public readonly brand: string = "Honda";
-                              public model: string;
-                              public year: number;
-
-                              constructor(model: string, year: number) {
-                                this.model = model;
-                                this.year = year;
-                              }
-                            }
-
-                            const myCar = new Honda("Corolla", 2020);
-                            printCar(myCar); // Fonctionne
+                                const user:UserInterface = {
+                                    name: "Marine LANCIEN",
+                                    age: 36,
+                                }
+                            </script>
                         </code>
                     </pre>
+                    <figcaption>
+                        Une <code>interface</code>
+                    </figcaption>
+                </figure>
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                                type UserType = {
+                                    name: string;
+                                    age: number;
+                                    kind?: string;
+                                }
+
+                                const user: UserType = {
+                                    name: "Marine LANCIEN",
+                                    age: 36
+                                }
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Un <code>type</code>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <ul>
+                <li class="fragment">
+                    La <strong>syntaxe</strong> est différente mais leurs <strong>utilisations</strong> sont similaires
+                </li>
+                <li class="fragment">
+                    Le <code>Type</code> et l’<code>Interface</code> sont souvent interchangeables.
+                </li>
+                <li class="fragment">
+                    Le <code>Type</code> est immuable tandis que l’<code>Interface</code> est extensible.
+                </li>
+            </ul>
+
+            <aside class="notes">
+                L’interface et le type ont beaucoup de similarités, et il peut être difficile de savoir quand utiliser quelle structure. Ils sont d’ailleurs souvent interchangeables.
+                Cependant, un type ne peut pas être modifié alors qu’une interface est toujours extensible
+            </aside>
+
+
+        </section>
+
+        <section>
+            <h2>Implémenter une interface</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|7|11-22|" data-fragment-index="1">
+                    interface CarInterface {
+                      readonly brand: string;
+                      model: string;
+                      year: number;
+                    }
+
+                    function printCar(car: CarInterface) {
+                      console.log(`${car.brand} ${car.model} - ${car.year}`);
+                    }
+
+                    class Honda implements CarInterface {
+
+                      public readonly brand: string = "Honda";
+                      public model: string;
+                      public year: number;
+
+                      constructor(model: string, year: number) {
+                        this.model = model;
+                        this.year = year;
+                      }
+                    }
+
+                    const myCar = new Honda("Corolla", 2020);
+                    printCar(myCar); // Fonctionne
+                </code>
+            </pre>
+            <ul class="r-stack">
+                <li class="fragment fade-in-then-out" data-fragment-index="1">
+                    Typer les paramètres ou le retour d’une fonction
+                </li>
+                <li class="fragment fade-in-then-out" data-fragment-index="2">
+                    Utiliser l’interface dans une classe
+                </li>
+            </ul>
+            <ul>
+                <li class="fragment" data-fragment-index="3">Notes : une classe peut implémenter une ou plusieurs interfaces
                 </li>
             </ul>
         </section>
 
         <section>
             <h2>L’héritage en Typescript</h2>
-            <ul>
-                <li class="fragment">
-                    Typescript permet l’héritage de classes via le mot-clefs <code>extends</code>
-                </li>
-                <li class="fragment">
-                    Une classe enfant héritera des propriétés et méthodes d’une classe parent.
-                </li>
-            </ul>
-            <pre class="fragment w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-13|15-16">
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|9-13|15-16" data-fragment-index="1">
                     class Animal {
                       constructor(public name: string) {}
 
@@ -1668,6 +1837,16 @@ To open last HTML report run:
                     dog.speak();  // Affiche "Rex aboie"
                 </code>
             </pre>
+
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Typescript permet l’héritage de classes via le mot-clefs <code>extends</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Une classe enfant héritera des propriétés et méthodes d’une classe parent.
+                </li>
+            </ul>
+
 
             <aside class="notes">
                 L'héritage en TypeScript permet à une classe enfant d'hériter des propriétés et des méthodes d'une
@@ -1732,28 +1911,19 @@ To open last HTML report run:
 
         <section>
             <h2>Définition d’un Générique</h2>
-            <ul>
-                <li class="fragment">
-                    Fonctionne comme un <strong>placeholder</strong>
-                </li>
-                <li class="fragment">
-                    Permet de passer un <strong>type</strong> à une méthode ou un objet
-                </li>
-            </ul>
-            <pre class="fragment w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-13|15|16-17|18">
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1|13|16,18" data-fragment-index="1">
                     <script type="text/template">
-                    function makeState
-                    <T>(value: T) {
-                      let state: T = value;
+                    function makeState<T>(value: T) {
+                        let state: T = value;
 
-                      function getState() {
-                        return state;
-                      }
-                      function setState(value: T) {
-                        state = value;
-                      }
-                      return {getState, setState};
+                        function getState() {
+                            return state;
+                        }
+                        function setState(value: T) {
+                            state = value;
+                        }
+                        return {getState, setState};
                     }
 
                     const state = makeState<number>(5);
@@ -1765,6 +1935,15 @@ To open last HTML report run:
                     </script>
                 </code>
             </pre>
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Fonctionne comme un <strong>placeholder</strong>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Permet de passer un <strong>type</strong> à une méthode ou un objet
+                </li>
+                <li class="fragment" data-fragment-index="3">Sécurise l’utilisation d’une méthode ou d’une classe</li>
+            </ul>
             <aside class="notes">
                 Les génériques permettent une flexibilité tout en maintenant la rigueur des types.
             </aside>
@@ -2836,6 +3015,13 @@ To open last HTML report run:
                 <li>Rester compatibles avec Javascript quoiqu’il arrive</li>
                 <li>Information à jour sur les ressources officielles</li>
             </ul>
+        </section>
+
+        <!-- Quizz Final -->
+        <section class="quizz">
+            <h1 class="r-fit-text">Quizz récapitulatif</h1>
+
+            <!-- TODO QUIZZ -->
         </section>
 
         <!-- Conclusion -->
