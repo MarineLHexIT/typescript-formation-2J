@@ -856,46 +856,55 @@ To open last HTML report run:
             </ul>
         </section>
 
-        <section>
+        <section class="pt-[56px]">
             <h2>Les types de bases en Typescript</h2>
             <aside class="notes">
-                Ces types simples permettent déjà de couvrir beaucoup de cas d'usage. Notez que TypeScript impose
+                Ces types primitifs permettent déjà de couvrir beaucoup de cas d'usage. Notez que TypeScript impose
                 d’assigner des valeurs conformes au type déclaré. Essayez d’assigner une chaîne de caractères à une
                 variable typée number et observez l’erreur.
             </aside>
-            <ul>
-                <li class="fragment">
-                    <code>number</code> : pour les nombres entiers et décimaux
-                </li>
-                <li class="fragment">
-                    <code>string</code> : pour les chaînes de caractères
-                </li>
-                <li class="fragment">
-                    <code>boolean</code> : pour les valeux vrai/faux
-                </li>
-                <li class="fragment">
-                    <code>null</code> et <code>undefined</code> : représentent l’absence de valeur
-                </li>
-                <li class="fragment">
-                    <code>any</code> : représente n’importe quelle valeur
-                </li>
-            </ul>
-            <pre>
-                <code class="fragment hljs typescript language-typescript" data-trim data-noescape>
-                    let age: number = 30; // Un nombre
-                    let firstName: string = "Alice"; // Une chaîne
-                    let isAdmin: boolean = true; // Un booléen
-                    let unknownValue: null = null; // Null
-                    let notAssigned: undefined = undefined; // Undefined
+            <div class="r-stack r-stretch">
+                <div class="fragment fade-out h-full" data-fragment-index="1">
+                    <img src="./images/type_hierarchy.svg"
+                         alt="Hiérarchie des types" />
+                </div>
+                <ul class="fragment current-visible" data-fragment-index="1">
+                    <li>
+                        <code>number</code> : pour les nombres entiers et décimaux
+                    </li>
+                    <li>
+                        <code>biging</code> :
+                    </li>
+                    <li>
+                        <code>string</code> : pour les chaînes de caractères
+                    </li>
+                    <li>
+                        <code>boolean</code> : pour les valeux vrai/faux
+                    </li>
+                    <li>
+                        <code>symbol</code> :
+                    </li>
+                    <li>
+                        <code>null</code> et <code>undefined</code> : représentent l’absence de valeur
+                    </li>
+                </ul>
+                <pre class="fragment">
+                    <code class="hljs typescript language-typescript" data-trim data-noescape>
+                        let age: number = 30; // Un nombre
+                        let firstName: string = "Alice"; // Une chaîne
+                        let isAdmin: boolean = true; // Un booléen
+                        let unknownValue: null = null; // Null
+                        let notAssigned: undefined = undefined; // Undefined
 
-                    // /!\ Le type `number` n’accepte pas les nombres dans une chaîne de caractères
-                    let invalidAge: number = "30"; // Erreur : Type 'string' n'est pas assignable à 'number'
+                        // /!\ Le type `number` n’accepte pas les nombres dans une chaîne de caractères
+                        let invalidAge: number = "30"; // Erreur : Type 'string' n'est pas assignable à 'number'
 
-                    // Le type `any` peut être n’importe quelle valeur à tout moment
-                    let anyValue: any = "30"; // j’assigne une chaîne de caractères
-                    anyValue = 30; // j’assigne un nombre
-                </code>
-            </pre>
+                        // Le type `any` peut être n’importe quelle valeur à tout moment
+                        let anyValue: any = "30"; // j’assigne une chaîne de caractères
+                        anyValue = 30; // j’assigne un nombre
+                    </code>
+                </pre>
+            </div>
         </section>
 
         <section>
@@ -1368,44 +1377,39 @@ To open last HTML report run:
         <section>
             <h2>Comment utiliser un enum</h2>
 
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-5|7-8|10-19" data-fragment-index="0">
+                    enum Status {
+                      Pending = "Pending",
+                      InProgress = "In Progress",
+                      Completed = "Completed"
+                    }
+
+                    const currentStatus: Status = Status.Pending;
+                    console.log(currentStatus); // "Pending"
+
+                    function getStatusMessage(status: Status): string {
+                      switch (status) {
+                        case Status.Pending:
+                          return "En attente...";
+                        case Status.InProgress:
+                          return "En cours...";
+                        case Status.Completed:
+                          return "Terminé !";
+                      }
+                    }
+                </code>
+            </pre>
+
             <ul class="r-stack list-none w-full">
-                <li class="fragment fade-in-then-out w-full">
-                    Déclaration d’un enum
-                    <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            enum Status {
-                              Pending = "Pending",
-                              InProgress = "In Progress",
-                              Completed = "Completed"
-                            }
-                        </code>
-                    </pre>
+                <li class="fragment fade-in-then-out w-full" data-fragment-index="0">
+                    Déclaration d’un <code>enum</code> ; la structure d’un <code>enum</code> est différente de la structure d’un objet.
                 </li>
-                <li class="fragment fade-in-then-out w-full">
-                    Accéder à ses valeurs
-                    <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            const currentStatus: Status = Status.Pending;
-                            console.log(currentStatus); // "Pending"
-                        </code>
-                    </pre>
+                <li class="fragment current-visible w-full" data-fragment-index="1">
+                    Accéder aux valeurs d’un <code>enum</code> = accéder aux propriétés d’un objet
                 </li>
-                <li class="fragment fade-in  w-full">
-                    Utiliser dans une fonction :
-                    <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            function getStatusMessage(status: Status): string {
-                              switch (status) {
-                                case Status.Pending:
-                                  return "En attente...";
-                                case Status.InProgress:
-                                  return "En cours...";
-                                case Status.Completed:
-                                  return "Terminé !";
-                              }
-                            }
-                        </code>
-                    </pre>
+                <li class="fragment fade-in w-full" data-fragment-index="2">
+                    Idéal pour utiliser au sein d’un fonction avec <code>switch</code>
                 </li>
             </ul>
             <aside class="notes">
@@ -1447,6 +1451,60 @@ To open last HTML report run:
             <aside class="notes">
                 Les enums sont utiles, mais ils ne sont pas parfaits. Ils peuvent augmenter la taille de vos fichiers JavaScript, surtout avec des enums numériques. Pour des scénarios plus complexes ou légers, les types union, que nous verrons dans la partie Concepts avancés, peuvent être une meilleure option.
             </aside>
+        </section>
+
+        <section>
+            <h2>Un point rapide sur <code>never</code> et <code>void</code></h2>
+
+            <aside class="notes">
+                On connaît bien le mot-clef <code>void</code> qui indique qu’une fonction ne retourne rien.
+                Typescript possède aussi un type <code>never</code> qui représente une valeur impossible à atteindre. Ce type n’est utilisé que pour flager les zones qui ne devraient jamais être atteintes ou pour les types conditionnels que nous verrons plus tard.
+            </aside>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-7|13,24,25,26" data-fragment-index="1">
+                    function throwError(e: Error):never {
+                      throw new Error(e.message);
+                    }
+
+                    function logError(e:Error):void {
+                      console.log(e.message);
+                    }
+
+                    enum Status {
+                      Pending = "pending",
+                      InProgress = "in progress",
+                      Done = "done",
+                      Cancelled = "cancelled"
+                    };
+
+                    function logStatus(s: Status):void {
+                      switch (s) {
+                        case Status.Pending:
+                          //...
+                        case Status.InProgress:
+                          // ...
+                        case Status.Done:
+                          // ...
+                        default:
+                          const _exhaustiveCheck: never = s;
+                          return _exhaustiveCheck // Typescript affiche une erreur, il manque un type
+                      }
+                    }
+                </code>
+            </pre>
+
+            <ul class="r-stack w-full">
+                <li class="fragment fade-in-then-out w-full" data-fragment-index="1">
+                    <code>never</code> : la fonction n’atteint jamais de valeur de retour
+                </li>
+                <li class="fragment fade-in-then-out w-full" data-fragment-index="2">
+                    <code>void</code> : la fonction atteint une valeur de retour, mais celle-ci est vide
+                </li>
+                <li class="fragment fade-in w-full" data-fragment-index="3">
+                    <code>never</code> peut permettre de s’assurer qu’on vérifie tous les cas d’une <code>enum</code>
+                </li>
+            </ul>
         </section>
 
         <section>
