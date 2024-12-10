@@ -2238,6 +2238,7 @@ To open last HTML report run:
                 Refactorisez le code des exercices précédents pour intégrer cette structure orientée objet.
 
             </aside>
+        </section>
 
         <section>
             <h2>Récapitulatif</h2>
@@ -2566,6 +2567,49 @@ To open last HTML report run:
         </section>
 
         <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Import et export - organiser votre projet</h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> réorganiser votre projet
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : identifiez les différentes entités de votre projet et discutez de la meilleure façon de les structurer.
+                </li>
+                <li>
+                    <strong>En individuel</strong> : réorganisez votre projet.
+                </li>
+                <li>
+                    <em>Facultatif</em> : corrigez les imports dans vos fichiers tests et vérifiez que les tests fonctionnent toujours.
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+
+                La modification de la structure va impliquer des modifications au niveau du fichier tsconfig. Ne pas hésiter à faire un rappel sur outDir, rootDir, exclude, include.
+
+                Pour la phase de réflexion :
+
+                Pourquoi est-il utile de diviser le code en plusieurs fichiers ?
+                Quels avantages apportent les modules import/export par rapport à un code monolithique ?
+
+                Pour la phase de codage :
+
+                Utilisez des chemins relatifs pour importer les modules (./).
+                Assurez-vous que chaque fichier a une responsabilité claire.
+
+                Pour les tests :
+
+                Exécutez les tests après chaque modification pour vérifier que tout fonctionne.
+
+            </aside>
+
+        <section>
+
+        <section>
             <h2>Modules et organisation : récapitulatif</h2>
             <ul>
                 <li>
@@ -2780,6 +2824,51 @@ To open last HTML report run:
                 Comme tout outil, les mixins doivent être utilisés avec modération et intelligence pour éviter une surcharge cognitive ou des conflits de noms.
             </aside>
         </section>
+
+            <section>
+                <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+                <h3 class="r-fit-text">
+                    Intégrer les mixins à notre projet
+                </h3>
+
+                <p class="text-left">
+                    <em>Consigne : </em> gérer des réductions sur une commande à l’aide de mixins
+                </p>
+                <ol>
+                    <li>
+                        <strong>En groupe</strong> : quels types de réductions pourraient utiles à un restaurant ? avec quelles conditions ?
+                    </li>
+                    <li>
+                        <strong>En individuel</strong> : implémentez un mixins qui permet de créer une réduction sur une commande
+                    </li>
+                    <li>
+                        <em>Facultatif</em> : écrivez des tests pour vérifier que votre code fonctionne, même les cas limites.
+                    </li>
+                </ol>
+
+                <aside class="notes">
+
+                    Quelques pistes pour aider les apprenants :
+
+                    Créez une interface Plat pour modéliser un plat.
+                    Implémentez une classe Commande pour gérer les commandes des clients. Cette classe doit :
+                    - Permettre d’ajouter des plats (avec une méthode générique).
+                    - Calculer le total de la commande.
+
+                    Refactorisez le code des exercices précédents pour intégrer cette structure orientée objet.
+
+                </aside>
+
+            <section>
+
+            <section>
+                <h2>Mixins - récapitulatif</h2>
+                <ul>
+                    <li>Apporter des modifications réutilisables qui ne modifient pas la logique principale</li>
+                    <li>Ils sont réutilisables et flexibles, et peuvent être combiner.</li>
+                    <li>Cependant, ils peuvent apporter une charge cognitive supplémentaire</li>
+                </ul>
+            </section>
 
         <!-- Type definition -->
         <section>
