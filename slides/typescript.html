@@ -389,7 +389,59 @@ Visual Studio Code est extrêmement bien intégré avec TypeScript. L’installa
         </section>
 
         <section>
-            <h2>Typescript côté navigateur</h2>
+            <h2>Typescript côté client</h2>
+            <aside class="notes">
+                Nos navigateurs n’interprètent pas Typescript directement : vous devrez toujours le compiler en Javascript et donc intégrer un fichier .js dans votre HTML.
+                Avec les frameworks comme React, Angular ou Vue, la configuration et compilation se font automatiquement.
+                Sur des petits projets, vous pouvez utiliser des outils comme esbuild ou vite pour une compilation en temps réel.
+            </aside>
+
+            <div class="flex flex-col gap-5">
+                <figure>
+                    <figcaption class="text-left">1. fichier main.ts</figcaption>
+
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="" data-fragment-index="0">
+                            <script type="text/template">
+                            document.addEventListener('DOMContentLoaded', async () => {
+                                const title:HTMLElement = document.querySelector('#title');
+                                title.innerHTML = "Hello World";
+                            });
+                            </script>
+                        </code>
+
+                    </pre>
+                </figure>
+
+
+                <figure>
+                    <figcaption class="text-left">2. compiler le projet</figcaption>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="bash" data-fragment-index="0">
+                            npm tsc
+                        </code>
+                    </pre>
+                </figure>
+
+                <figure>
+                    <figcaption class="text-left">3 import du fichier .js dans le HTML</figcaption>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="html" data-line-numbers="" data-fragment-index="0">
+                            &lt;!DOCTYPE html&gt;
+                                &lt;html lang=&quot;en&quot;&gt;
+                                &lt;head&gt;
+                                  &lt;meta charset=&quot;UTF-8&quot;&gt;
+                                  &lt;title&gt;TypeScript dans le navigateur&lt;/title&gt;
+                                &lt;/head&gt;
+                                &lt;body&gt;
+                                  &lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+                                &lt;/body&gt;
+                            &lt;/html&gt;
+                        </code>
+                    </pre>
+                </figure>
+            </div>
+
         </section>
 
         <section>
@@ -537,18 +589,18 @@ Voici un serveur minimal utilisant TypeScript avec Express. En plus de renforcer
         </section>
         <section>
             <h2>Avantage du Source Map</h2>
-            <ul class="fragment">
+            <ul>
                 <li>Debugger directement le code Typescript dans les navigateurs ou outils comme VS Code.</li>
             </ul>
             <div class="flex flex-row gap-5 items-baseline">
                 <figure class="w-1/2">
-                    <img src="images/console_js.png" alt=""/>
+                    <img src="images/console_js.png" alt="" style="margin: 0 auto;"/>
                     <figcaption>
                         Aperçu du code JS dans le navigateur
                     </figcaption>
                 </figure>
                 <figure class="w-1/2">
-                    <img src="images/console_ts.png" alt=""/>
+                    <img src="images/console_ts.png" alt="" style="margin: 0 auto;"/>
                     <figcaption>
                         Aperçu du code Typescript dans le navigateur
                     </figcaption>
@@ -727,7 +779,7 @@ Voici un serveur minimal utilisant TypeScript avec Express. En plus de renforcer
 
 ---
 
-## Éxécuter les tests
+## Exécuter les tests
 
 5. **Exécuter les tests :**
    ```bash
@@ -2649,14 +2701,14 @@ To open last HTML report run:
                 Les décorateurs
             </h2>
             <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers>
+                <code data-trim data-noescape class="typescript" data-line-numbers="||6" data-fragment-index="1">
                     <script type="text/template">
                         function Log(target: any, key: string) {
                             console.log(`${key} a été accédé`);
                         }
 
                         class Exemple {
-                            @Log
+                            @Log // import du décorateur
                             prop: string = 'Hello';
                         }
 
@@ -2666,10 +2718,10 @@ To open last HTML report run:
                 </code>
             </pre>
             <ul>
-                <li class="fragment">
+                <li class="fragment" data-fragment-index="1">
                     Un <strong>décorateur</strong> est une fonction spéciale annotant une classe, méthode ou propriété
                 </li>
-                <li class="fragment">
+                <li class="fragment" data-fragment-index="2">
                     <strong>Syntaxe</strong> : préfixée par <code>@</code>
                 </li>
             </ul>
@@ -2699,16 +2751,9 @@ To open last HTML report run:
 
         <section>
             <h2>Les <em>Decorator Factory</em></h2>
-            <ul>
-                <li class="fragment">
-                    <strong>Factory</strong> : une fonction retournant un décorateur
-                </li>
-                <li class="fragment">
-                    <strong>Objectif</strong> : personnaliser le décorateur
-                </li>
-            </ul>
-            <pre class="w-full fragment">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1|2-9|13|18">
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-9|13,18" data-fragment-index="1">
                     <script type="text/template">
                         function logFactory(output: string) {
                             return function (target: any, key: string) {
@@ -2731,6 +2776,15 @@ To open last HTML report run:
                     </script>
                 </code>
             </pre>
+
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Factory</strong> : une fonction retournant un décorateur
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    <strong>Objectif</strong> : personnaliser le décorateur
+                </li>
+            </ul>
             <aside class="notes">
                 Les décorateurs peuvent être paramétrés afin de répondre à un besoin plutôt qu’un autre. Un outil de log qui écrit dans un fichier ou dans la console ?
             </aside>
@@ -2773,7 +2827,7 @@ To open last HTML report run:
             <h2>Type "Union"</h2>
 
             <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1|3|" data-fragment-index="1">
                     <script type="text/template">
                         type ID = number | string;
 
@@ -2789,16 +2843,16 @@ To open last HTML report run:
             </pre>
 
             <ul>
-                <li class="fragment">
+                <li>
                     <strong>Union</strong> : type combinant plusieurs possibilités
                 </li>
-                <li class="fragment">
+                <li class="fragment" data-fragment-index="1">
                     <strong>Syntaxe</strong> : le symbole <code>|</code>
                 </li>
-                <li class="fragment">
+                <li class="fragment" data-fragment-index="2">
                     <strong>Simplification</strong> des signatures de fonction et <strong>flexibilité</strong>
                 </li>
-                <li class="fragment">Le <code>|</code> doit se lire comme un <strong>"ou"</strong></li>
+                <li class="fragment" data-fragment-index="3">Le <code>|</code> doit se lire comme un <strong>"ou"</strong></li>
             </ul>
 
             <aside class="notes">
@@ -2811,7 +2865,7 @@ To open last HTML report run:
         <section>
             <h2>Type "Intersection"</h2>
             <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-8|10|12-16|18-21">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|10|12-21" data-fragment-index="1">
                     <script type="text/template">
                         type Circle = {
                             radius: number;
@@ -2838,9 +2892,13 @@ To open last HTML report run:
                 </code>
             </pre>
             <ul>
-                <li class="fragment">Type s’accaparant l’ensemble des propriétés des types combinés</li>
-                <li class="fragment"><strong>Syntaxe</strong> : le symbole <code>&</code></li>
-                <li class="fragment">Une <strong>intersection</strong> créé un nouveau type</li>
+                <li>Type s’accaparant l’ensemble des propriétés des types combinés</li>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Syntaxe</strong> : le symbole <code>&</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Une <strong>intersection</strong> créé un nouveau type
+                </li>
             </ul>
             <aside class="notes">
                 L’intersection est un autre moyen de combiner les types mais cette fois-ci, en créant un nouveau type à partir de l’ensemble de toutes les caractéristiques des types combinés.
@@ -2871,9 +2929,57 @@ To open last HTML report run:
         </section>
 
         <section>
+            <h2>Types conditionnels et <code>never</code></h2>
+            <figure>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|11|13-15|17-19" data-fragment-index="1">
+                    <script type="text/template">
+                    interface Email {
+                        message: string;
+                    }
+
+                    class Dog {
+                        bark() {
+                            console.log("Waf");
+                        }
+                    }
+
+                    type MessageOf<T> = T['message']; // ❌ erreur : "type 'message' cannot be used to index type 'T'"
+
+                    type MessageOf<T extends { message: string}> = T['message']; // ✅ ça fonctionne
+                    type MessageOfEmail = MessageOf<Email>; // ✅ type MessageOfEmail = string;
+                    type MessageOfDog = MessageOf<Dog>; // ❌ Type 'Dog' does not satisfy the constraint '{ message: string; }'
+
+                    type MessageOf<T> = T extends { message: string } ? T['message'] : never;
+                    type MessageOfEmail = MessageOf<Email>; // ✅ type MessageOfEmail = string;
+                    type MessageOfDog = MessageOf<Dog>; // ✅ type MessageOfDog = never
+                    </script>
+                </code>
+            </pre>
+                <figcaption>
+                    Cas pratique : extraire le type d’un message
+                </figcaption>
+            </figure>
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Première étape : erreur, <code>message</code> n’est pas nécessairement défini sur notre type générique <code>T</code>.
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Avec <code>extends</code> : mieux, mais déclenche une erreur si on passe un type qui ne satisfait pas l’extension
+                </li>
+                <li class="fragment" data-fragment-index="3">
+                    Avec un type conditionnel et <code>never</code> : plus d’erreur pour Typescript
+                </li>
+            </ul>
+            <aside class="notes">
+                Lorsque nous avons parcouru les types, nous avons rapidement abordé le type <code>never</code>, qui indique une fonction qui ne parviendrait pas à son terme, ou comme on pourrait le dire autrement, une "fausse route". J’utilise ce terme car dans le cas d’un type conditionnel, on voit ce que peut être une "fausse route" : une route lorsque la condition est <em>fausse</em>.
+            </aside>
+        </section>
+
+        <section>
             <h2>Types mappés</h2>
             <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-3|5-6">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-6" data-fragment-index="1">
                     <script type="text/template">
                         type ReadOnly<T> = {
                             readonly [K in keyof T]: T[K];
@@ -2885,9 +2991,13 @@ To open last HTML report run:
                 </code>
             </pre>
             <ul>
-                <li class="fragment">Transforme un type en appliquant des modifications à ses clefs ou valeurs</li>
-                <li class="fragment"><strong>Syntaxe</strong> : <code>{ [K in keys]: ValueType }</code></li>
-                <li class="fragment">
+                <li class="fragment" data-fragment-index="0">
+                    Transforme un type en appliquant des modifications à ses clefs ou valeurs
+                </li>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Syntaxe</strong> : <code>{ [K in keys]: ValueType }</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
                     Cas d’utilisation :
                     <ul>
                         <li>Rendre toutes les propriétés optionnelles</li>
@@ -2923,9 +3033,9 @@ To open last HTML report run:
                     <code data-trim data-noescape class="typescript" data-line-numbers>
                         <script type="text/template">
                             type User = { name: string; password: string };
-                            type PublicUser = Omit<User, 'password'>;
+                            type PublicUser = Omit<User, 'password'>; // { name: string}
                             // ou
-                            type SecureUser = Pick<User, 'name'>;
+                            type SecureUser = Pick<User, 'name'>; // { name: string}
                         </script>
                     </code>
                 </pre>
@@ -2955,7 +3065,7 @@ To open last HTML report run:
         <section>
             <h2>Infer</h2>
             <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-8|10|12-16|18-21">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
                     <script type="text/template">
                         type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
 
@@ -2968,7 +3078,7 @@ To open last HTML report run:
                 </code>
             </pre>
             <ul>
-                <li class="fragment">Extrait des types spécifiques d’un type complexe</li>
+                <li>Extrait des types spécifiques d’un type complexe</li>
             </ul>
             <aside class="notes">
                 infer est une fonctionnalité avancée permettant d’extraire des parties spécifiques d’un type, particulièrement utile dans les bibliothèques fortement typées. Toutefois, sa syntaxe peut sembler intimidante pour les débutants.
