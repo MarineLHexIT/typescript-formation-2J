@@ -631,7 +631,7 @@ Voici un serveur minimal utilisant TypeScript avec Express. En plus de renforcer
         </section>
 
         <section>
-            <h2>Récapitulatif</h2>
+            <h2>Environnement et outillage : récapitulatif</h2>
             <ul>
                 <li>
                     Typescript : facile à installer avec <code>npm</code>
@@ -867,6 +867,24 @@ To open last HTML report run:
             </textarea>
         </section>
 
+        <section>
+            <h2>Tests : récapitulatif</h2>
+            <ul>
+                <li>
+                    Typescript est compatible avec plusieurs frameworks de tests
+                </li>
+                <li>
+                    Typescript : vérification des types ≠ outils de tests : vérification des cas limites, règles métiers, etc.
+                </li>
+                <li>
+                    Jest : tests unitaires
+                </li>
+                <li>
+                    Playwright : tests UI
+                </li>
+            </ul>
+        </section>
+
         <!-- Types primitifs -->
         <section>
             <h1 class="r-fix-text">Types primitifs</h1>
@@ -1044,6 +1062,25 @@ To open last HTML report run:
         </section>
 
         <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Mise en place d’un projet et premières lignes de code</h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> vous êtes chargés de modéliser les commandes d’un restaurant.
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : déterminez les éléments que vous souhaitez modéliser, et utilisez les types primitifs pour leur attribuer un type.
+                <li>
+                    <strong>En individuel</strong> : dans un fichier main.ts, déclarez les variables
+                </li>
+                <li>
+                    <em>Facultatif</em> : dans un fichier main.test.ts, écrivez un jeu de tests  avec Jest pour valider que les valeurs respectent les types et les attentes fixées lors de la discussion.
+                </li>
+            </ol>
+        </section>
+
+        <section>
             <h2>L’inférence de type</h2>
             <ul>
                 <li class="fragment">Détection automatique du type d’une variable</li>
@@ -1205,43 +1242,7 @@ To open last HTML report run:
             </aside>
         </section>
 
-        <section>
-            <h2>Typage complexe dans les fonctions</h2>
-            <aside class="notes">"TypeScript permet d'utiliser des types complexes dans vos fonctions, comme des objets
-                ou des tableaux. Cela vous aide à mieux structurer et sécuriser votre code."
-            </aside>
-            <ul class="w-full">
-                <li class="w-full">
-                    <figure class="w-full">
-                        <figcaption>Avec des objets</figcaption>
-                        <pre>
-                            <code data-trim data-noescape class="typescript" data-line-numbers>
-                                function describePerson(
-                                  person: {
-                                    name: string;
-                                    age: number
-                                  }): string {
 
-                                  return `${person.name} is ${person.age} years old.`;
-                                }
-                            </code>
-                        </pre>
-                    </figure>
-                </li>
-                <li>
-                    <figure>
-                        <figcaption>Avec des tableaux</figcaption>
-                        <pre>
-                            <code data-trim data-noescape class="typescript" data-line-numbers>
-                                function sum(numbers: number[]): number {
-                                  return numbers.reduce((acc, val) => acc + val, 0);
-                                }
-                            </code>
-                        </pre>
-                    </figure>
-                </li>
-            </ul>
-        </section>
 
         <section>
             <h2>Le typage des tableaux</h2>
@@ -1285,11 +1286,49 @@ To open last HTML report run:
             <aside class="notes">
                 En TypeScript, les tableaux sont des collections de valeurs du même type. Il existe deux façons de
                 déclarer un tableau : avec type[] ou Array
-                <type>. Ces deux syntaxes sont équivalentes."
+                &lt;type&gt;. Ces deux syntaxes sont équivalentes."
 
                     Les tableaux peuvent contenir des types complexes, comme des objets ou des unions. Vous pouvez aussi
                     les rendre immuables grâce au mot-clé readonly.
             </aside>
+        </section>
+
+        <section>
+            <h2>Typage complexe dans les fonctions</h2>
+            <aside class="notes">"TypeScript permet d'utiliser des types complexes dans vos fonctions, comme des objets
+                ou des tableaux. Cela vous aide à mieux structurer et sécuriser votre code."
+            </aside>
+            <ul class="w-full">
+                <li class="w-full">
+                    <figure class="w-full">
+                        <figcaption>Avec des objets</figcaption>
+                        <pre>
+                            <code data-trim data-noescape class="typescript" data-line-numbers>
+                                function describePerson(
+                                  person: {
+                                    name: string;
+                                    age: number
+                                  }): string {
+
+                                  return `${person.name} is ${person.age} years old.`;
+                                }
+                            </code>
+                        </pre>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <figcaption>Avec des tableaux</figcaption>
+                        <pre>
+                            <code data-trim data-noescape class="typescript" data-line-numbers>
+                                function sum(numbers: number[]): number {
+                                  return numbers.reduce((acc, val) => acc + val, 0);
+                                }
+                            </code>
+                        </pre>
+                    </figure>
+                </li>
+            </ul>
         </section>
 
         <section>
