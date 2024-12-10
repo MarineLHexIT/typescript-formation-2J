@@ -1267,7 +1267,7 @@ To open last HTML report run:
                     <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, écrivez les fonctions
                 </li>
                 <li>
-                    <em>Facultatif</em> : dans un fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider que les valeurs respectent les types et les attentes fixées lors de la discussion.
+                    <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider les retours de vos fonctions
                 </li>
             </ol>
 
@@ -1408,7 +1408,7 @@ To open last HTML report run:
             <h2>Tuples et Typescript avancé</h2>
             <ul>
                 <li class="fragment">
-                    Les tuples peuvent inclure des spreds pour des longueurs dynamiques&nbsp;:
+                    Les tuples peuvent inclure des spreads pour des longueurs dynamiques&nbsp;:
                     <pre>
                         <code data-trim data-noescape class="typescript" data-line-numbers>
                             let log: [string, ...number[]] = ["INFO", 200, 300];
@@ -1632,6 +1632,36 @@ To open last HTML report run:
                     <code>never</code> peut permettre de s’assurer qu’on vérifie tous les cas d’une <code>enum</code>
                 </li>
             </ul>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Modéliser avec des <code>Arrays</code>, <code>Enums</code> et <code>Tuples</code></h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> écrire des structures plus complexes pour modéliser un type de plat, une liste, des retours de fonctions
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : quels éléments d’un restaurant peuvent-être représentés sous la forme d’un tableau ? d’une énumération ?
+                </li>
+                <li>
+                    <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, ajoutez ou modifiez les fonctions et les structures dont vous avez parlé entre vous.
+                </li>
+                <li>
+                    <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, ajoutez ou modifiez vos jeux de tests.
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+                - Un tableau contenant les prix des plats et une fonction pour calculer leur somme totale.
+                - Une énumération pour les catégories de plats (entrée, plat principal, dessert).
+                - Un tuple pour représenter un plat (nom, catégorie, prix).
+                - Une fonction qui renvoie un tuple contenant le nom et le prix du plat le moins cher.
+
+            </aside>
         </section>
 
         <section>
