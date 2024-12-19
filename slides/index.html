@@ -1,40 +1,3491 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+    <title>Typescript - 2 jours - ForEach</title>
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+    <link rel="stylesheet" href="dist/reset.css">
+    <link rel="stylesheet" href="dist/reveal.css">
+    <link rel="stylesheet" href="dist/theme/my-black.css">
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+    <!-- Theme used for syntax highlighted code -->
+    <link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+<body>
+<div class="reveal">
+    <div class="menubar flex flex-row items-end p-1 gap-5">
+        <img src="images/typescript_logo.svg" alt="Logo Typescript" class="h-[48px] m-0"/>
+        <h5 class="grow">Apprendre et développer en Typescript</h5>
+    </div>
+    <div class="slides">
+        <!-- Présentation -->
+        <section data-state="hide-menubar">
+            <div class="flex flex-row gap-5 items-center">
+                <img src="images/typescript_logo.svg" alt="Logo Typescript"/>
+                <div>
+                    <h1>Apprendre et développer en Typescript</h1>
+                    <h4>
+                        par <strong>Marine LANCIEN (Hexagone-IT)</strong><br/>
+                        les 11 et 12 décembre 2024
+                    </h4>
+                </div>
+            </div>
+        </section>
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+        <section>
+            <h1 class="r-fit-text">Qui suis-je ?</h1>
+            <p class="r-fit-text">
+                Marine LANCIEN, 36 ans, salariée de Hexagone-IT
+            </p>
+            <p class="r-fit-text">
+                13 ans d’expérience dans le développement web (front et back-end) <br/>
+                De HTML4.1 à HTML5, de jQuery à React, de Javascript à Typescript, etc.
+            </p>
+        </section>
+
+        <section>
+            <h1 class="r-fix-text">Qui êtes-vous ?</h1>
+            <h2 class="r-fit-text">Petit tour de table…</h2>
+            <ul>
+                <li>Qui êtes-vous ?</li>
+                <li>Quelle est votre expérience ?</li>
+                <li>Qu’attendez-vous de cette formation ?</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Évaluation initiale</h2>
+            <div class="flex flex-row gap-5 items-start">
+                <p class="text-right">
+                    Rendez vous sur <a href="https://qruiz.net/Q/?zbvZT3">https://qruiz.net/</a> <br/>
+                    ou bien scannez le QR Code ci-contre.<br/>
+                </p>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://qruiz.net/Q/?zbvZT3"
+                     class="r-fit-text"
+                     alt="QR Code menant à l’adresse https://qruiz.net/Q/?zbvZT3"/>
+            </div>
+            <aside class="notes">
+                Cette évaluation, personnelle et anonyme, contient des questions à propos de Javascript et de
+                Typescript. Il n’y a pas de questions pièges, et il est tout à fait normale d’ignorer les réponses à
+                certaines de ces questions : nous y répondrons durant la formation.
+            </aside>
+        </section>
+
+        <!-- Introduction à Javascript -->
+        <section>
+            <h1>Introduction à Typescript</h1>
+            <ul>
+                <li class="fragment">Comprendre pourquoi Typescript a été créé</li>
+                <li class="fragment">Découvrir ses principaux atouts</li>
+                <li class="fragment">Poser les bases pour la suite de la formation</li>
+            </ul>
+            <aside class="notes">
+                Bienvenue à cette formation TypeScript ! Pour bien commencer, nous allons explorer pourquoi TypeScript
+                existe, ce qu’il apporte aux développeurs, et ses grandes fonctionnalités. Cette introduction est
+                essentielle pour bien comprendre les raisons de son adoption.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Javascript : omniprésent…</h2>
+            <ul>
+                <li class="fragment">Créé en 1995 pour rendre les pages web interactives</li>
+                <li class="fragment">Devient central avec les <strong>frameworks modernes</strong> (React, Angular, Vue,
+                    etc.)
+                </li>
+            </ul>
+            <aside class="notes">
+                JavaScript est le pilier du développement web moderne. Présent depuis 1995 pour rendre les pages web
+                interactives, il est vite devenu un élément central dans le développement web, que cela soit côté client
+                avec les principaux frameworks que l’on connaît aujourd’hui, mais aussi côté back end avec Node.js
+            </aside>
+        </section>
+
+        <section>
+            <h2>Javascript : … mais imparfait</h2>
+            <ul>
+                <li class="fragment">Pas de typage statique -> erreurs fréquentes</li>
+                <li class="fragment">Difficile à maintenir sur de gros projets</li>
+                <li class="fragment">Erreurs détectées uniquement à l’exécution</li>
+            </ul>
+            <aside class="notes">
+                Le problème étant que Javascript est un langage extrêmement flexible, et cette flexibilité pose souci
+                dès lors qu’il s’agit de maintenir des projets d’envergure. C’est à ses obstacles que Typescript va
+                répondre.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Typescript : une évolution naturelle</h2>
+            <ul>
+                <li class="fragment">Créé en <strong>2012 par Microsoft</strong> pour améliorer Javascript</li>
+                <li class="fragment">
+                    Répond aux problèmes des projets complexes
+                    <ul>
+                        <li>Typage statique pour réduire les erreurs.</li>
+                        <li>Outils puissants pour les IDE (autocomplétion, suggestions).</li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Superset de JavaScript</strong>
+                    <ul>
+                        <li>Compatible avec tout le code JavaScript.</li>
+                        <li>Compile en JavaScript pour les navigateurs et Node.js.</li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                En 2012, Microsoft a introduit TypeScript, un superset de JavaScript conçu pour structurer et sécuriser
+                le code. L’idée était simple : détecter les erreurs avant l’exécution grâce au typage statique et rendre
+                le travail des développeurs plus efficace grâce à des outils modernes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les avantages concrets de Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Réduction des erreurs :</strong>
+                    <span class="fragment">détection lors de la compilation</span>
+                </li>
+                <li class="fragment">
+                    <strong>Code plus lisible :</strong>
+                    <span class="fragment">documentation implicite grâce au typage</span>
+                </li>
+                <li class="fragment">
+                    <strong>Maintenance facilitée : </strong>
+                    <span class="fragment">idéal pour les grands projets</span>
+                </li>
+                <li class="fragment">
+                    <strong>Interopérabilité totale : </strong>
+                    <span class="fragment">migration progressive depuis Javascript</span>
+                </li>
+            </ul>
+            <aside class="notes">
+                TypeScript apporte des avantages très concrets. Il vous aide à détecter les erreurs en amont, à produire
+                un code plus clair et à gérer de gros projets avec plus de sérénité. De plus, comme il est compatible
+                avec JavaScript, il est possible de migrer vos projets existants étape par étape.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Un aperçu des super-pouvoirs de Typescript</h2>
+            <ul>
+                <li class="fragment">Typage statique (optionnel, mais fortement recommandé)</li>
+                <li class="fragment">Support des interfaces, et génériques</li>
+                <li class="fragment">Compatibilité avec les dernières versions de JS</li>
+                <li class="fragment"><strong>Interopérabilité complète</strong> : tout Javascript est aussi Typescript
+                </li>
+            </ul>
+            <aside class="notes">
+                TypeScript offre des fonctionnalités qui améliorent significativement l’expérience du développeur. Son
+                système de typage statique est optionnel mais puissant, et il apporte des outils modernes comme les
+                interfaces et génériques. Tout cela tout en restant 100 % compatible avec JavaScript."
+            </aside>
+        </section>
+
+        <section class="quizz">
+            <section>
+                <h1 class="r-fit-text">Questionnaire</h1>
+            </section>
+
+            <section>
+                <h3>En quelle année Typescript a-t-il été créé ?</h3>
+                <ol>
+                    <li class="fragment strike" data-fragment-index="1">1995</li>
+                    <li>2012</li>
+                    <li class="fragment strike" data-fragment-index="1">2018</li>
+                </ol>
+            </section>
+
+            <section>
+                <h3>Qui a créé Typescript ?</h3>
+                <ol>
+                    <li>Microsoft</li>
+                    <li class="fragment strike" data-fragment-index="1">Google</li>
+                    <li class="fragment strike" data-fragment-index="1">Facebook / Meta</li>
+                </ol>
+            </section>
+
+            <section>
+                <h3>Pourquoi dit-on que Typescript est un <strong>superset</strong> de Javascript</h3>
+                <ol>
+                    <li>Parce qu’il ajoute des fonctionnalités tout en étant compatible avec Javascript</li>
+                    <li class="fragment strike" data-fragment-index="1">Parce qu’il est plus rapide</li>
+                    <li class="fragment strike" data-fragment-index="1">Parce qu’il remplace complètement Javascript
+                    </li>
+                </ol>
+            </section>
+
+            <section>
+                <h3>Quel est l’avantage principal du typage statique</h3>
+                <ol>
+                    <li class="fragment strike" data-fragment-index="1">Rendre le code plus rapide</li>
+                    <li class="fragment strike" data-fragment-index="1">Remplacer la documentation</li>
+                    <li>Éviter les bugs en production</li>
+                </ol>
+            </section>
+
+            <section>
+                <h3>Typescript est-il compatible avec Javascript</h3>
+                <ol>
+                    <li>Oui</li>
+                    <li class="fragment strike" data-fragment-index="1">Non</li>
+                </ol>
+            </section>
+        </section>
+
+        <!-- Environnement et sOutillage -->
+        <section>
+            <h1 class="r-fit-text">Environnement et outillage</h1>
+            <aside class="notes">Passons maintenant à la configuration pratique. Nous allons installer Node.JS,
+                configurer un projet, et aborder l’intégration côté serveur.
+            </aside>
+            <ul>
+                <li class="fragment">Installer Node.JS et Typescript</li>
+                <li class="fragment">Intégration dans les IDE</li>
+                <li class="fragment">Intégrer Typescript dans des projets existants</li>
+                <li class="fragment">Ajouter Typescript côté serveur</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Installer Node.js</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Prérequis : </strong> Node.js pour exécuter du JS ou du TS sur votre machine.
+                </li>
+                <li class="fragment">
+                    <strong>Installer Node.js</strong>
+                    <ul>
+                        <li class="fragment">
+                            Rendez-vous sur <a href="https://nodejs.org">nodejs.org</a> et téléchargez la version LTS
+                            (Long Term Support) et suivez les instructions
+                        </li>
+                        <li class="fragment">
+                            Vérifiez l’installation :
+                            <pre>
+                                <code data-trim data-noescape class="hljs language-bash">
+                                    node --version
+                                    npm --version
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Si Node.js n’est pas déjà installé sur votre machine, vous devez d’abord l’installer. Node.js est
+                essentiel pour exécuter votre code TypeScript, et npm (le gestionnaire de paquets) sera utilisé pour
+                installer TypeScript et d’autres dépendances.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Installation de Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Créer un projet</strong>
+                    <ul>
+                        <li>Créer un dossier et s’y placer</li>
+                        <li>
+                            Dans un terminal :
+                            <pre>
+                                <code data-trim data-noescape class="hljs language-bash">
+                                    npm init // initialise le dossier
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Installer Typescript localement</strong>
+                    <pre>
+                        <code data-trim data-noescape class="hljs language-bash">
+                            npm install -D typescript
+                            npx tsc --version // Vérifie que l’installation s’est bien passé
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Initialiser un projet Typescript</strong>
+                    <pre>
+                        <code data-trim data-noescape class="hljs language-bash">
+                            npx tsc --init
+                        </code>
+                    </pre>
+                </li>
+
+            </ul>
+
+            <aside class="notes">
+                Une fois Node.js installé, nous allons commencer à créer notre projet.
+                Il est possible d’installer Typescript globalement ou localement.
+                Nous allons l’installer localement, au sein d’un projet.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les IDE au service de Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>IDE populaires</strong>
+                    <ul>
+                        <li>Visual Studio Code (VS Code) : léger, gratuit, et extensible</li>
+                        <li>Webstorm : puissant, riche en fonctionnalité, payant</li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Alternatives</strong>
+                    <ul>
+                        <li>Sublime Text : nécessite des plugins</li>
+                        <li>Vim / NéoVim : nécessite une configuration avancée</li>
+                        <li>Notepad++ : compatible mais dispose de peu de fonctionnalités</li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Bien que Typescript soit compatible avec la plupart des éditeurs de textes et environnements de
+                développement, certains offrent une meilleure prise en charge, notamment grâce à l’auto-complétion et à
+                la détection d’erreur en temps réel.
+                Personnellement j’utilise Webstorm mais on va aussi regarder du côté de Visual Studio Code.
+            </aside>
+        </section>
+
+        <section data-markdown>
+            <textarea data-template>
+## Configurer Visual Studio Code pour Typescript 1/2
+
+1. **Étape 1 : Installer VS Code**
+    - Téléchargez depuis [code.visualstudio.com](https://code.visualstudio.com).
+
+2. **Étape 2 : Installer les extensions nécessaires**
+    - **TypeScript and JavaScript Language Features** (intégré).
+    - **ESLint** (si vous utilisez un linter).
+
+Note:
+Visual Studio Code est extrêmement bien intégré avec TypeScript. L’installation de base suffit pour démarrer, mais des extensions comme ESLint ou Prettier peuvent améliorer encore votre expérience.
+
+---
+## Configurer Visual Studio Code pour Typescript 2/2
+
+3. **Étape 3 : Personnaliser `settings.json` (optionnel)**
+    - Exemple de configuration :
+    ```json
+    {
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "editor.formatOnSave": true,
+    "eslint.validate": ["javascript", "typescript"]
+    }
+    ```
+4. **Étape 4 : Activer le mode de vérification stricte dans `tsconfig.json`**
+    - Ajoutez `"strict": true` dans votre configuration.
+        </textarea>
+        </section>
+
+        <section>
+            <h2>Typescript côté client</h2>
+            <aside class="notes">
+                Nos navigateurs n’interprètent pas Typescript directement : vous devrez toujours le compiler en Javascript et donc intégrer un fichier .js dans votre HTML.
+                Avec les frameworks comme React, Angular ou Vue, la configuration et compilation se font automatiquement.
+                Sur des petits projets, vous pouvez utiliser des outils comme esbuild ou vite pour une compilation en temps réel.
+            </aside>
+
+            <div class="flex flex-col gap-5">
+                <figure>
+                    <figcaption class="text-left">1. fichier main.ts</figcaption>
+
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="" data-fragment-index="0">
+                            <script type="text/template">
+                            document.addEventListener('DOMContentLoaded', async () => {
+                                const title:HTMLElement = document.querySelector('#title');
+                                title.innerHTML = "Hello World";
+                            });
+                            </script>
+                        </code>
+
+                    </pre>
+                </figure>
+
+
+                <figure>
+                    <figcaption class="text-left">2. compiler le projet</figcaption>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="bash" data-fragment-index="0">
+                            npm tsc
+                        </code>
+                    </pre>
+                </figure>
+
+                <figure>
+                    <figcaption class="text-left">3 import du fichier .js dans le HTML</figcaption>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="html" data-line-numbers="" data-fragment-index="0">
+                            &lt;!DOCTYPE html&gt;
+                                &lt;html lang=&quot;en&quot;&gt;
+                                &lt;head&gt;
+                                  &lt;meta charset=&quot;UTF-8&quot;&gt;
+                                  &lt;title&gt;TypeScript dans le navigateur&lt;/title&gt;
+                                &lt;/head&gt;
+                                &lt;body&gt;
+                                  &lt;script src=&quot;main.js&quot;&gt;&lt;/script&gt;
+                                &lt;/body&gt;
+                            &lt;/html&gt;
+                        </code>
+                    </pre>
+                </figure>
+            </div>
+
+        </section>
+
+        <section>
+            <h2>Les avantages de Typescript côté serveur</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Meilleure maintenabilité : </strong>
+                    Systèmes complexes mieux structurés grâce aux types
+                </li>
+                <li class="fragment">
+                    <strong>Moins d’erreurs : </strong>
+                    Détection des erreurs au moment du développement.
+                </li>
+                <li class="fragment">
+                    <strong>Écosystème riche : </strong>
+                    Support étendu dans des frameworks comme Express, NestJS, etc.
+                </li>
+                <li class="fragment">
+                    <strong>Interopérabilité facile : </strong>
+                    Compatible avec tout Javascript et Node.js
+                </li>
+            </ul>
+            <aside class="notes">
+                Les avantages de Typescript que nous avons vus s’appliquent tout à fait côté serveur.
+            </aside>
+        </section>
+
+        <section data-markdown>
+            <textarea data-template>
+## Configurer un serveur Node.js avec Typescript (1/4)
+
+- **Étape 1 : Initialiser un projet Node.js**
+    - Commande pour créer un nouveau projet :
+      ```bash
+      npm init -y
+      ```
+    - Installez TypeScript et ses dépendances :
+      ```bash
+      npm install typescript ts-node @types/node --save-dev
+      ```
+
+---
+## Configurer un serveur Node.js avec Typescript (2/4)
+
+- **Étape 2 : Configurer `tsconfig.json`**
+    - Commande pour générer un fichier de configuration :
+      ```bash
+      npx tsc --init
+      ```
+    - Exemple de fichier :
+      ```json
+      {
+        "compilerOptions": {
+          "target": "ES2020", // La version de JavaScript ciblée après compilation
+          "module": "commonjs", // Le système de modules utilisé, ici pour Node.js
+          "outDir": "./dist", // Le dossier où seront placés les fichiers compilés
+          "rootDir": "./src", // Le dossier racine contenant le code source TypeScript
+          "strict": true, // Active un ensemble de vérifications strictes (recommandé)
+          "esModuleInterop": true // Permet une meilleure interopérabilité avec les modules CommonJS
+        }
+      }
+      ```
+
+Note:
+Le fichier `tsconfig.json` est essentiel pour adapter le compilateur TypeScript à votre projet. Configurez-le selon vos besoins, notamment pour définir où les fichiers compilés seront placés.
+---
+## Configurer un serveur Node.js avec Typescript (3/4)
+
+
+- **Étape 3 : Créer un fichier de démarrage**
+    - Exemple : `src/server.ts`
+      ```typescript
+      import express from 'express'; // Import de la bibliothèque Express
+
+      const app = express(); // Création d'une application Express
+      const port = 3000; // Port d'écoute du serveur
+
+      // Route GET qui renvoie un message simple
+      app.get('/', (req, res) => {
+        res.send('Hello, TypeScript!');
+      });
+
+      // Démarrage du serveur avec une fonction de callback
+      app.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+      });
+      ```
+    - Installer les dépendances
+    ```bash
+    npm install express
+    npm install --save-dev @types/express
+    ```
+---
+## Configurer un serveur Node.js avec Typescript (4/4)
+
+- **Étape 4 : Lancer le serveur**
+    - Utilisez `ts-node` pour démarrer directement en TypeScript :
+      ```bash
+      npx ts-node src/server.ts
+      ```
+    - Compilez puis exécutez en JavaScript si nécessaire :
+      ```bash
+      npx tsc && node dist/server.js
+      ```
+
+Notes:
+Voici un serveur minimal utilisant TypeScript avec Express. En plus de renforcer la robustesse de votre projet, cette configuration est facilement extensible pour des cas d’usage plus complexes.
+            </textarea>
+        </section>
+        <section>
+            <h2>Déboguer comme un pro avec les Source Map</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Qu’est-ce qu’un Source Map ?</strong>
+                    <ul>
+                        <li>
+                            Fichier généré lors de la compilation Typescript vers Javascript
+                        </li>
+                        <li>
+                            Permet de relier le code Javascript compilé au code Typescript d’origine
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Activation : </strong>
+                    <ul>
+                        <li>
+                            Ajouter dans <code>tsconfig.json</code>
+                            <pre>
+                                <code data-trim data-noescape class="json language-json">
+                                {
+                                    "sourceMap": true
+                                }
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les Source Maps sont des fichiers magiques qui vous permettent de déboguer votre code TypeScript
+                directement, même après compilation. Ils font le lien entre le JavaScript exécuté et le code TypeScript
+                original. Pour les activer, ajoutez simplement `sourceMap: true` dans votre configuration.
+            </aside>
+        </section>
+        <section>
+            <h2>Avantage du Source Map</h2>
+            <ul>
+                <li>Debugger directement le code Typescript dans les navigateurs ou outils comme VS Code.</li>
+            </ul>
+            <div class="flex flex-row gap-5 items-baseline">
+                <figure class="w-1/2">
+                    <img src="images/console_js.png" alt="" style="margin: 0 auto;"/>
+                    <figcaption>
+                        Aperçu du code JS dans le navigateur
+                    </figcaption>
+                </figure>
+                <figure class="w-1/2">
+                    <img src="images/console_ts.png" alt="" style="margin: 0 auto;"/>
+                    <figcaption>
+                        Aperçu du code Typescript dans le navigateur
+                    </figcaption>
+                </figure>
+            </div>
+            <aside class="notes">
+                Le Source Map va permettre au navigateur de connaître votre code Typescript et vous guider plus facilement en cas d’erreur.
+
+                Quelle(s) différence(s) voyez-vous dans les aperçus ?
+            </aside>
+        </section>
+        <section>
+            <h2>Atelier</h2>
+            <p class="r-fix-text">
+                À partir de ce que l’on vient de voir, mettre en place des dossiers de travail pour Typescript.
+            </p>
+            <ul>
+                <li>
+                    Initialiser avec <code>npm</code> puis installer <strong>typescript</strong>
+                </li>
+                <li>
+                    Initialiser avec <code>tsc</code>
+                </li>
+                <li>
+                    Configurer vos fichiers <code>package.json</code> et <code>tsconfig.json</code>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Environnement et outillage : récapitulatif</h2>
+            <ul>
+                <li>
+                    Typescript : facile à installer avec <code>npm</code>
+                </li>
+                <li>
+                    <code>tsconfig.json</code> : le cœur de la configuration
+                </li>
+                <li>
+                    IDE modernes compatibles et pourvus de fonctionnalités pour aider à l’écriture de code Typescript
+                </li>
+                <li>
+                    Les Sources Map : outils indispensables pour le débogage.
+                </li>
+            </ul>
+            <aside class="notes">
+                Pour résumer, TypeScript est simple à configurer et bénéficie d’outils modernes pour rendre le développement agréable. Avec une configuration solide et un bon IDE, vous êtes prêts à écrire du code TypeScript comme des pros.
+            </aside>
+        </section>
+
+        <!-- Tests -->
+        <section>
+            <h1 class="r-fit-text">Les tests avec Typescript</h1>
+            <h2 class="r-fit-text">Pourquoi tester, même avec Typescript ?</h2>
+        </section>
+
+        <section>
+            <h2>Les tests avec Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Typescript garantit : </strong>
+                    <ul>
+                        <li>
+                            Détection des erreurs courante avant l’exécution
+                        </li>
+                        <li>
+                            Cohérence des types au moment de la compilation
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>… mais ne protège pas contre :</strong>
+                    <ul>
+                        <li>
+                            Les erreurs de logique métier
+                        </li>
+                        <li>
+                            Les bugs dans les interactions avec des API ou des bases de données
+                        </li>
+                        <li>
+                            Les erreurs inattendues dans des scénarios réels
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    <strong>Conclusion : </strong>
+                    Typage statique ≠ Remplacement des tests
+                </li>
+            </ul>
+            <aside class="notes">
+                TypeScript est une aide précieuse pour réduire les erreurs, mais les tests restent indispensables pour
+                garantir que votre code fonctionne correctement dans tous les cas possibles.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les frameworks de tests pour Typescript</h2>
+            <ul>
+                <li>
+                    <strong>Jest</strong>
+                    <ul class="fragment">
+                        <li>Configuration simple et riche en fonctionnalités</li>
+                        <li>Support Typescript via <code>ts-jest</code></li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Mocha + Chai</strong>
+                    <ul class="fragment">
+                        <li>Très flexible, idéal pour les besoins spécifiques</li>
+                        <li>Nécessite un peu plus de configuration avec Typescript</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Playwright</strong>
+                    <ul class="fragment">
+                        <li>Teste les UI avec les moteurs de rendu des navigateurs modernes</li>
+                        <li>Supporte plusieurs langages, dont Typescript</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Supertest</strong>
+                    <ul class="fragment">
+                        <li>Teste les requête HTTP (API, serveurs)</li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Le choix d’un framework dépend de vos besoins et préférences.
+                Pour cette formation, nous allons utiliser Jest, qui est simple et populaire, et voir aussi Playwright
+                pour les expériences End-to-End
+            </aside>
+        </section>
+
+        <section data-markdown>
+            <textarea data-template>
+## Installer et configurer **Jest**
+
+1. **Installer Jest et ses dépendances :**
+   ```bash
+   npm install --save-dev jest ts-jest @types/jest
+   ```
+2. **Configurer Jest :**
+   Ajouter un fichier `jest.config.js` avec des commentaires :
+   ```javascript
+   module.exports = {
+     // Utilise ts-jest pour la transpilation TypeScript
+     preset: 'ts-jest',
+     // Environnement Node pour les tests frontend (peut être changé en node pour le backend)
+     testEnvironment: 'jsdom',
+     // Fichiers de test ciblés avec une extension .test.ts
+     testMatch: ['**/*.test.ts'],
+   };
+   ```
+---
+## Écrire un test unitaire simple avec Jest
+
+3. Exemple de fonction à tester :
+   ```typescript
+   export function sum(a: number, b: number): number {
+     return a + b;
+   }
+   ```
+4. Exemple de fichier de test (`sum.test.ts`) :
+   ```typescript
+   import { sum } from './sum';
+   import { describe, expect, test } from '@jest/globals';
+
+   test('sum adds two numbers', () => {
+     expect(sum(1, 2)).toBe(3);
+   });
+
+   test('sum with negative numbers', () => {
+     expect(sum(-1, -2)).toBe(-3);
+   });
+   ```
+
+---
+
+## Exécuter les tests
+
+5. **Exécuter les tests :**
+   ```bash
+    npx jest
+    ```
+6. Retour d’exécution :
+    ```bash
+    test $ npx jest
+    PASS  src/sum.test.ts
+     ✓ sum adds two number (2 ms)
+     ✓ sum adds two negative numbers (1 ms)
+
+    Test Suites: 1 passed, 1 total
+    Tests:       2 passed, 2 total
+    Snapshots:   0 total
+    Time:        1.497 s, estimated 2 s
+    Ran all test suites.
+    ```
+            </textarea>
+        </section>
+
+        <section data-markdown>
+            <textarea data-template>
+## Installer et configurer Playwright
+
+1. **Installer les dépendances :**
+   ```bash
+   npm init playwright@latest
+   ```
+
+2. **Configurer Playwright durant l’installation:**
+    ```bash
+    - Where to put your end-to-end tests? · tests
+    - Add a GitHub Actions workflow? (y/N) · false
+    - Install Playwright browsers (...) · true
+    - Install Playwright operating system dependencies (...) · false
+    ```
+
+---
+## Premier test avec Playwright
+
+3. **Créer un test :**
+    - Fichier : `tests/example.spec.ts`
+    ```typescript
+    import { test, expect } from '@playwright/test';
+
+    test('has title', async ({ page }) => {
+      await page.goto('https://playwright.dev/');
+
+      // Expect a title "to contain" a substring.
+      await expect(page).toHaveTitle(/Playwright/);
+    });
+
+    test('get started link', async ({ page }) => {
+      await page.goto('https://playwright.dev/');
+
+      // Click the get started link.
+      await page.getByRole('link', { name: 'Get started' }).click();
+
+      // Expects page to have a heading with the name of Installation.
+      await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+    });
+
+    ```
+
+4. **Exécuter le test :**
+   ```bash
+   npx playwright test
+   ```
+---
+## Premier test avec Playwright
+
+```bash
+test $ npx playwright test
+
+Running 4 tests using 4 workers
+  4 passed (2.9s)
+
+To open last HTML report run:
+
+  npx playwright show-report
+                ```
+
+![Rapport Playwright](./images/playwright_report.png)
+            </textarea>
+        </section>
+
+        <section>
+            <h2>Tests : récapitulatif</h2>
+            <ul>
+                <li>
+                    Typescript est compatible avec plusieurs frameworks de tests
+                </li>
+                <li>
+                    Typescript : vérification des types ≠ outils de tests : vérification des cas limites, règles métiers, etc.
+                </li>
+                <li>
+                    Jest : tests unitaires
+                </li>
+                <li>
+                    Playwright : tests UI
+                </li>
+            </ul>
+        </section>
+
+        <!-- Types primitifs -->
+        <section>
+            <h1 class="r-fix-text">Types primitifs</h1>
+            <h2 class="r-fix-text">Plongée dans les types de Typescript</h2>
+        </section>
+
+        <section>
+            <h2>Pourquoi des types en Typescript ?</h2>
+            <aside class="notes">
+                Le principal avantage des types en TypeScript est de détecter les erreurs au plus tôt. Imaginez une
+                grosse application où une fonction attend un nombre, mais reçoit une chaîne de caractères par erreur.
+                Avec JavaScript, cette erreur serait détectée à l'exécution, mais avec TypeScript, le compilateur nous
+                alerte immédiatement.
+            </aside>
+            <ul>
+                <li class="fragment">
+                    <strong>Javascript</strong> est un langage dynamiquement typé.
+                    <pre>
+                        <code class="language-javascript javascript" data-trim data-noescape>
+                        let x = 42; // x est un nombre
+                        x = "hello"; // x devient une chaîne de caractères
+                    </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Typescript</strong> est un langage statiquement type.
+                    <ul>
+                        <li>
+                            Détecte les erreurs à la compilation, pas seulement à l’exécution
+                            <pre>
+                                <code class="hljs language-typescript typescript" data-trim data-noescape>
+                                    let x = 42; // x est un nombre
+                                    x = "hello"; // déclenche une erreur
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+
+        <section class="pt-[56px]">
+            <h2>Les types de bases en Typescript</h2>
+            <aside class="notes">
+                Ces types primitifs permettent déjà de couvrir beaucoup de cas d'usage. Notez que TypeScript impose
+                d’assigner des valeurs conformes au type déclaré. Essayez d’assigner une chaîne de caractères à une
+                variable typée number et observez l’erreur.
+            </aside>
+            <div class="r-stack r-stretch">
+                <div class="fragment fade-out h-full" data-fragment-index="1">
+                    <img src="./images/type_hierarchy.svg"
+                         alt="Hiérarchie des types" />
+                </div>
+                <ul class="fragment current-visible" data-fragment-index="1">
+                    <li>
+                        <code>number</code> : pour les nombres entiers et décimaux
+                    </li>
+                    <li>
+                        <code>biging</code> :
+                    </li>
+                    <li>
+                        <code>string</code> : pour les chaînes de caractères
+                    </li>
+                    <li>
+                        <code>boolean</code> : pour les valeux vrai/faux
+                    </li>
+                    <li>
+                        <code>symbol</code> :
+                    </li>
+                    <li>
+                        <code>null</code> et <code>undefined</code> : représentent l’absence de valeur
+                    </li>
+                </ul>
+                <pre class="fragment">
+                    <code class="hljs typescript language-typescript" data-trim data-noescape>
+                        let age: number = 30; // Un nombre
+                        let firstName: string = "Alice"; // Une chaîne
+                        let isAdmin: boolean = true; // Un booléen
+                        let unknownValue: null = null; // Null
+                        let notAssigned: undefined = undefined; // Undefined
+
+                        // /!\ Le type `number` n’accepte pas les nombres dans une chaîne de caractères
+                        let invalidAge: number = "30"; // Erreur : Type 'string' n'est pas assignable à 'number'
+
+                        // Le type `any` peut être n’importe quelle valeur à tout moment
+                        let anyValue: any = "30"; // j’assigne une chaîne de caractères
+                        anyValue = 30; // j’assigne un nombre
+                    </code>
+                </pre>
+            </div>
+        </section>
+
+        <section>
+            <h2>Un code allégé et plus simple à maintenir</h2>
+            <aside class="notes">
+                En JavaScript, vous pouvez écrire des vérifications manuelles pour sécuriser les types, mais cela
+                alourdit le code et augmente les risques d’oublis. Avec TypeScript, ces vérifications sont intégrées au
+                système de type, ce qui vous évite de répéter ces tests et vous concentre sur votre logique métier.
+            </aside>
+            <ul>
+                <li class="fragment">
+                    <strong>Javascript : </strong> sécurisation possible mais coûteuse
+                    <pre>
+                        <code class="javascript" data-trim data-noescape>
+                            function somme(a, b) {
+                              if (!isNumber(a) || !isNumber(b)) {
+                                throw new Error("Les arguments doivent être des nombres");
+                              }
+                              return a + b;
+                            }
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Typescript :</strong> la vérification est implicite
+                    <pre>
+                        <code class="typescript language-typescript" data-noescape data-trim>
+                            function somme(a: number, b: number): number {
+                              return a + b;
+                            }
+                            somme(1, "2"); // Erreur à la compilation
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </section>
+
+        <section class="quizz">
+            <section>
+                <h1 class="r-fit-text">Mini quizz</h1>
+            </section>
+
+            <section>
+                <h3>
+                    Quel type utilisez-vous pour une valeur vraie ou fausse ?
+                </h3>
+                <ol>
+                    <li class="fragment strike" data-fragment-index="1">
+                        <code>number</code>
+                    </li>
+                    <li>
+                        <code>boolean</code>
+                    </li>
+                    <li class="fragment strike" data-fragment-index="1">
+                        <code>string</code>
+                    </li>
+                    <li class="fragment strike" data-fragment-index="1">
+                        <code>undefined</code>
+                    </li>
+                </ol>
+            </section>
+
+            <section>
+                <h3>
+                    Quel erreur Typescript détecterait ici?
+                    <pre>
+                        <code data-trim data-noescape class="typescript">
+                            let temperature: number = 25;
+                            temperature = "chaud";
+                        </code>
+                    </pre>
+                </h3>
+                <ol>
+                    <li class="fragment strike" data-fragment-index="1">
+                        Aucune erreur
+                    </li>
+                    <li>
+                        <code>string</code> n’est pas assignable à <code>number</code>
+                    </li>
+                    <li class="fragment strike" data-fragment-index="1">
+                        Mauvais nom de variable
+                    </li>
+                </ol>
+            </section>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Mise en place d’un projet et premières lignes de code</h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> vous êtes chargés de modéliser les commandes d’un restaurant.
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : déterminez les éléments que vous souhaitez modéliser, et utilisez les types primitifs pour leur attribuer un type.
+                </li>
+                <li>
+                    <strong>En individuel</strong> : dans un fichier <code>main.ts</code>, déclarez les variables
+                </li>
+                <li>
+                    <em>Facultatif</em> : dans un fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider que les valeurs respectent les types et les attentes fixées lors de la discussion.
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+                - Le nom du restaurant. (string)
+                - Le nombre de tables disponibles. (number)
+                - Si le restaurant est ouvert ou non. (string)
+                etc.
+            </aside>
+        </section>
+
+        <section>
+            <h2>L’inférence de type</h2>
+            <ul>
+                <li class="fragment">Détection automatique du type d’une variable</li>
+                <li class="fragment">
+                    <strong>Inférence de type</strong> ou <strong>right déclaration</strong>
+                    <pre>
+                        <code data-trim data-noescape class="typescript">
+                            let age = 30; // Type inféré : number
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Déclaration explicite</strong> ou <strong>left declaration</strong>
+                    <pre>
+                        <code data-trim data-noescape class="typescript">
+                            let age: number = 30; // Type déclaré explicitement : number
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                L'inférence de types, appelée aussi right declaration en anglais, permet à TypeScript de déduire
+                automatiquement le type d'une variable en se basant sur la valeur qu'on lui attribue. C'est une
+                fonctionnalité puissante pour simplifier votre code, tout en conservant une sécurité stricte des types.
+
+                En combinant les deux approches, vous pouvez profiter de la flexibilité de TypeScript. Utilisez
+                l'inférence implicite pour les cas simples, et la déclaration explicite pour les types complexes ou
+                lorsque vous souhaitez améliorer la documentation de votre code.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Retour de fonction et inférence</h2>
+            <ul>
+                <li class="fragment">
+                    Typescript infère également le type de retour d’une fonction :
+                    <pre>
+                        <code data-trim data-noescape class="typescript">
+                            function sum(a: number, b: number) {
+                              return a + b; // Type inféré : "number"
+                            }
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    Typescript peut aussi déduire du contexte :
+                    <pre>
+                        <code data-trim data-noescape class="typescript">
+
+                            window.onmousedown = function (mouseEvent) {
+                              console.log(mouseEvent.button);
+                              console.log(mouseEvent.kangaroo); // error
+                              // Property kangaroo does not exist on MouseEvent type
+                            };
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+
+            <aside class="notes">
+                L'inférence de type fonctionne aussi sur les retours de fonction.
+                Si le type inféré correspond à vos attentes, pas besoin de le déclarer. Mais dans des contextes
+                complexes, indiquer un type peut améliorer la lisibilité et la robustesse du code.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Déclaration et typage des fonctions</h2>
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function greet(name: string): string {
+                      return `Hello, ${name}!`;
+                    }
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment">
+                    Le <strong>type des paramètres</strong> est déclarés après son nom avec&nbsp;<code>:&nbsp;&lt;type&gt;</code>
+                </li>
+                <li class="fragment">
+                    Le <strong>type de retour</strong> est précisé après les parenthèses avec&nbsp;<code>:&nbsp;&lt;type&gt; </code>
+                </li>
+                <li class="fragment">
+                    Si aucun type n’est précisé pour le retour, Typescript l’infère
+                </li>
+            </ul>
+            <aside class="notes">
+                Les fonctions en TypeScript permettent d’assurer que les paramètres et le type de retour respectent vos
+                attentes. Ici, name doit être une chaîne de caractères et la fonction retourne également une chaîne.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Fonctions anonymes et fléchées</h2>
+
+            <figure>
+                <figcaption>Fonction normale</figcaption>
+                <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function addNormal(a: number, b: number): number {
+                      return a + b;
+                    }
+                </code>
+            </pre>
+            </figure>
+
+            <figure>
+                <figcaption>Fonction fléchée</figcaption>
+                <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    const add = (a: number, b: number): number => a + b;
+                </code>
+            </pre>
+            </figure>
+
+            <aside class="notes">
+                Les fonctions fléchées offrent une alternative compacte aux fonctions classiques. Elles sont très
+                utilisées dans des méthodes comme map, filter, ou reduce.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Paramètres optionnels et valeurs par défaut</h2>
+            <ul>
+                <li>
+                    <figure>
+                        <figcaption>Paramètres optionnels</figcaption>
+                        <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function greet(name?: string): string {
+                      return `Hello, ${name ?? "World"}!`;
+                    }
+                </code>
+            </pre>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <figcaption>Valeurs par défaut</figcaption>
+                        <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function greetWithDefault(name: string = "World"): string {
+                      return `Hello, ${name}!`;
+                    }
+                </code>
+            </pre>
+                    </figure>
+                </li>
+                <li class="fragment">
+                    Différence clef : <code>?</code> indique un paramètre optionnel, tandis que les valeurs par défaut
+                    remplacent automatiquement <code>undefined</code>
+                </li>
+            </ul>
+
+            <aside class="notes">
+                Vous pouvez rendre un paramètre optionnel avec le ?, ou assigner une valeur par défaut. Cela permet
+                d'éviter les erreurs tout en réduisant la complexité du code.
+            </aside>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Utilisation des fonctions</h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> Créer des fonctions pour simuler des interactions clientes
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : réfléchissez à des fonctions pour gérer certaines fonctionnalités simples du restaurant. Ces fonctions utiliseront les paramètres optionnels, les paramètres par défaut, et l'inférence de type.
+                </li>
+                <li>
+                    <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, écrivez les fonctions
+                </li>
+                <li>
+                    <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider les retours de vos fonctions
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+                - Calculer le nombre de clients restants à placer dans le restaurant.
+                - Vérifier si une réservation peut être acceptée selon le nombre de tables disponibles.
+                - Gérer une addition en ajoutant des taxes ou un pourboire optionnel.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Le typage des tableaux</h2>
+            <ul>
+                <li class="fragment">
+                    Un tableau : regroupe plusieurs valeurs sous une même variable.
+                </li>
+                <li class="fragment">
+                    Deux syntaxes possibles en Typescript :
+                    <ul>
+                        <li class="fragment">
+                            Type suivi de <code>[]</code> : <code>number[]</code>
+                            <pre>
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    let numbers: number[] = [1, 2, 3];
+                                </code>
+                            </pre>
+                        </li>
+                        <li class="fragment">
+                            Avec <code>Array&lt;type&gt;</code> : <code>Array&lt;number&gt;</code>
+                            <pre>
+                                <code class="typescript" data-line-numbers data-trim>
+                                      <script type="text/template">
+                                          let numbers: Array<number> = [1, 2, 3];
+                                      </script>
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    Type prédéfini <code>readonly</code> pour empêcher les modifications
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            const readonlyNumbers: readonly number[] = [1, 2, 3];
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                En TypeScript, les tableaux sont des collections de valeurs du même type. Il existe deux façons de
+                déclarer un tableau : avec type[] ou Array
+                &lt;type&gt;. Ces deux syntaxes sont équivalentes."
+
+                    Les tableaux peuvent contenir des types complexes, comme des objets ou des unions. Vous pouvez aussi
+                    les rendre immuables grâce au mot-clé readonly.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Typage complexe dans les fonctions</h2>
+            <aside class="notes">"TypeScript permet d'utiliser des types complexes dans vos fonctions, comme des objets
+                ou des tableaux. Cela vous aide à mieux structurer et sécuriser votre code."
+            </aside>
+            <ul class="w-full">
+                <li class="w-full">
+                    <figure class="w-full">
+                        <figcaption>Avec des objets</figcaption>
+                        <pre>
+                            <code data-trim data-noescape class="typescript" data-line-numbers>
+                                function describePerson(
+                                  person: {
+                                    name: string;
+                                    age: number
+                                  }): string {
+
+                                  return `${person.name} is ${person.age} years old.`;
+                                }
+                            </code>
+                        </pre>
+                    </figure>
+                </li>
+                <li>
+                    <figure>
+                        <figcaption>Avec des tableaux</figcaption>
+                        <pre>
+                            <code data-trim data-noescape class="typescript" data-line-numbers>
+                                function sum(numbers: number[]): number {
+                                  return numbers.reduce((acc, val) => acc + val, 0);
+                                }
+                            </code>
+                        </pre>
+                    </figure>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Introduction aux Tuples</h2>
+            <ul>
+                <li>
+                    Un tuple est un tableau dont la longueur et les types de chaque élément sont prédéfinis
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            let user: [string, number] = ["Alice", 25];
+                        </code>
+                    </pre>
+                </li>
+
+
+                <li class="fragment">
+                    Accéder aux éléments :
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            console.log(user[0]); // Alice
+                            console.log(user[1]); // 25
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    Le tuple peut permettre de représenter des types complexes
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            let config: [string, number, boolean] = ["localhost", 8080, true];
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les tuples permettent de représenter des tableaux avec une structure fixe. Contrairement aux tableaux
+                classiques, chaque élément d’un tuple a un type prédéfini et la longueur est connue à l’avance.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Tuples et Typescript avancé</h2>
+            <ul>
+                <li class="fragment">
+                    Les tuples peuvent inclure des spreads pour des longueurs dynamiques&nbsp;:
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            let log: [string, ...number[]] = ["INFO", 200, 300];
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    Les tuples sont couramment utilisés pour des fonctions renvoyant plusieurs valeurs&nbsp;:
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            function getUser(): [string, number] {
+                                return ["Bob", 30];
+                            }
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les tuples permettent aussi d’utiliser des fonctionnalités avancées comme le spread syntax. Ils sont
+                très utiles pour retourner plusieurs valeurs d’une fonction tout en restant typés.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Introduction aux Enums</h2>
+            <ul>
+                <li class="fragment">
+                    Un <strong>enum</strong> est un moyen de définir un groupe de valeurs constantes liées
+                </li>
+                <li class="fragment">
+                    Pourquoi utiliser des Enums ?
+                    <ul>
+                        <li class="fragment">
+                            Meilleur lisibilité et maintenance du code
+                        </li>
+                        <li class="fragment">
+                            Facilite la gestion des valeurs limitées pour des propriétés ou des états
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <aside class="notes">
+                Un enum, ou enumeration, est un outil très pratique pour gérer des valeurs constantes et prévisibles dans vos projets. Imaginez par exemple que vous deviez représenter les statuts d'une tâche ou les directions sur une boussole. Au lieu de jongler avec des chaînes de caractères ou des nombres, qui peuvent vite devenir sources d'erreurs, vous utilisez un enum pour centraliser et sécuriser ces valeurs.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Deux types d’enum</h2>
+            <ul>
+                <li>
+                    Enum numérique
+                    <ul>
+                        <li class="fragment">
+                            Les valeurs sont des entiers implicites (autoincrémentés) ou explicites
+                            <pre>
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    enum Direction {
+                                      North, // = 0
+                                      East, // = 1
+                                      South, // = 2
+                                      West // = 3,
+                                    }
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    Enum chaînes de caractères
+                    <ul>
+                        <li class="fragment">
+                            Chaque valeur est une chaîne explicitement définie.
+                            <pre>
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    enum Direction {
+                                      North = "North",
+                                      East = "East",
+                                      South = "South",
+                                      West = "West",
+                                    }
+                                </code>
+                            </pre>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                En TypeScript, il existe deux types principaux d'enums. D'abord, les enums numériques, où les valeurs sont des entiers. Soit vous laissez TypeScript générer des entiers automatiquement, soit vous les définissez manuellement. Ensuite, on a les enums chaînes de caractères, où vous attribuez explicitement une chaîne à chaque valeur. Les enums chaînes sont souvent préférés car ils sont plus lisibles lors du débogage.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Comment utiliser un enum</h2>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-5|7-8|10-19" data-fragment-index="0">
+                    enum Status {
+                      Pending = "Pending",
+                      InProgress = "In Progress",
+                      Completed = "Completed"
+                    }
+
+                    const currentStatus: Status = Status.Pending;
+                    console.log(currentStatus); // "Pending"
+
+                    function getStatusMessage(status: Status): string {
+                      switch (status) {
+                        case Status.Pending:
+                          return "En attente...";
+                        case Status.InProgress:
+                          return "En cours...";
+                        case Status.Completed:
+                          return "Terminé !";
+                      }
+                    }
+                </code>
+            </pre>
+
+            <ul class="r-stack list-none w-full">
+                <li class="fragment fade-in-then-out w-full" data-fragment-index="0">
+                    Déclaration d’un <code>enum</code> ; la structure d’un <code>enum</code> est différente de la structure d’un objet.
+                </li>
+                <li class="fragment current-visible w-full" data-fragment-index="1">
+                    Accéder aux valeurs d’un <code>enum</code> = accéder aux propriétés d’un objet
+                </li>
+                <li class="fragment fade-in w-full" data-fragment-index="2">
+                    Idéal pour utiliser au sein d’un fonction avec <code>switch</code>
+                </li>
+            </ul>
+            <aside class="notes">
+                Voici un exemple concret pour manipuler des enums dans votre code. Vous déclarez un enum, ici pour les statuts d'une tâche. Ensuite, vous pouvez y accéder directement pour assigner une valeur ou, comme dans notre fonction, utiliser un switch pour adapter le comportement de votre application selon le statut.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Pros and cons des enums</h2>
+            <table class="w-full">
+                <thead>
+                <tr>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <ul class="fragment">
+                            <li>
+                                Idéal avec des ensembles fermés de valeurs constantes
+                            </li>
+                            <li>
+                                Évite les erreurs liées à des typos ou des modifications ultérieures
+                            </li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="fragment">
+                            <li>Flexibilité limitée dans des cas complexes</li>
+                            <li>Augmentation de la taille des bundles JS</li>
+                            <li>Moins ergonomiques que des alternatives comme les <strong>type union</strong></li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <aside class="notes">
+                Les enums sont utiles, mais ils ne sont pas parfaits. Ils peuvent augmenter la taille de vos fichiers JavaScript, surtout avec des enums numériques. Pour des scénarios plus complexes ou légers, les types union, que nous verrons dans la partie Concepts avancés, peuvent être une meilleure option.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Un point rapide sur <code>never</code> et <code>void</code></h2>
+
+            <aside class="notes">
+                On connaît bien le mot-clef <code>void</code> qui indique qu’une fonction ne retourne rien.
+                Typescript possède aussi un type <code>never</code> qui représente une valeur impossible à atteindre. Ce type n’est utilisé que pour flager les zones qui ne devraient jamais être atteintes ou pour les types conditionnels que nous verrons plus tard.
+            </aside>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-7|13,24,25,26" data-fragment-index="1">
+                    function throwError(e: Error):never {
+                      throw new Error(e.message);
+                    }
+
+                    function logError(e:Error):void {
+                      console.log(e.message);
+                    }
+
+                    enum Status {
+                      Pending = "pending",
+                      InProgress = "in progress",
+                      Done = "done",
+                      Cancelled = "cancelled"
+                    };
+
+                    function logStatus(s: Status):void {
+                      switch (s) {
+                        case Status.Pending:
+                          //...
+                        case Status.InProgress:
+                          // ...
+                        case Status.Done:
+                          // ...
+                        default:
+                          const _exhaustiveCheck: never = s;
+                          return _exhaustiveCheck // Typescript affiche une erreur, il manque un type
+                      }
+                    }
+                </code>
+            </pre>
+
+            <ul class="r-stack w-full">
+                <li class="fragment fade-in-then-out w-full" data-fragment-index="1">
+                    <code>never</code> : la fonction n’atteint jamais de valeur de retour
+                </li>
+                <li class="fragment fade-in-then-out w-full" data-fragment-index="2">
+                    <code>void</code> : la fonction atteint une valeur de retour, mais celle-ci est vide
+                </li>
+                <li class="fragment fade-in w-full" data-fragment-index="3">
+                    <code>never</code> peut permettre de s’assurer qu’on vérifie tous les cas d’une <code>enum</code>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Modéliser avec des <code>Arrays</code>, <code>Enums</code> et <code>Tuples</code></h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> écrire des structures plus complexes pour modéliser un type de plat, une liste, des retours de fonctions
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : quels éléments d’un restaurant peuvent-être représentés sous la forme d’un tableau ? d’une énumération ?
+                </li>
+                <li>
+                    <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, ajoutez ou modifiez les fonctions et les structures dont vous avez parlé entre vous.
+                </li>
+                <li>
+                    <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, ajoutez ou modifiez vos jeux de tests.
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+                - Un tableau contenant les prix des plats et une fonction pour calculer leur somme totale.
+                - Une énumération pour les catégories de plats (entrée, plat principal, dessert).
+                - Un tuple pour représenter un plat (nom, catégorie, prix).
+                - Une fonction qui renvoie un tuple contenant le nom et le prix du plat le moins cher.
+
+            </aside>
+        </section>
+
+        <section>
+            <h2>Récapitulatif</h2>
+            <ul>
+                <li class="fragment">
+                    Des types primitifs <code>number</code>, <code>string</code>, etc.
+                </li>
+                <li class="fragment">Typescript reconnaît les types grâce à <strong>l’inférence</strong></li>
+                <li class="fragment">
+                    Typage dans les fonctions (paramètres et retours)
+                </li>
+                <li class="fragment">
+                    Structure complexes : <code>Array</code>, <code>tuple</code>, <code>enum</code>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Les objets -->
+        <section>
+            <h1 class="r-fit-text">Les objets en Typescript</h1>
+            <p>En <strong>Javascript</strong>, les objets sont dynamiques mais risquent des erreurs de structure et de
+                type.</p>
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    const car = { brand: "Toyota", model: "Corolla" };
+                    car.year = "2020"; // Pas d'erreur, mais incohérence !
+                </code>
+            </pre>
+        </section>
+
+        <section>
+            <h2>Sécurité et contrôle avec Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Définition exacte</strong> de la structure (classes, interface, <code>type</code>)
+                </li>
+                <li class="fragment">
+                    <strong>Vérification statique</strong> à la compilation
+                </li>
+                <li class="fragment">
+                    <strong>Modèles réutilisables</strong> grâce aux génériques.
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>
+                Utiliser les <code>type</code>
+            </h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="||1-6|8-14" data-fragment-index="1">
+                    <script type="text/template">
+                        type User = {
+                            firstName: string;
+                            lastName: string;
+                            age: number;
+                            kind?: string;
+                        }
+
+                        const user:User = {
+                            firstName: "Marine",
+                            lastName: "Lancien",
+                            age: 36
+                        };
+
+                        user.kind = "Formatrice";
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Structurer un objet Javascript avec <code>type</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    <strong>Définir un type: </strong> <code>type &lt;Type&gt; : { … }</code>
+                </li>
+                <li class="fragment" data-fragment-index="3">
+                    <strong>Utiliser un type : </strong> <code>const monType:Type = { … }</code>
+                </li>
+            </ul>
+
+            <aside class="notes">
+                De la même façon que l’on type nos variables, on peut typer un objet avec le mot clef <code>type</code>. Cela permet de définir un ensemble de propriétés nécessaires ou facultatives pour que notre objet soit considéré comme valide.
+            </aside>
+        </section>
+
+        <section>
+            <h2>
+                Propriétés facultatives
+            </h2>
+            <div class="flex flex-row w-full gap-5 h-full">
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="3,8">
+                            <script type="text/template">
+                                type User = {
+                                    name: string;
+                                    kind: string | undefined;
+                                }
+
+                                const user:User = {
+                                    name: "Marine LANCIEN",
+                                    kind: undefined
+                                };
+
+                                console.log(user.kind); // undefined
+                                user.kind = "Formatrice";
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Avec <code>null</code> ou <code>undefined</code>
+                    </figcaption>
+                </figure>
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="3,11">
+                            <script type="text/template">
+                                type User = {
+                                    name: string;
+                                    kind?: string;
+                                }
+
+                                const user:User = {
+                                    name: "Marine LANCIEN"
+                                };
+
+                                console.log(user.kind); // undefined
+                                user.kind = "Formatrice";
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Avec le symbole <code>?</code>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <aside class="notes">
+                Par défaut, un <code>type</code> définit des propriétés qui sont nécessaires pour valider un objet.
+                Il est cependant possible de dire qu’une propriété est facultative ; il existe deux façons différentes de l’écrire, soit en utilisant l’union pour définir plusieurs types pour une valeur, soit en utilisant le <code>?</code>.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les classes</h2>
+            <ul class="r-stack">
+                <li class="fragment fade-out" data-fragment-index="1">
+                    <strong>En Javascript</strong> : classes depuis ES6, sans vérification statique
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            class Person {
+                              constructor(name, age) {
+                                this.name = name;
+                                this.age = age;
+                              }
+                            }
+                            const alice = new Person("Alice", "trente"); // Erreur silencieuse
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>En Typescript</strong>
+                    <ul>
+                        <li>Vérification des types</li>
+                        <li>
+                            Modificateurs d’accès (
+                            <code>private</code>,
+                            <code>protected</code>,
+                            <code>public</code>
+                            )
+                        </li>
+                        <li>Typage des propriétés et des méthodes</li>
+                    </ul>
+                    <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            class Person {
+                              private name: string;
+                              protected age: number;
+
+                              constructor(name: string, age: number) {
+                                this.name = name;
+                                this.age = age;
+                              }
+
+                              public greet(): string {
+                                return `Hello, my name is ${this.name}.`;
+                              }
+                            }
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les classes TypeScript offrent une structure plus robuste et permettent d'éviter des erreurs dès le
+                développement.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Qu’est-ce que sont les interfaces ?</h2>
+            <ul>
+                <li>Établit <strong>contrat</strong> entre les objets et les méthodes</li>
+                <li>Réduit les erreurs d’intégrations</li>
+                <li class="fragment">
+                    <strong>En Javascript : </strong>pas d’équivalent natif pour définir des structures précises
+                </li>
+                <li class="fragment">
+                    <strong>En Typescript : </strong>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript"
+                              data-line-numbers="1-5|7-8|11-15|17|18-22|24-29">
+                            interface Car {
+                              readonly brand: string;
+                              model: string;
+                              year: number;
+                            }
+
+                            function printCar(car: Car) {
+                              console.log(`${car.brand} ${car.model} - ${car.year}`);
+                            }
+
+                            const myCar:Car = {
+                              brand: "Honda",
+                              model: "Corolla",
+                              year: 2020
+                            }
+
+                            printCar(myCar); // Fonctionne
+                            printCar({
+                              brand: "Honda",
+                              model: "Corolla",
+                              year: 2020
+                            }); // Fonctionne aussi
+
+                            printCar({
+                              brand: "Honda",
+                              model: "Corolla",
+                              year: 2020,
+                              color: "red"
+                            }); // Erreur
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les interfaces définissent un contrat entre les objets, les méthodes, etc. en déclarant les propriétés
+                attendues ainsi que leur type, mais elles n’implémentent rien.
+            </aside>
+        </section>
+
+        <section>
+            <h2>
+                <code>Interface</code> VS <code>Type</code>
+            </h2>
+
+            <div class="flex flex-row w-full gap-5 h-full mb-1.5">
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                                interface UserInterface {
+                                    name:string;
+                                    age: number;
+                                    kind?: string
+                                }
+
+                                const user:UserInterface = {
+                                    name: "Marine LANCIEN",
+                                    age: 36,
+                                }
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Une <code>interface</code>
+                    </figcaption>
+                </figure>
+                <figure class="grow">
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                                type UserType = {
+                                    name: string;
+                                    age: number;
+                                    kind?: string;
+                                }
+
+                                const user: UserType = {
+                                    name: "Marine LANCIEN",
+                                    age: 36
+                                }
+                            </script>
+                        </code>
+                    </pre>
+                    <figcaption>
+                        Un <code>type</code>
+                    </figcaption>
+                </figure>
+            </div>
+
+            <ul>
+                <li class="fragment">
+                    La <strong>syntaxe</strong> est différente mais leurs <strong>utilisations</strong> sont similaires
+                </li>
+                <li class="fragment">
+                    Le <code>Type</code> et l’<code>Interface</code> sont souvent interchangeables.
+                </li>
+                <li class="fragment">
+                    Le <code>Type</code> est immuable tandis que l’<code>Interface</code> est extensible.
+                </li>
+            </ul>
+
+            <aside class="notes">
+                L’interface et le type ont beaucoup de similarités, et il peut être difficile de savoir quand utiliser quelle structure. Ils sont d’ailleurs souvent interchangeables.
+                Cependant, un type ne peut pas être modifié alors qu’une interface est toujours extensible
+            </aside>
+
+
+        </section>
+
+        <section>
+            <h2>Implémenter une interface</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|7|11-22|" data-fragment-index="1">
+                    interface CarInterface {
+                      readonly brand: string;
+                      model: string;
+                      year: number;
+                    }
+
+                    function printCar(car: CarInterface) {
+                      console.log(`${car.brand} ${car.model} - ${car.year}`);
+                    }
+
+                    class Honda implements CarInterface {
+
+                      public readonly brand: string = "Honda";
+                      public model: string;
+                      public year: number;
+
+                      constructor(model: string, year: number) {
+                        this.model = model;
+                        this.year = year;
+                      }
+                    }
+
+                    const myCar = new Honda("Corolla", 2020);
+                    printCar(myCar); // Fonctionne
+                </code>
+            </pre>
+            <ul class="r-stack">
+                <li class="fragment fade-in-then-out" data-fragment-index="1">
+                    Typer les paramètres ou le retour d’une fonction
+                </li>
+                <li class="fragment fade-in-then-out" data-fragment-index="2">
+                    Utiliser l’interface dans une classe
+                </li>
+            </ul>
+            <ul>
+                <li class="fragment" data-fragment-index="3">Notes : une classe peut implémenter une ou plusieurs interfaces
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>L’héritage en Typescript</h2>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|9-13|15-16" data-fragment-index="1">
+                    class Animal {
+                      constructor(public name: string) {}
+
+                      speak() {
+                        console.log(`${this.name} fait un bruit`);
+                      }
+                    }
+
+                    class Dog extends Animal {
+                      speak() {
+                        console.log(`${this.name} aboie`);
+                      }
+                    }
+
+                    const dog = new Dog('Rex');
+                    dog.speak();  // Affiche "Rex aboie"
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Typescript permet l’héritage de classes via le mot-clefs <code>extends</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Une classe enfant héritera des propriétés et méthodes d’une classe parent.
+                </li>
+            </ul>
+
+
+            <aside class="notes">
+                L'héritage en TypeScript permet à une classe enfant d'hériter des propriétés et des méthodes d'une
+                classe parente, ce qui facilite la réutilisation du code. Ici, la classe Dog hérite de la classe Animal,
+                mais elle peut aussi redéfinir ses propres méthodes, comme la méthode speak
+            </aside>
+        </section>
+
+        <section>
+            <h2>L’héritage en Typescript 2/2</h2>
+            <ul>
+                <li class="fragment">
+                    Similaire à Javascript :
+                    <ul>
+                        <li>
+                            <code>super()</code> pour appeler la méthode parente
+                        </li>
+                        <li>
+                            Propriétés et méthodes de la classe parente accessible via <code>this</code>
+                        </li>
+                        <li>
+                            Pas d’héritage multiple, pas d’interface
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    Apport de Typescript
+                    <ul>
+                        <li>Vérification des types à la compilation</li>
+                        <li>Possibilité d’utiliser des <strong>interfaces</strong> et des <strong>mixins</strong> pour
+                            des fonctionnalités supplémentaires
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                En JavaScript, l'héritage repose sur les prototypes et les classes, sans vérification des types. En
+                TypeScript, l'héritage fonctionne de la même manière, mais avec une vérification des types au moment de
+                la compilation, ce qui permet d'éviter les erreurs de type. TypeScript offre aussi la possibilité
+                d'utiliser des interfaces et des mixins pour étendre l'héritage, ce qui n'est pas possible en JavaScript
+                natif.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les Génériques pour plus de flexibilité</h2>
+            <figure>
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                        function wrap<T>(value: T): T[] {
+                          return [value];
+                        }
+                        const wrapped = wrap<number>(42); // Type précis : number[]
+                    </script>
+                </code>
+            </pre>
+                <figcaption>Qu’est-ce que ce <code>T</code> ? Que signifie-t-il ?</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>Définition d’un Générique</h2>
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1|13|16,18" data-fragment-index="1">
+                    <script type="text/template">
+                    function makeState<T>(value: T) {
+                        let state: T = value;
+
+                        function getState() {
+                            return state;
+                        }
+                        function setState(value: T) {
+                            state = value;
+                        }
+                        return {getState, setState};
+                    }
+
+                    const state = makeState<number>(5);
+
+                    console.log(state.getState()); // 5
+                    state.setState(10);
+                    console.log(state.getState()); // 10
+                    state.setState("10"); // Erreur
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Fonctionne comme un <strong>placeholder</strong>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Permet de passer un <strong>type</strong> à une méthode ou un objet
+                </li>
+                <li class="fragment" data-fragment-index="3">Sécurise l’utilisation d’une méthode ou d’une classe</li>
+            </ul>
+            <aside class="notes">
+                Les génériques permettent une flexibilité tout en maintenant la rigueur des types.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Génériques avec des contraintes</h2>
+            <ul>
+                <li class="fragment">
+                    <code>T</code> peut donc correspondre à n’importe quel type
+                </li>
+                <li class="fragment">
+                    Mais il est aussi possible d’apporter des contraintes afin de limiter les types autorisés :
+
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                            function logLength
+                            <T extends { length: number }>(
+                                value: T
+                              ): void {
+                              console.log(value.length);
+                            }
+
+                            logLength("Hello"); // OK
+                            logLength([1, 2, 3]); // OK
+                            logLength(42); // Erreur
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    <code>T</code> est un usage standard, mais il est possible d’utiliser n’import quel nom, e.g. <code>TBase</code>
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                            function logLength
+                            <TBase extends { length: number }>(value: TBase): void { … }
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les contraites permettent de conserver la flexibilité tout en limitant les erreurs d’usage.
+            </aside>
+        </section>
+
+        <section>
+            <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Refactoriser avec des <code>Interfaces</code>, <code>Objets</code>, et <code>Classes</code></h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> créer des classes à partir des exercices précédents
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : identifiez les parties des exercices précédents qui pourraient être refactorisés en classe. Ajoutez des fonctionnalités supplémentaires, intégrez l’usage de génériques si possible.
+                </li>
+                <li>
+                    <strong>En individuel</strong> : refactoriser le code contenu dans <code>main.ts</code>.
+                </li>
+                <li>
+                    <em>Facultatif</em> : complétez votre fichier <code>main.test.ts</code> afin de continuer de valider votre code.
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+
+                Créez une interface Plat pour modéliser un plat.
+                Implémentez une classe Commande pour gérer les commandes des clients. Cette classe doit :
+                 - Permettre d’ajouter des plats (avec une méthode générique).
+                 - Calculer le total de la commande.
+
+                Refactorisez le code des exercices précédents pour intégrer cette structure orientée objet.
+
+            </aside>
+            </section>
+            <section>
+                <ul>
+                    <li>Interface Plat (modéliser nom, un type de plat, un prix, etc.</li>
+                    <li>Une classe Commande : ajouterItem, calculerTotal, getItems</li>
+                    <li>La classe commande doit pouvoir être utilisée avec un générique. </li>
+
+                </ul>
+            </section>
+        </section>
+
+        <section>
+            <h2>Récapitulatif</h2>
+            <ul>
+                <li>Des objets qui bénéficient du typage statique</li>
+                <li>Amélioration des classes</li>
+                <li>Ajout des interfaces</li>
+                <li>Héritage amélioré</li>
+                <li>Générique : plus de flexibilité</li>
+            </ul>
+        </section>
+
+        <!-- Modules -->
+        <section>
+            <h1 class="r-fit-text">Les Modules</h1>
+            <h2 class="r-fit-text">La boîte à outil du développement Typescript</h2>
+        </section>
+
+        <section>
+            <h2>Qu’est-ce qu’un module ?</h2>
+            <ul>
+                <li class="fragment">
+                    Un <strong>module</strong> est un fichier contenant du code réutilisable
+                </li>
+                <li class="fragment">
+                    Cela permet de
+                    <ul>
+                        <li>découper le code en blocs logiques</li>
+                        <li>Réutiliser des fonctions ou des objets</li>
+                        <li>Faciliter la maintenance et la collaboration</li>
+                    </ul>
+                </li>
+                <li class="fragment">
+                    Les modules favorisent :
+                    <ul>
+                        <li>
+                            <strong>la lisibilité</strong> : le code est mieux organisé
+                        </li>
+                        <li>
+                            <strong>la réusabilité</strong> : les fonctions sont partagées entre plusieurs fichiers
+                        </li>
+                        <li>
+                            <strong>l’évolutivité</strong> : il est facile d’ajouter de nouvelles fonctionnalités sans
+                            casser le code existant
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Un module est comme une boîte à outils. En Typescript, chaque fichier est un module. Ils simplifient la
+                collaboration et rendent vos projets évolutifs.
+            </aside>
+        </section>
+        <section>
+            <h2>Comprendre les types de modules</h2>
+
+            <ul class="r-stack">
+                <li class="fragment fade-in-then-out">
+                    <strong>CommonJS (CJS)</strong>
+                    <ul>
+                        <li>
+                            Historiquement utilisé par Node.js
+                        </li>
+                        <li>
+                            Chargement synchrone
+                        </li>
+                        <li>
+                            Syntaxe
+                            <pre class="w-full">
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    <script type="text/template">
+                                    const math = require('./math'); // Import
+                                    module.exports = math;         // Export
+                                    </script>
+                                </code>
+                            </pre>
+                        </li>
+                        <li>
+                            <strong>Avantage</strong> : compatibilité avec Node.js
+                        </li>
+                        <li>
+                            <strong>Limites</strong> : Moins performant avec les outils modernes
+                        </li>
+                    </ul>
+                </li>
+                <li class="fragment fade-in">
+                    <strong>ES Modules (ESM)</strong>
+                    <ul>
+                        <li>
+                            Standard moderne (ECMAScript 2015+)
+                        </li>
+                        <li>
+                            Chargement asynchrone
+                        </li>
+                        <li>
+                            Syntaxe :
+                            <pre class="w-full">
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    <script type="text/template">
+                                    import { add } from './math';   // Import
+                                    export const PI = 3.14;        // Export
+                                    </script>
+                                </code>
+                            </pre>
+                        </li>
+                        <li>
+                            <strong>Avantages</strong> : Meilleure optimisation, support natif dans les navigateurs
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les ES Modules sont le standard recommandé aujourd’hui. Cependant, certains anciens projets utilisent
+                encore CommonJS, donc il est utile de connaître les deux.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Import / export</h2>
+            <ul>
+                <li>
+                    Les <strong>exports</strong> permettent de rendre code accessible dans d’autres fichiers
+                </li>
+                <li>
+                    Les <strong>imports</strong> permettent d’utiliser ce code
+                </li>
+                <li>
+                    Avec ES Modules, il y a les <strong>import/export nommés</strong> et les <strong>import/export par
+                    défaut</strong>
+                </li>
+            </ul>
+            <aside class="notes">
+                En TypeScript, les modules fonctionnent grâce aux exports et imports. Voyons leurs différentes
+                variantes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Import / Export nommé</h2>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Export nommé</strong> : exporte plusieurs entités d’un module
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        export const PI = 3.14;
+                        export function add(a: number, b: number): number {
+                        return a + b;
+                        }
+                        </script>
+                    </code>
+                </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Import nommé</strong> : importer les entités nécessaires :
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        import { PI, add } from './math';
+                        console.log(add(2, 3), PI);
+                        </script>
+                    </code>
+                </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les exports nommés permettent de partager plusieurs fonctionnalités par fichier. À l'importation, vous
+                sélectionnez ce dont vous avez besoin.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Importer tout le contenu d’un module</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    import * as Utils from './utils';
+                    console.log(Utils.add(2, 3)); // 5
+                    console.log(Utils.PI); // 3.14
+                    </script>
+                </code>
+            </pre>
+            <p>À utiliser quand un fichier contient plusieurs utilitaires liés.<br/>
+                Mais attention aux performances. </p>
+            <aside class="notes">
+                L’import global est utile pour regrouper tout ce qu’un module offre, mais peut réduire la clarté si vous
+                importez trop d’éléments.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Import / Export par défaut</h2>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Export par défaut</strong> : exporter une entité unique (souvent une classe ou une fonction principale)
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        export default class Greeter {
+                            greet(name: string) {
+                                return `Hello, ${name}`;
+                            }
+                        }
+                        </script>
+                    </code>
+                </pre>
+                </li>
+                <li class="fragment">
+                    <strong>Import par défaut</strong> : import sans accolades
+                    <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                        import Greeter from './Greeter';
+                        const greeter = new Greeter();
+                        console.log(greeter.greet("Alice"));
+                        </script>
+                    </code>
+                </pre>
+                </li>
+            </ul>
+            <aside class="notes">
+                Utilisez l’export par défaut quand un fichier représente une seule fonctionnalité principale.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Mélanger les types d’export</h2>
+            <p>
+                Il est possible de mélanger <strong>exports nommés</strong> et <strong>export par défaut</strong> dans un même fichier.
+            </p>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    // Export
+                    export const PI = 3.14;
+                    export const add = (a: number, b: number): number => a + b;
+                    export default function subtract(a: number, b: number): number {
+                    return a - b;
+                    }
+
+                    // Import
+                    import subtract, { PI, add } from './math';
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Dans certains cas, vous pouvez combiner les deux types d’exports. Cependant, pour plus de lisibilité, évitez les mélanges dans des modules complexes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Renommer un export</h2>
+            <aside class="notes">
+                Parfois, les modules peuvent exporter des fonctions ou des objets qui portent les mêmes noms. Pour éviter d’écraser nos imports nous pouvons renommer les entités.
+            </aside>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-4|6-9|11-16">
+                    <script type="text/template">
+                    // math.ts
+                    export function sum(a: number, b: number): number {
+                        return a + b;
+                    }
+
+                    // utils.ts
+                    export function sum(numbers: number[]): number {
+                        return numbers.reduce((number, sum) => sum + number, 0);
+                    }
+
+                    // index.ts
+                    import { sum } from "./math";
+                    import { sum as arraySum } from "./utils";
+
+                    sum(3, 4);
+                    arraySum([3, 4, 5, 7]);
+                    </script>
+                </code>
+            </pre>
+        </section>
+
+        <section>
+            <h2>Structurer un projet Typescript</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape>
+                    ├── src/            // Fichiers source TypeScript
+                    │   ├── modules/    // Sous-modules organisés
+                    │   │   ├── math.ts
+                    │   │   ├── string.ts
+                    │   └── index.ts    // Point d’entrée
+                    ├── tests/          // Tests unitaires
+                    ├── dist/           // Fichiers compilés JavaScript
+                    ├── tsconfig.json   // Configuration TypeScript
+                    └── package.json    // Dépendances du projet
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Une bonne structure simplifie la navigation dans le code</li>
+                <li class="fragment">Elle facilite la collaboration en équipe</li>
+                <li class="fragment">Elle prépare à l’intégration avec des outils comme Jest ou ESLint</li>
+            </ul>
+            <aside class="notes">Organiser un projet de manière logique rend le développement plus fluide et facilite le partage du code. Voici une structure standard qui fonctionne pour des projets simples comme complexes.</aside>
+        </section>
+
+        <section>
+            <h2>Structurer un projet Typescript</h2>
+            <h3>Configurer <code>tsconfig.json</code></h3>
+            <pre class="w-full">
+                <code data-trim data-noescape class="json">
+                {
+                    "compilerOptions": {
+                        …
+                        rootDir: "./src",
+                        outDir: "./dist",
+                    },
+                    "include": ["./src/**/*.ts", "./test/**/*.ts"], // Inclure le code source et les tests
+                    "exclude": ["node_modules", "dist"]
+                }
+                </code>
+            </pre>
+            <aside class="notes">
+                Avec une configuration semblable à celle-ci, vous pouvez structurer vos fichiers sources dans un dossier <code>/src</code>, vos fichiers tests dans un dossier <code>/tests</code> et la compilation de ces fichiers sera dans le dossier <code>/dist</code>
+            </aside>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Import et export - organiser votre projet</h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> réorganiser votre projet
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : identifiez les différentes entités de votre projet et discutez de la meilleure façon de les structurer.
+                </li>
+                <li>
+                    <strong>En individuel</strong> : réorganisez votre projet.
+                </li>
+                <li>
+                    <em>Facultatif</em> : corrigez les imports dans vos fichiers tests et vérifiez que les tests fonctionnent toujours.
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+
+                La modification de la structure va impliquer des modifications au niveau du fichier tsconfig. Ne pas hésiter à faire un rappel sur outDir, rootDir, exclude, include.
+
+                Pour la phase de réflexion :
+
+                Pourquoi est-il utile de diviser le code en plusieurs fichiers ?
+                Quels avantages apportent les modules import/export par rapport à un code monolithique ?
+
+                Pour la phase de codage :
+
+                Utilisez des chemins relatifs pour importer les modules (./).
+                Assurez-vous que chaque fichier a une responsabilité claire.
+
+                Pour les tests :
+
+                Exécutez les tests après chaque modification pour vérifier que tout fonctionne.
+
+            </aside>
+        </section>
+
+        <section>
+            <h2>Modules et organisation : récapitulatif</h2>
+            <ul>
+                <li>
+                    <strong>Types de modules : </strong> CommonJS et ES Modules (préférez ESM)
+                </li>
+                <li>
+                    <strong>Exports et imports</strong>
+                    <ul>
+                        <li>Nommés pour plusieurs entités</li>
+                        <li>Par défaut pour une entité unique</li>
+                        <li>Tout importer si nécessaire (mais attention aux performances)</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Organisation d’un projet :</strong> une structure claire avec <code>src/</code>, <code>tests/</code> et <code>dist/</code>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Mixins -->
+        <section>
+            <h1 class="r-fit-text">Mixins</h1>
+            <h2>Des blocs légos pour Typescript</h2>
+        </section>
+
+        <section>
+            <h2>Introduction aux mixins</h2>
+
+            <h3>Qu’est-ce qu’un mixin ?</h3>
+            <ul>
+                <li class="fragment">Réutlisation du code entre plusieurs classes</li>
+                <li class="fragment">Composition de fonctionnalités</li>
+            </ul>
+
+            <h3>Comparaison</h3>
+            <ul>
+                <li class="fragment">
+                    <strong>Héritage classique</strong> : relation parent-enfant stricte
+                </li>
+                <li class="fragment">
+                    <strong>Mixins</strong> : combinaison flexibles sans hiérarchie
+                </li>
+            </ul>
+
+            <h3>Cas d’utilisations</h3>
+            <ul>
+                <li class="fragment">Ajout de fonctionnalité réutilisables</li>
+                <li class="fragment">Modularisation de comportements partagés</li>
+            </ul>
+
+            <aside class="notes">
+                Pensez aux mixins comme des blocs LEGO. Chaque bloc ajoute une fonctionnalité, et vous assemblez les blocs nécessaires pour créer l'objet final.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Créer des mixins en Typescript</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-6|8-14|16|17-18|20-31">
+                    <script type="text/template">
+                    class Animal {
+                      name: string;
+                      constructor(name: string) {
+                        this.name = name;
+                      }
+                    }
+
+                    function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
+                      return class extends Base {
+                        fly() {
+                          console.log(`${this.name} is flying!`);
+                        }
+                      };
+                    }
+
+                    const Bird = CanFly(Animal);
+                    const eagle = new Bird("Eagle");
+                    eagle.fly(); // "Eagle is flying!"
+
+                    class Vehicule {
+                      name: string;
+
+                      constructor(name: string) {
+                        this.name = name;
+                      }
+                    }
+
+                    const Plane = CanFly(Vehicule);
+                    const airbus = new Plane("Airbus");
+
+                    airbus.fly(); // Airbus is flying!
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Pour créer un mixin, cela demande plusieurs étapes :
+                - Créer une fonction qui prend une classe et retourne une classe qui étend la première
+                - Créer la classe qui nous intéresse en appelant notre mixin avec notre classe de base
+                - Utiliser cette classe pour instancier un objet
+
+                Dans le cas présent, nous aurions pu simplement créer une classe Bird qui étend de Animal…
+                Mais mettons que l’on souhaite avoir un véhicule qui peut voler :
+
+                Nous pourrions appliquer le mixin CanFly à une classe Vehicule et obtenir des avions, ou bien à une classe Personne, et avoir Superman, etc.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Créer des mixins en Typescript</h2>
+            <ul>
+                <li class="fragment">
+                    Déclarer une fonction qui prend une classe comme argument
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                               function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {}
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    La fonction retourne une nouvelle classe qui étend la classe passée en paramètre avec des fonctionnalités supplémentaires
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="">
+                            <script type="text/template">
+                            function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
+                              return class extends Base {
+                                fly() {}
+                              };
+                            }
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+                <li class="fragment">
+                    Obtenir la nouvelle classe en appelant le mixin et l’instancier
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                            const Bird = CanFly(Animal);
+                            const eagle = new Bird("Eagle");
+                            eagle.fly(); // "Eagle is flying!"
+
+                            const Plane = CanFly(Vehicule);
+                            const airbus = new Plane("Airbus");
+                            airbus.fly(); // Airbus is flying!
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Composition de mixins</h2>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    function CanSwim<TBase extends new (...args: any[]) => { name: string }>(Base: TBase) {
+                      return class extends Base {
+                        swim() {
+                          console.log(`${this.name} is swimming!`);
+                        }
+                      };
+                    }
+
+                    const Amphibian = CanSwim(CanFly(Animal));
+                    const frog = new Amphibian("Frog");
+                    frog.fly();  // "Frog is flying!"
+                    frog.swim(); // "Frog is swimming!"
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Il est tout à fait possible d’enchaîner les mixins comme des couches successives.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Avantages des mixins</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Réutilisabilité</strong> : encapsulation de fonctionnalités spécifiques, facilement applicables à différentes classes
+                </li>
+                <li class="fragment">
+                    <strong>Flexibilité</strong> : pas de hiérarchie rigide
+                </li>
+                <li class="fragment">
+                    <strong>Découplage</strong> : chaque mixin est indépendant des uns des autres
+                </li>
+            </ul>
+            <aside class="notes">
+                Les mixins permettent d’éviter la complexité de l’héritage profond ou permet de pallier l’absence d’héritage multiple.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Limites des mixins</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Complexité</strong> : plusieurs mixins peuvent compliquer la compréhension de la classe finale
+                </li>
+                <li class="fragment">
+                    <strong>Conflits</strong> : un mixin peut venir écraser une méthode déjà implementée par un mixin précédent ou la classe originale
+                </li>
+                <li class="fragment">
+                    <strong>Performance</strong> : alourdit les classes
+                </li>
+            </ul>
+            <aside class="notes">
+                Comme tout outil, les mixins doivent être utilisés avec modération et intelligence pour éviter une surcharge cognitive ou des conflits de noms.
+            </aside>
+        </section>
+
+            <section>
+                <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+                <h3 class="r-fit-text">
+                    Intégrer les mixins à notre projet
+                </h3>
+
+                <p class="text-left">
+                    <em>Consigne : </em> gérer des réductions sur une commande à l’aide de mixins
+                </p>
+                <ol>
+                    <li>
+                        <strong>En groupe</strong> : quels types de réductions pourraient utiles à un restaurant ? avec quelles conditions ?
+                    </li>
+                    <li>
+                        <strong>En individuel</strong> : implémentez un mixins qui permet de créer une réduction sur une commande
+                    </li>
+                    <li>
+                        <em>Facultatif</em> : écrivez des tests pour vérifier que votre code fonctionne, même les cas limites.
+                    </li>
+                </ol>
+
+                <aside class="notes">
+
+                    Quelques pistes pour aider les apprenants :
+
+                    Créez une interface Plat pour modéliser un plat.
+                    Implémentez une classe Commande pour gérer les commandes des clients. Cette classe doit :
+                    - Permettre d’ajouter des plats (avec une méthode générique).
+                    - Calculer le total de la commande.
+
+                    Refactorisez le code des exercices précédents pour intégrer cette structure orientée objet.
+
+                </aside>
+            </section>
+
+            <section>
+                <h2>Mixins - récapitulatif</h2>
+                <ul>
+                    <li>Apporter des modifications réutilisables qui ne modifient pas la logique principale</li>
+                    <li>Ils sont réutilisables et flexibles, et peuvent être combiner.</li>
+                    <li>Cependant, ils peuvent apporter une charge cognitive supplémentaire</li>
+                </ul>
+            </section>
+
+        <!-- Type definition -->
+        <section>
+            <h1 class="r-fit-text">Définition de types</h1>
+            <h2 class="r-fit-text">Typer les bibliothèques externes</h2>
+        </section>
+
+        <section>
+            <h2>Fichiers de déclaration</h2>
+            <aside class="notes">
+                Souvent dans le cadre de nos projet, nous utilisons des bibliothèques externes, qui sont parfois écrites en Typescript, parfois en Javascript. Dans ce dernier cas, comment Typescript est capable de savoir qui existe ou non ?
+            </aside>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                       // Librarie Math
+                       Math.min(5, 7, 12, 29, 13, 2, 11);
+                       Math.mix(5, 7, 12, 29, 13, 2, 11); // TS2339: Property 'mix' does not exist on type 'Math'.
+                       Math.min("Toto", "Titi", "Tata"); //TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment">
+                    <strong>Définition pré-existantes</strong> : Typescript possède des déclarations pour toutes les API standards du moteur Javascript
+                </li>
+                <li class="fragment">
+                    <strong>Installer des types</strong> : dans le cadre de bibliothèques externes, il est possible d’installer les types avec <code>npm install @types/&lt;package&gt;</code>
+                </li>
+                <li class="fragment">
+                    <strong>Créer son propre fichier <code>.d.ts</code></strong> :
+                    <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                               // my-library.d.ts
+                               declare module 'my-library' {
+                                 export function myFunction(param: string): boolean;
+                               }
+                            </script>
+                        </code>
+                    </pre>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Concepts avancés -->
+        <section>
+            <h1 class="r-fix-text">Concepts avancés</h1>
+            <h2>Pour aller plus loin, et pour mieux comprendre les bibliothèques qu’on utilise…</h2>
+        </section>
+
+        <section>
+            <h2>
+                Les décorateurs
+            </h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="||6" data-fragment-index="1">
+                    <script type="text/template">
+                        function Log(target: any, key: string) {
+                            console.log(`${key} a été accédé`);
+                        }
+
+                        class Exemple {
+                            @Log // import du décorateur
+                            prop: string = 'Hello';
+                        }
+
+                        const example = new Exemple();
+                        example.prop = "World"; // prop a été accédé
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Un <strong>décorateur</strong> est une fonction spéciale annotant une classe, méthode ou propriété
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    <strong>Syntaxe</strong> : préfixée par <code>@</code>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les décorateurs permettent d’ajouter ou de modifier des comportements sans altérer directement le code annoté. Leur principal usage se trouve dans les frameworks comme Angular pour gérer des métadonnées ou des injections de dépendance. En revanche, ils nécessitent une configuration avancée, car ils ne sont disponibles qu’en mode expérimental.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Une fonction expérimentale</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="json">
+                    <script type="text/template">
+                       {
+                           "compilerOptions": {
+                               "target": "ES5",
+                               "experimentalDecorators": true
+                           }
+                       }
+                    </script>
+                </code>
+            </pre>
+            <aside class="notes">
+                Pour faire fonctionner les décorateurs, il est nécessaire d’activer l’option experimentalDecorators dans les options.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Les <em>Decorator Factory</em></h2>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-9|13,18" data-fragment-index="1">
+                    <script type="text/template">
+                        function logFactory(output: string) {
+                            return function (target: any, key: string) {
+                                if (output === "console") {
+                                    console.log(`${key} a été accédé`);
+                                }
+                                else if (output === "file") {
+                                    // another thing
+                                }
+                            }
+                        }
+
+                        class Exemple {
+                            @logFactory("console")
+                            prop: string = 'Hello';
+                        }
+
+                        const example = new Exemple();
+                        example.prop = "World"; // prop a été accédé
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Factory</strong> : une fonction retournant un décorateur
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    <strong>Objectif</strong> : personnaliser le décorateur
+                </li>
+            </ul>
+            <aside class="notes">
+                Les décorateurs peuvent être paramétrés afin de répondre à un besoin plutôt qu’un autre. Un outil de log qui écrit dans un fichier ou dans la console ?
+            </aside>
+        </section>
+
+        <section>
+            <h2>Pros and cons</h2>
+            <table class="w-full">
+                <thead>
+                <tr>
+                    <th>Pros</th>
+                    <th>Cons</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <ul class="fragment">
+                            <li>Réduction de code</li>
+                            <li>Extensibilité via de simples annotations</li>
+                            <li>Idéal dans les frameworks</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="fragment">
+                            <li>Syntaxe peu intuitive</li>
+                            <li>Nécessite un support expérimental</li>
+                            <li>Pas adapté à tous les projets</li>
+                        </ul>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <aside class="notes">
+                Les décorateurs sont recommandés dans des contextes standardisés et ne seront sûrement pas utilisé dans un projet Typescript relativement simple.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Type "Union"</h2>
+
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1|3|" data-fragment-index="1">
+                    <script type="text/template">
+                        type ID = number | string;
+
+                        function printId(id: ID) {
+                            if (typeof id === 'string') {
+                                console.log(id.toUpperCase());
+                            } else {
+                                console.log(id);
+                            }
+                        }
+                    </script>
+                </code>
+            </pre>
+
+            <ul>
+                <li>
+                    <strong>Union</strong> : type combinant plusieurs possibilités
+                </li>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Syntaxe</strong> : le symbole <code>|</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    <strong>Simplification</strong> des signatures de fonction et <strong>flexibilité</strong>
+                </li>
+                <li class="fragment" data-fragment-index="3">Le <code>|</code> doit se lire comme un <strong>"ou"</strong></li>
+            </ul>
+
+            <aside class="notes">
+                L’union est un élément que l’on retrouver très souvent car il simplifie les signatures ; cependant, cela impose plus de contrôle, donc il faut faire attention à ne pas combiner trop de type.
+
+                Il est bien sûr possible de combiner des types complexes.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Type "Intersection"</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|10|12-21" data-fragment-index="1">
+                    <script type="text/template">
+                        type Circle = {
+                            radius: number;
+                            center: [number, number]
+                        }
+
+                        type Colorful = {
+                            color: string
+                        }
+
+                        type ColorfulCircle = Circle & Colorful;
+
+                        const c:ColorfulCircle = {
+                            center: [0, 0],
+                            radius: 10,
+                            color: "blue"
+                        };
+
+                        const colorfulSquare: {width: number} & Colorful = {
+                            width: 10,
+                            color: "red"
+                        }
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li>Type s’accaparant l’ensemble des propriétés des types combinés</li>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Syntaxe</strong> : le symbole <code>&</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Une <strong>intersection</strong> créé un nouveau type
+                </li>
+            </ul>
+            <aside class="notes">
+                L’intersection est un autre moyen de combiner les types mais cette fois-ci, en créant un nouveau type à partir de l’ensemble de toutes les caractéristiques des types combinés.
+                Cela peut être utile pour réutiliser des types existants.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Types conditionnels</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1|3-4">
+                    <script type="text/template">
+                        type IsString<T> = T extends string ? true : false;
+
+                        type Test1 = IsString<string>; // true
+                        type Test2 = IsString<number>; // false
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment">Type déterminé dynamiquement selon une condition</li>
+                <li class="fragment"><strong>Syntaxe</strong> : une condition ternaire <code>T extends U ? X : Y</code>
+                <li class="fragment">Utile particulièrement avec les générique</li>
+            </ul>
+            <aside class="notes">
+                Les types conditionnels permettent de rendre les types dynamiques en fonction de règles spécifiques. Ils sont très puissants dans des bibliothèques génériques et des outils fortement typés, mais leur lisibilité peut rapidement devenir un problème.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Types conditionnels et <code>never</code></h2>
+            <figure>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|11|13-15|17-19" data-fragment-index="1">
+                    <script type="text/template">
+                    interface Email {
+                        message: string;
+                    }
+
+                    class Dog {
+                        bark() {
+                            console.log("Waf");
+                        }
+                    }
+
+                    type MessageOf<T> = T['message']; // ❌ erreur : "type 'message' cannot be used to index type 'T'"
+
+                    type MessageOf<T extends { message: string}> = T['message']; // ✅ ça fonctionne
+                    type MessageOfEmail = MessageOf<Email>; // ✅ type MessageOfEmail = string;
+                    type MessageOfDog = MessageOf<Dog>; // ❌ Type 'Dog' does not satisfy the constraint '{ message: string; }'
+
+                    type MessageOf<T> = T extends { message: string } ? T['message'] : never;
+                    type MessageOfEmail = MessageOf<Email>; // ✅ type MessageOfEmail = string;
+                    type MessageOfDog = MessageOf<Dog>; // ✅ type MessageOfDog = never
+                    </script>
+                </code>
+            </pre>
+                <figcaption>
+                    Cas pratique : extraire le type d’un message
+                </figcaption>
+            </figure>
+            <ul>
+                <li class="fragment" data-fragment-index="1">
+                    Première étape : erreur, <code>message</code> n’est pas nécessairement défini sur notre type générique <code>T</code>.
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Avec <code>extends</code> : mieux, mais déclenche une erreur si on passe un type qui ne satisfait pas l’extension
+                </li>
+                <li class="fragment" data-fragment-index="3">
+                    Avec un type conditionnel et <code>never</code> : plus d’erreur pour Typescript
+                </li>
+            </ul>
+            <aside class="notes">
+                Lorsque nous avons parcouru les types, nous avons rapidement abordé le type <code>never</code>, qui indique une fonction qui ne parviendrait pas à son terme, ou comme on pourrait le dire autrement, une "fausse route". J’utilise ce terme car dans le cas d’un type conditionnel, on voit ce que peut être une "fausse route" : une route lorsque la condition est <em>fausse</em>.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Types mappés</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-6" data-fragment-index="1">
+                    <script type="text/template">
+                        type ReadOnly<T> = {
+                            readonly [K in keyof T]: T[K];
+                        };
+
+                        type Point = { x: number; y: number };
+                        type ReadOnlyPoint = ReadOnly<Point>;
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li class="fragment" data-fragment-index="0">
+                    Transforme un type en appliquant des modifications à ses clefs ou valeurs
+                </li>
+                <li class="fragment" data-fragment-index="1">
+                    <strong>Syntaxe</strong> : <code>{ [K in keys]: ValueType }</code>
+                </li>
+                <li class="fragment" data-fragment-index="2">
+                    Cas d’utilisation :
+                    <ul>
+                        <li>Rendre toutes les propriétés optionnelles</li>
+                        <li>Rendre toutes les propriétés immuables</li>
+                        <li>Renommer ou préfixer des clefs</li>
+                        <li>etc.</li>
+                    </ul>
+                </li>
+            </ul>
+            <aside class="notes">
+                Les types mappés sont particulièrement utiles pour créer des variantes des types existants (readonly, optional). Cependant, ils nécessitent de bien comprendre les clés et les indices de TypeScript.
+            </aside>
+        </section>
+        <section>
+            <h2>Partial, Omit, et types conditionnels</h2>
+            <div class="r-stack">
+            <figure class="w-full fragment fade-in-then-out">
+                <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                            type User = { name: string; email: string };
+                            type UpdateUser = Partial<User>; // Toutes les propriétés deviennent optionnelles
+
+                            type Config = { host: string; port: number };
+                            type ImmutableConfig = Readonly<Config>; // toutes les propriétés deviennent immutables
+                        </script>
+                    </code>
+                </pre>
+                <figcaption>Partial ou Readonly</figcaption>
+            </figure>
+            <figure class="w-full fragment fade-in-then-out">
+                <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                            type User = { name: string; password: string };
+                            type PublicUser = Omit<User, 'password'>; // { name: string}
+                            // ou
+                            type SecureUser = Pick<User, 'name'>; // { name: string}
+                        </script>
+                    </code>
+                </pre>
+                <figcaption>Omit et Pick</figcaption>
+            </figure>
+            <figure class="w-full fragment  fade-in">
+                <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                            type FormValues = { name: string; age: number };
+                            type Validation = {
+                                [K in keyof FormValues]: FormValues[K] extends string ? boolean : FormValues[K];
+                            };
+                        </script>
+                    </code>
+                </pre>
+                <figcaption>Utilisation des types conditionnels </figcaption>
+            </figure>
+            </div>
+            <aside class="notes">
+                Il existe des types mappés pré-existant que vous verrez en lisant des fichiers de déclarations ou dont vous pourriez avoir besoin.
+                Partial et ReadOnly appliquent un type à l’ensemble des propriétés de votre type
+                Omit (ou Pick) permettent de sélectionner certains éléments d’un type pour en créer un nouveau
+                Et bien sûr, il est possible d’utiliser les types conditionnels en combinaison avec les types mappés.
+            </aside>
+        </section>
+        <section>
+            <h2>Infer</h2>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                        type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+                        function getMessage(): string {
+                            return 'Hello';
+                        }
+
+                        type MessageReturn = ReturnType<typeof getMessage>; // string
+                    </script>
+                </code>
+            </pre>
+            <ul>
+                <li>Extrait des types spécifiques d’un type complexe</li>
+            </ul>
+            <aside class="notes">
+                infer est une fonctionnalité avancée permettant d’extraire des parties spécifiques d’un type, particulièrement utile dans les bibliothèques fortement typées. Toutefois, sa syntaxe peut sembler intimidante pour les débutants.
+            </aside>
+        </section>
+
+        <section>
+            <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+            <h3 class="r-fit-text">Système de réservation de tables avec les concepts avancés</h3>
+
+            <p class="text-left">
+                <em>Consigne : </em> créer un système de réservation. Le système de réservation doit prendre un nom et un nombre de convives. Dans le cas où le nombre de convive est supérieur à une valeur, la réservation doit avoir un menu sélectionné.
+            </p>
+            <ol>
+                <li>
+                    <strong>En groupe</strong> : réflechissez à l’implémentation de la consigne en tenant compte de ce que l’on vient de voir : les types conditionnels, les décorateurs, etc.
+                </li>
+                <li>
+                    <strong>En individuel</strong> : créez une classe <code>Reservation</code>, et implémentez ce que vous avez discuté précédemment
+                </li>
+                <li>
+                    <em>Facultatif</em> : tester que vos réservations soient valides, en tenant compte du nombre de convives
+                </li>
+            </ol>
+
+            <aside class="notes">
+
+                Quelques pistes pour aider les apprenants :
+
+                Décorateurs pour la validation des réservations de groupe
+                Types conditionnels pour appliquer des règles spécifiques aux groupes de plus de 6 personnes
+                Intersection Types pour combiner des types standard et de groupe
+                Union Types pour gérer les différents types de réservations (standard et groupe)
+                Validation et flexibilité du système de réservation avec TypeScript
+
+            </aside>
+
+        </section>
+
+        <section>
+            <h2>Concepts avancés : récapitulatif</h2>
+            <ul>
+                <li>Les décorateurs permettent d’annoter une entité Typescript</li>
+                <li>Plusieurs façons de créer des types à partir d’autres types</li>
+                <li>Une panoplie d’outils pour créer des bibliothèques ou des frameworks</li>
+            </ul>
+        </section>
+
+
+        <!-- Roadmap -->
+        <section>
+            <h1>Roadmap Typescript</h1>
+            <h2>À quoi s’attendre, comment veiller ?</h2>
+        </section>
+
+        <section>
+            <h2>Cycle de publication</h2>
+            <ul>
+                <li class="fragment">Cycle de publication stable : ~ 3 mois</li>
+                <li class="fragment">Priorité : compatibilité avec Javascript, amélioration des outils</li>
+                <li class="fragment">Dernières nouveautés : <code>asserts condition</code> ou amélioration des templates (<code>infer</code>)</li>
+            </ul>
+            <aside class="notes">
+                TypeScript évolue rapidement grâce à une communauté active et à une équipe dédiée chez Microsoft. Chaque mise à jour majeure introduit des outils et des concepts qui simplifient la vie des développeurs tout en maintenant une compatibilité totale avec l'écosystème JavaScript.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Fonctionnalités expérimentales</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Décorateurs</strong> : proposition officielle
+                </li>
+                <li class="fragment">
+                    <strong>Types intrinsics</strong> : analyse fine des types (<code>is</code>, <code>infer</code>)
+                </li>
+                <li class="fragment">
+                    <strong>Types Template avancés</strong> : manipulation puissante de chaînes de types
+                </li>
+            </ul>
+            <aside class="notes">
+                L’équipe TypeScript teste toujours des idées nouvelles pour étendre les capacités du langage. Par exemple, les décorateurs permettent d'ajouter du comportement à vos classes, méthodes ou propriétés, comme on l’a vu plus tôt.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Interopérabilité et compatibilité</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Interopérabilité</strong> : être compilé avec Babel ou utilisé avec des outils comme ESLint
+                </li>
+                <li class="fragment">
+                    <strong>Compatibilité JS/TS</strong> : typage automatiques pour les modules JS
+                </li>
+            </ul>
+            <aside class="notes">
+                TypeScript est pensé pour jouer le rôle d'un sur-ensemble de JavaScript, ce qui garantit que toute base de code JS existante peut être migrée progressivement. C’est également pour cela que TypeScript est adopté dans des projets gigantesques.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Fonctionnalités à venir</h2>
+            <ul>
+                <li class="fragment">
+                    <strong>Décorateurs natifs</strong> : standardiser l’implémentation
+                </li>
+                <li class="fragment">
+                    <strong>Types de données structurés</strong> : simplifier la déclaration des types complexes
+                </li>
+                <li class="fragment">
+                    <strong>Haiku et pentamètres</strong> : écrire les messages d’erreur de façon poétique
+                </li>
+            </ul>
+            <aside class="notes">
+                Les prochaines évolutions se concentreront sur la flexibilité des types et l’intégration d’outils standardisés dans l’écosystème
+            </aside>
+        </section>
+
+        <section>
+            <h2>Ressources</h2>
+            <ul>
+                <li class="fragment">Suivre la roadmap sur <a href="https://github.com/microsoft/typescript/wiki/roadmap">Github Typescript</a></li>
+                <li class="fragment">Explorer les nouveautés : <a href="https://devblogs.microsoft.com/typescript/">Blog Typescript officiel</a></li>
+            </ul>
+            <aside class="notes">
+                Pour rester à jour, consultez régulièrement les ressources officielles. C’est aussi une bonne manière de comprendre les motivations derrière les changements et d’interagir avec la communauté.
+            </aside>
+        </section>
+
+        <section>
+            <h2>Roadmap : récapitulatif</h2>
+            <ul>
+                <li>Publication ~ 3 mois</li>
+                <li>Des fonctionnalités expérimentales</li>
+                <li>Rester compatibles avec Javascript quoiqu’il arrive</li>
+                <li>Information à jour sur les ressources officielles</li>
+            </ul>
+        </section>
+
+        <!-- Quizz Final -->
+        <section class="quizz">
+            <h1 class="r-fit-text">Quizz récapitulatif</h1>
+
+            <!-- TODO QUIZZ -->
+        </section>
+
+        <!-- Conclusion -->
+        <section>
+            <h1>Conclusion</h1>
+            <h2>Des questions, des remarques ?</h2>
+            <aside class="notes">
+                C’est ainsi que s’achève la partie théorique de cette formation. Si vous avez des questions, n’hésitez pas, on peut en discuter tous ensemble.
+            </aside>
+        </section>
+    </div>
+</div>
+
+<script src="dist/reveal.js"></script>
+<script src="plugin/notes/notes.js"></script>
+<script src="plugin/markdown/markdown.js"></script>
+<script src="plugin/highlight/highlight.js"></script>
+<script src="plugin/simplemenu/simplemenu.js"></script>
+<script>
+    // More info about initialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+        hash: true,
+        center: true,
+        width: 1280,
+        height: 970,
+
+        // Learn about plugins: https://revealjs.com/plugins/
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, Simplemenu]
+    });
+</script>
+</body>
 </html>

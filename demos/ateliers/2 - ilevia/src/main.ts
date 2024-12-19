@@ -8,7 +8,7 @@ type APIJson = {
     heure_estimee_depart: string
 }
 
-const fetchAPI = async (): Promise<Array<APIJson>> => {
+const fetchNextPassageAPI = async (): Promise<Array<APIJson>> => {
 
     try {
         const response = await fetch(API);
@@ -107,12 +107,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     selectStation.addEventListener('change', onChangeSelectStation);
 
     setInterval(async () => {
-        data = await fetchAPI();
+        data = await fetchNextPassageAPI();
         updateTBody();
         updateRefreshSpan();
     }, 30 * 1000);
 
-    fetchAPI().then((response: Array<APIJson>) => {
+    fetchNextPassageAPI().then((response: Array<APIJson>) => {
 
         data = response;
 

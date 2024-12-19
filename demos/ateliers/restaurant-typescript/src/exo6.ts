@@ -39,22 +39,14 @@ export class Commande<T extends { prix: number }> {
     }
 }
 
-type Constructor<T = {}> = new (...args: any[]) => T;
+type Constructor<T = {}> = new (...args: any[]) => { calculerTotal: () => number};
 
-export function Reductionnable<TBase extends Constructor>(Base: TBase) {
+export function Reductionnable<TBase extends Constructor>(Base: TBase, reduction: number = 15) {
     return class extends Base {
-        private reduction: number = 0;
-
-        appliquerReduction(pourcentage: number) {
-            if ( pourcentage < 0 || pourcentage > 100 ) {
-                throw new Error('Pourcentage must be between 0 and 100');
-            }
-
-            this.reduction = pourcentage;
-        }
+        private reduction: number = reduction;
 
         calculerTotalAvecReduction(): number {
-            return (this as unknown as { calculerTotal: () => number }).calculerTotal() * ((100 - this.reduction) / 100.0);
+            return this.calculerTotal() * ((100 - this.reduction) / 100.0);
         }
 
         getReduction() {
@@ -63,4 +55,14 @@ export function Reductionnable<TBase extends Constructor>(Base: TBase) {
     };
 }
 
-export const CommandeAvecReduction = Reductionnable(Commande);
+class Taille {
+    calculerTotal() {
+        return 100;
+    }
+}
+
+export const CommandeAvecReduction = Reductionnable(Commande, 20);
+
+const c = new CommandeAvecReduction();
+export const TailleAvecReduction = Reductionnable(Taille);
+
