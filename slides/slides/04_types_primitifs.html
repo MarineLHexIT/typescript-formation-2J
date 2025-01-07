@@ -1,0 +1,792 @@
+<section>
+    <h1 class="r-fix-text">Types primitifs</h1>
+    <h2 class="r-fix-text">Plongée dans les types de Typescript</h2>
+</section>
+
+<section>
+    <h2>Pourquoi des types en Typescript ?</h2>
+    <aside class="notes">
+        Le principal avantage des types en TypeScript est de détecter les erreurs au plus tôt. Imaginez une
+        grosse application où une fonction attend un nombre, mais reçoit une chaîne de caractères par erreur.
+        Avec JavaScript, cette erreur serait détectée à l'exécution, mais avec TypeScript, le compilateur nous
+        alerte immédiatement.
+    </aside>
+    <ul>
+        <li class="fragment">
+            <strong>Javascript</strong> est un langage dynamiquement typé.
+            <pre>
+                        <code class="language-javascript javascript" data-trim data-noescape>
+                        let x = 42; // x est un nombre
+                        x = "hello"; // x devient une chaîne de caractères
+                    </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            <strong>Typescript</strong> est un langage statiquement type.
+            <ul>
+                <li>
+                    Détecte les erreurs à la compilation, pas seulement à l’exécution
+                    <pre>
+                                <code class="hljs language-typescript typescript" data-trim data-noescape>
+                                    let x = 42; // x est un nombre
+                                    x = "hello"; // déclenche une erreur
+                                </code>
+                            </pre>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+<section class="pt-[56px]">
+    <h2>Les types de bases en Typescript</h2>
+    <aside class="notes">
+        Ces types primitifs permettent déjà de couvrir beaucoup de cas d'usage. Notez que TypeScript impose
+        d’assigner des valeurs conformes au type déclaré. Essayez d’assigner une chaîne de caractères à une
+        variable typée number et observez l’erreur.
+    </aside>
+    <div class="r-stack r-stretch">
+        <div class="fragment fade-out h-full" data-fragment-index="1">
+            <img src="./images/type_hierarchy.svg"
+                 alt="Hiérarchie des types" />
+        </div>
+        <ul class="fragment current-visible" data-fragment-index="1">
+            <li>
+                <code>number</code> : pour les nombres entiers et décimaux
+            </li>
+            <li>
+                <code>biging</code> :
+            </li>
+            <li>
+                <code>string</code> : pour les chaînes de caractères
+            </li>
+            <li>
+                <code>boolean</code> : pour les valeux vrai/faux
+            </li>
+            <li>
+                <code>symbol</code> :
+            </li>
+            <li>
+                <code>null</code> et <code>undefined</code> : représentent l’absence de valeur
+            </li>
+        </ul>
+        <pre class="fragment">
+                    <code class="hljs typescript language-typescript" data-trim data-noescape>
+                        let age: number = 30; // Un nombre
+                        let firstName: string = "Alice"; // Une chaîne
+                        let isAdmin: boolean = true; // Un booléen
+                        let unknownValue: null = null; // Null
+                        let notAssigned: undefined = undefined; // Undefined
+
+                        // /!\ Le type `number` n’accepte pas les nombres dans une chaîne de caractères
+                        let invalidAge: number = "30"; // Erreur : Type 'string' n'est pas assignable à 'number'
+
+                        // Le type `any` peut être n’importe quelle valeur à tout moment
+                        let anyValue: any = "30"; // j’assigne une chaîne de caractères
+                        anyValue = 30; // j’assigne un nombre
+                    </code>
+                </pre>
+    </div>
+</section>
+
+<section>
+    <h2>Un code allégé et plus simple à maintenir</h2>
+    <aside class="notes">
+        En JavaScript, vous pouvez écrire des vérifications manuelles pour sécuriser les types, mais cela
+        alourdit le code et augmente les risques d’oublis. Avec TypeScript, ces vérifications sont intégrées au
+        système de type, ce qui vous évite de répéter ces tests et vous concentre sur votre logique métier.
+    </aside>
+    <ul>
+        <li class="fragment">
+            <strong>Javascript : </strong> sécurisation possible mais coûteuse
+            <pre>
+                        <code class="javascript" data-trim data-noescape>
+                            function somme(a, b) {
+                              if (!isNumber(a) || !isNumber(b)) {
+                                throw new Error("Les arguments doivent être des nombres");
+                              }
+                              return a + b;
+                            }
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            <strong>Typescript :</strong> la vérification est implicite
+            <pre>
+                        <code class="typescript language-typescript" data-noescape data-trim>
+                            function somme(a: number, b: number): number {
+                              return a + b;
+                            }
+                            somme(1, "2"); // Erreur à la compilation
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+</section>
+
+<section class="quizz">
+    <section>
+        <h1 class="r-fit-text">Mini quizz</h1>
+    </section>
+
+    <section>
+        <h3>
+            Quel type utilisez-vous pour une valeur vraie ou fausse ?
+        </h3>
+        <ol>
+            <li class="fragment strike" data-fragment-index="1">
+                <code>number</code>
+            </li>
+            <li>
+                <code>boolean</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                <code>string</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                <code>undefined</code>
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>
+            Quel erreur Typescript détecterait ici?
+            <pre>
+                        <code data-trim data-noescape class="typescript">
+                            let temperature: number = 25;
+                            temperature = "chaud";
+                        </code>
+                    </pre>
+        </h3>
+        <ol>
+            <li class="fragment strike" data-fragment-index="1">
+                Aucune erreur
+            </li>
+            <li>
+                <code>string</code> n’est pas assignable à <code>number</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Mauvais nom de variable
+            </li>
+        </ol>
+    </section>
+</section>
+
+<section>
+    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+    <h3 class="r-fit-text">Mise en place d’un projet et premières lignes de code</h3>
+
+    <p class="text-left">
+        <em>Consigne : </em> vous êtes chargés de modéliser les commandes d’un restaurant.
+    </p>
+    <ol>
+        <li>
+            <strong>En groupe</strong> : déterminez les éléments que vous souhaitez modéliser, et utilisez les types primitifs pour leur attribuer un type.
+        </li>
+        <li>
+            <strong>En individuel</strong> : dans un fichier <code>main.ts</code>, déclarez les variables
+        </li>
+        <li>
+            <em>Facultatif</em> : dans un fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider que les valeurs respectent les types et les attentes fixées lors de la discussion.
+        </li>
+    </ol>
+
+    <aside class="notes">
+
+        Quelques pistes pour aider les apprenants :
+        - Le nom du restaurant. (string)
+        - Le nombre de tables disponibles. (number)
+        - Si le restaurant est ouvert ou non. (string)
+        etc.
+    </aside>
+</section>
+
+<section>
+    <h2>L’inférence de type</h2>
+    <ul>
+        <li class="fragment">Détection automatique du type d’une variable</li>
+        <li class="fragment">
+            <strong>Inférence de type</strong> ou <strong>right déclaration</strong>
+            <pre>
+                        <code data-trim data-noescape class="typescript">
+                            let age = 30; // Type inféré : number
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            <strong>Déclaration explicite</strong> ou <strong>left declaration</strong>
+            <pre>
+                        <code data-trim data-noescape class="typescript">
+                            let age: number = 30; // Type déclaré explicitement : number
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+    <aside class="notes">
+        L'inférence de types, appelée aussi right declaration en anglais, permet à TypeScript de déduire
+        automatiquement le type d'une variable en se basant sur la valeur qu'on lui attribue. C'est une
+        fonctionnalité puissante pour simplifier votre code, tout en conservant une sécurité stricte des types.
+
+        En combinant les deux approches, vous pouvez profiter de la flexibilité de TypeScript. Utilisez
+        l'inférence implicite pour les cas simples, et la déclaration explicite pour les types complexes ou
+        lorsque vous souhaitez améliorer la documentation de votre code.
+    </aside>
+</section>
+
+<section>
+    <h2>Retour de fonction et inférence</h2>
+    <ul>
+        <li class="fragment">
+            Typescript infère également le type de retour d’une fonction :
+            <pre>
+                        <code data-trim data-noescape class="typescript">
+                            function sum(a: number, b: number) {
+                              return a + b; // Type inféré : "number"
+                            }
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            Typescript peut aussi déduire du contexte :
+            <pre>
+                        <code data-trim data-noescape class="typescript">
+
+                            window.onmousedown = function (mouseEvent) {
+                              console.log(mouseEvent.button);
+                              console.log(mouseEvent.kangaroo); // error
+                              // Property kangaroo does not exist on MouseEvent type
+                            };
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+
+    <aside class="notes">
+        L'inférence de type fonctionne aussi sur les retours de fonction.
+        Si le type inféré correspond à vos attentes, pas besoin de le déclarer. Mais dans des contextes
+        complexes, indiquer un type peut améliorer la lisibilité et la robustesse du code.
+    </aside>
+</section>
+
+<section>
+    <h2>Déclaration et typage des fonctions</h2>
+    <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function greet(name: string): string {
+                      return `Hello, ${name}!`;
+                    }
+                </code>
+            </pre>
+
+    <ul>
+        <li class="fragment">
+            Le <strong>type des paramètres</strong> est déclarés après son nom avec&nbsp;<code>:&nbsp;&lt;type&gt;</code>
+        </li>
+        <li class="fragment">
+            Le <strong>type de retour</strong> est précisé après les parenthèses avec&nbsp;<code>:&nbsp;&lt;type&gt; </code>
+        </li>
+        <li class="fragment">
+            Si aucun type n’est précisé pour le retour, Typescript l’infère
+        </li>
+    </ul>
+    <aside class="notes">
+        Les fonctions en TypeScript permettent d’assurer que les paramètres et le type de retour respectent vos
+        attentes. Ici, name doit être une chaîne de caractères et la fonction retourne également une chaîne.
+    </aside>
+</section>
+
+<section>
+    <h2>Fonctions anonymes et fléchées</h2>
+
+    <figure>
+        <figcaption>Fonction normale</figcaption>
+        <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function addNormal(a: number, b: number): number {
+                      return a + b;
+                    }
+                </code>
+            </pre>
+    </figure>
+
+    <figure>
+        <figcaption>Fonction fléchée</figcaption>
+        <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    const add = (a: number, b: number): number => a + b;
+                </code>
+            </pre>
+    </figure>
+
+    <aside class="notes">
+        Les fonctions fléchées offrent une alternative compacte aux fonctions classiques. Elles sont très
+        utilisées dans des méthodes comme map, filter, ou reduce.
+    </aside>
+</section>
+
+<section>
+    <h2>Paramètres optionnels et valeurs par défaut</h2>
+    <ul>
+        <li>
+            <figure>
+                <figcaption>Paramètres optionnels</figcaption>
+                <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function greet(name?: string): string {
+                      return `Hello, ${name ?? "World"}!`;
+                    }
+                </code>
+            </pre>
+            </figure>
+        </li>
+        <li>
+            <figure>
+                <figcaption>Valeurs par défaut</figcaption>
+                <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function greetWithDefault(name: string = "World"): string {
+                      return `Hello, ${name}!`;
+                    }
+                </code>
+            </pre>
+            </figure>
+        </li>
+        <li class="fragment">
+            Différence clef : <code>?</code> indique un paramètre optionnel, tandis que les valeurs par défaut
+            remplacent automatiquement <code>undefined</code>
+        </li>
+    </ul>
+
+    <aside class="notes">
+        Vous pouvez rendre un paramètre optionnel avec le ?, ou assigner une valeur par défaut. Cela permet
+        d'éviter les erreurs tout en réduisant la complexité du code.
+    </aside>
+</section>
+
+<section>
+    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+    <h3 class="r-fit-text">Utilisation des fonctions</h3>
+
+    <p class="text-left">
+        <em>Consigne : </em> Créer des fonctions pour simuler des interactions clientes
+    </p>
+    <ol>
+        <li>
+            <strong>En groupe</strong> : réfléchissez à des fonctions pour gérer certaines fonctionnalités simples du restaurant. Ces fonctions utiliseront les paramètres optionnels, les paramètres par défaut, et l'inférence de type.
+        </li>
+        <li>
+            <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, écrivez les fonctions
+        </li>
+        <li>
+            <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider les retours de vos fonctions
+        </li>
+    </ol>
+
+    <aside class="notes">
+
+        Quelques pistes pour aider les apprenants :
+        - Calculer le nombre de clients restants à placer dans le restaurant.
+        - Vérifier si une réservation peut être acceptée selon le nombre de tables disponibles.
+        - Gérer une addition en ajoutant des taxes ou un pourboire optionnel.
+    </aside>
+</section>
+
+<section>
+    <h2>Le typage des tableaux</h2>
+    <ul>
+        <li class="fragment">
+            Un tableau : regroupe plusieurs valeurs sous une même variable.
+        </li>
+        <li class="fragment">
+            Deux syntaxes possibles en Typescript :
+            <ul>
+                <li class="fragment">
+                    Type suivi de <code>[]</code> : <code>number[]</code>
+                    <pre>
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    let numbers: number[] = [1, 2, 3];
+                                </code>
+                            </pre>
+                </li>
+                <li class="fragment">
+                    Avec <code>Array&lt;type&gt;</code> : <code>Array&lt;number&gt;</code>
+                    <pre>
+                                <code class="typescript" data-line-numbers data-trim>
+                                      <script type="text/template">
+                                          let numbers: Array<number> = [1, 2, 3];
+                                      </script>
+                                </code>
+                            </pre>
+                </li>
+            </ul>
+        </li>
+        <li class="fragment">
+            Type prédéfini <code>readonly</code> pour empêcher les modifications
+            <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            const readonlyNumbers: readonly number[] = [1, 2, 3];
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+    <aside class="notes">
+        En TypeScript, les tableaux sont des collections de valeurs du même type. Il existe deux façons de
+        déclarer un tableau : avec type[] ou Array
+        &lt;type&gt;. Ces deux syntaxes sont équivalentes."
+
+        Les tableaux peuvent contenir des types complexes, comme des objets ou des unions. Vous pouvez aussi
+        les rendre immuables grâce au mot-clé readonly.
+    </aside>
+</section>
+
+<section>
+    <h2>Typage complexe dans les fonctions</h2>
+    <aside class="notes">"TypeScript permet d'utiliser des types complexes dans vos fonctions, comme des objets
+        ou des tableaux. Cela vous aide à mieux structurer et sécuriser votre code."
+    </aside>
+    <ul class="w-full">
+        <li class="w-full">
+            <figure class="w-full">
+                <figcaption>Avec des objets</figcaption>
+                <pre>
+                            <code data-trim data-noescape class="typescript" data-line-numbers>
+                                function describePerson(
+                                  person: {
+                                    name: string;
+                                    age: number
+                                  }): string {
+
+                                  return `${person.name} is ${person.age} years old.`;
+                                }
+                            </code>
+                        </pre>
+            </figure>
+        </li>
+        <li>
+            <figure>
+                <figcaption>Avec des tableaux</figcaption>
+                <pre>
+                            <code data-trim data-noescape class="typescript" data-line-numbers>
+                                function sum(numbers: number[]): number {
+                                  return numbers.reduce((acc, val) => acc + val, 0);
+                                }
+                            </code>
+                        </pre>
+            </figure>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h2>Introduction aux Tuples</h2>
+    <ul>
+        <li>
+            Un tuple est un tableau dont la longueur et les types de chaque élément sont prédéfinis
+            <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            let user: [string, number] = ["Alice", 25];
+                        </code>
+                    </pre>
+        </li>
+
+
+        <li class="fragment">
+            Accéder aux éléments :
+            <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            console.log(user[0]); // Alice
+                            console.log(user[1]); // 25
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            Le tuple peut permettre de représenter des types complexes
+            <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            let config: [string, number, boolean] = ["localhost", 8080, true];
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+    <aside class="notes">
+        Les tuples permettent de représenter des tableaux avec une structure fixe. Contrairement aux tableaux
+        classiques, chaque élément d’un tuple a un type prédéfini et la longueur est connue à l’avance.
+    </aside>
+</section>
+
+<section>
+    <h2>Tuples et Typescript avancé</h2>
+    <ul>
+        <li class="fragment">
+            Les tuples peuvent inclure des spreads pour des longueurs dynamiques&nbsp;:
+            <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            let log: [string, ...number[]] = ["INFO", 200, 300];
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            Les tuples sont couramment utilisés pour des fonctions renvoyant plusieurs valeurs&nbsp;:
+            <pre>
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            function getUser(): [string, number] {
+                                return ["Bob", 30];
+                            }
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+    <aside class="notes">
+        Les tuples permettent aussi d’utiliser des fonctionnalités avancées comme le spread syntax. Ils sont
+        très utiles pour retourner plusieurs valeurs d’une fonction tout en restant typés.
+    </aside>
+</section>
+
+<section>
+    <h2>Introduction aux Enums</h2>
+    <ul>
+        <li class="fragment">
+            Un <strong>enum</strong> est un moyen de définir un groupe de valeurs constantes liées
+        </li>
+        <li class="fragment">
+            Pourquoi utiliser des Enums ?
+            <ul>
+                <li class="fragment">
+                    Meilleur lisibilité et maintenance du code
+                </li>
+                <li class="fragment">
+                    Facilite la gestion des valeurs limitées pour des propriétés ou des états
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <aside class="notes">
+        Un enum, ou enumeration, est un outil très pratique pour gérer des valeurs constantes et prévisibles dans vos projets. Imaginez par exemple que vous deviez représenter les statuts d'une tâche ou les directions sur une boussole. Au lieu de jongler avec des chaînes de caractères ou des nombres, qui peuvent vite devenir sources d'erreurs, vous utilisez un enum pour centraliser et sécuriser ces valeurs.
+    </aside>
+</section>
+
+<section>
+    <h2>Deux types d’enum</h2>
+    <ul>
+        <li>
+            Enum numérique
+            <ul>
+                <li class="fragment">
+                    Les valeurs sont des entiers implicites (autoincrémentés) ou explicites
+                    <pre>
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    enum Direction {
+                                      North, // = 0
+                                      East, // = 1
+                                      South, // = 2
+                                      West // = 3,
+                                    }
+                                </code>
+                            </pre>
+                </li>
+            </ul>
+        </li>
+        <li>
+            Enum chaînes de caractères
+            <ul>
+                <li class="fragment">
+                    Chaque valeur est une chaîne explicitement définie.
+                    <pre>
+                                <code data-trim data-noescape class="typescript" data-line-numbers>
+                                    enum Direction {
+                                      North = "North",
+                                      East = "East",
+                                      South = "South",
+                                      West = "West",
+                                    }
+                                </code>
+                            </pre>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <aside class="notes">
+        En TypeScript, il existe deux types principaux d'enums. D'abord, les enums numériques, où les valeurs sont des entiers. Soit vous laissez TypeScript générer des entiers automatiquement, soit vous les définissez manuellement. Ensuite, on a les enums chaînes de caractères, où vous attribuez explicitement une chaîne à chaque valeur. Les enums chaînes sont souvent préférés car ils sont plus lisibles lors du débogage.
+    </aside>
+</section>
+
+<section>
+    <h2>Comment utiliser un enum</h2>
+
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-5|7-8|10-19" data-fragment-index="0">
+                    enum Status {
+                      Pending = "Pending",
+                      InProgress = "In Progress",
+                      Completed = "Completed"
+                    }
+
+                    const currentStatus: Status = Status.Pending;
+                    console.log(currentStatus); // "Pending"
+
+                    function getStatusMessage(status: Status): string {
+                      switch (status) {
+                        case Status.Pending:
+                          return "En attente...";
+                        case Status.InProgress:
+                          return "En cours...";
+                        case Status.Completed:
+                          return "Terminé !";
+                      }
+                    }
+                </code>
+            </pre>
+
+    <ul class="r-stack list-none w-full">
+        <li class="fragment fade-in-then-out w-full" data-fragment-index="0">
+            Déclaration d’un <code>enum</code> ; la structure d’un <code>enum</code> est différente de la structure d’un objet.
+        </li>
+        <li class="fragment current-visible w-full" data-fragment-index="1">
+            Accéder aux valeurs d’un <code>enum</code> = accéder aux propriétés d’un objet
+        </li>
+        <li class="fragment fade-in w-full" data-fragment-index="2">
+            Idéal pour utiliser au sein d’un fonction avec <code>switch</code>
+        </li>
+    </ul>
+    <aside class="notes">
+        Voici un exemple concret pour manipuler des enums dans votre code. Vous déclarez un enum, ici pour les statuts d'une tâche. Ensuite, vous pouvez y accéder directement pour assigner une valeur ou, comme dans notre fonction, utiliser un switch pour adapter le comportement de votre application selon le statut.
+    </aside>
+</section>
+
+<section>
+    <h2>Pros and cons des enums</h2>
+    <table class="w-full">
+        <thead>
+        <tr>
+            <th>Pros</th>
+            <th>Cons</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <ul class="fragment">
+                    <li>
+                        Idéal avec des ensembles fermés de valeurs constantes
+                    </li>
+                    <li>
+                        Évite les erreurs liées à des typos ou des modifications ultérieures
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <ul class="fragment">
+                    <li>Flexibilité limitée dans des cas complexes</li>
+                    <li>Augmentation de la taille des bundles JS</li>
+                    <li>Moins ergonomiques que des alternatives comme les <strong>type union</strong></li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <aside class="notes">
+        Les enums sont utiles, mais ils ne sont pas parfaits. Ils peuvent augmenter la taille de vos fichiers JavaScript, surtout avec des enums numériques. Pour des scénarios plus complexes ou légers, les types union, que nous verrons dans la partie Concepts avancés, peuvent être une meilleure option.
+    </aside>
+</section>
+
+<section>
+    <h2>Un point rapide sur <code>never</code> et <code>void</code></h2>
+
+    <aside class="notes">
+        On connaît bien le mot-clef <code>void</code> qui indique qu’une fonction ne retourne rien.
+        Typescript possède aussi un type <code>never</code> qui représente une valeur impossible à atteindre. Ce type n’est utilisé que pour flager les zones qui ne devraient jamais être atteintes ou pour les types conditionnels que nous verrons plus tard.
+    </aside>
+
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-7|13,24,25,26" data-fragment-index="1">
+                    function throwError(e: Error):never {
+                      throw new Error(e.message);
+                    }
+
+                    function logError(e:Error):void {
+                      console.log(e.message);
+                    }
+
+                    enum Status {
+                      Pending = "pending",
+                      InProgress = "in progress",
+                      Done = "done",
+                      Cancelled = "cancelled"
+                    };
+
+                    function logStatus(s: Status):void {
+                      switch (s) {
+                        case Status.Pending:
+                          //...
+                        case Status.InProgress:
+                          // ...
+                        case Status.Done:
+                          // ...
+                        default:
+                          const _exhaustiveCheck: never = s;
+                          return _exhaustiveCheck // Typescript affiche une erreur, il manque un type
+                      }
+                    }
+                </code>
+            </pre>
+
+    <ul class="r-stack w-full">
+        <li class="fragment fade-in-then-out w-full" data-fragment-index="1">
+            <code>never</code> : la fonction n’atteint jamais de valeur de retour
+        </li>
+        <li class="fragment fade-in-then-out w-full" data-fragment-index="2">
+            <code>void</code> : la fonction atteint une valeur de retour, mais celle-ci est vide
+        </li>
+        <li class="fragment fade-in w-full" data-fragment-index="3">
+            <code>never</code> peut permettre de s’assurer qu’on vérifie tous les cas d’une <code>enum</code>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+    <h3 class="r-fit-text">Modéliser avec des <code>Arrays</code>, <code>Enums</code> et <code>Tuples</code></h3>
+
+    <p class="text-left">
+        <em>Consigne : </em> écrire des structures plus complexes pour modéliser un type de plat, une liste, des retours de fonctions
+    </p>
+    <ol>
+        <li>
+            <strong>En groupe</strong> : quels éléments d’un restaurant peuvent-être représentés sous la forme d’un tableau ? d’une énumération ?
+        </li>
+        <li>
+            <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, ajoutez ou modifiez les fonctions et les structures dont vous avez parlé entre vous.
+        </li>
+        <li>
+            <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, ajoutez ou modifiez vos jeux de tests.
+        </li>
+    </ol>
+
+    <aside class="notes">
+
+        Quelques pistes pour aider les apprenants :
+        - Un tableau contenant les prix des plats et une fonction pour calculer leur somme totale.
+        - Une énumération pour les catégories de plats (entrée, plat principal, dessert).
+        - Un tuple pour représenter un plat (nom, catégorie, prix).
+        - Une fonction qui renvoie un tuple contenant le nom et le prix du plat le moins cher.
+
+    </aside>
+</section>
+
+<section>
+    <h2>Récapitulatif</h2>
+    <ul>
+        <li class="fragment">
+            Des types primitifs <code>number</code>, <code>string</code>, etc.
+        </li>
+        <li class="fragment">Typescript reconnaît les types grâce à <strong>l’inférence</strong></li>
+        <li class="fragment">
+            Typage dans les fonctions (paramètres et retours)
+        </li>
+        <li class="fragment">
+            Structure complexes : <code>Array</code>, <code>tuple</code>, <code>enum</code>
+        </li>
+    </ul>
+</section>

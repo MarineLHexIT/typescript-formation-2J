@@ -1,0 +1,232 @@
+<section>
+    <h1 class="r-fit-text">Les tests avec Typescript</h1>
+    <h2 class="r-fit-text">Pourquoi tester, même avec Typescript ?</h2>
+</section>
+
+<section>
+    <h2>Les tests avec Typescript</h2>
+    <ul>
+        <li class="fragment">
+            <strong>Typescript garantit : </strong>
+            <ul>
+                <li>
+                    Détection des erreurs courante avant l’exécution
+                </li>
+                <li>
+                    Cohérence des types au moment de la compilation
+                </li>
+            </ul>
+        </li>
+        <li class="fragment">
+            <strong>… mais ne protège pas contre :</strong>
+            <ul>
+                <li>
+                    Les erreurs de logique métier
+                </li>
+                <li>
+                    Les bugs dans les interactions avec des API ou des bases de données
+                </li>
+                <li>
+                    Les erreurs inattendues dans des scénarios réels
+                </li>
+            </ul>
+        </li>
+        <li class="fragment">
+            <strong>Conclusion : </strong>
+            Typage statique ≠ Remplacement des tests
+        </li>
+    </ul>
+    <aside class="notes">
+        TypeScript est une aide précieuse pour réduire les erreurs, mais les tests restent indispensables pour
+        garantir que votre code fonctionne correctement dans tous les cas possibles.
+    </aside>
+</section>
+
+<section>
+    <h2>Les frameworks de tests pour Typescript</h2>
+    <ul>
+        <li>
+            <strong>Jest</strong>
+            <ul class="fragment">
+                <li>Configuration simple et riche en fonctionnalités</li>
+                <li>Support Typescript via <code>ts-jest</code></li>
+            </ul>
+        </li>
+        <li>
+            <strong>Mocha + Chai</strong>
+            <ul class="fragment">
+                <li>Très flexible, idéal pour les besoins spécifiques</li>
+                <li>Nécessite un peu plus de configuration avec Typescript</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Playwright</strong>
+            <ul class="fragment">
+                <li>Teste les UI avec les moteurs de rendu des navigateurs modernes</li>
+                <li>Supporte plusieurs langages, dont Typescript</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Supertest</strong>
+            <ul class="fragment">
+                <li>Teste les requête HTTP (API, serveurs)</li>
+            </ul>
+        </li>
+    </ul>
+    <aside class="notes">
+        Le choix d’un framework dépend de vos besoins et préférences.
+        Pour cette formation, nous allons utiliser Jest, qui est simple et populaire, et voir aussi Playwright
+        pour les expériences End-to-End
+    </aside>
+</section>
+
+<section data-markdown>
+            <textarea data-template>
+## Installer et configurer **Jest**
+
+1. **Installer Jest et ses dépendances :**
+   ```bash
+   npm install --save-dev jest ts-jest @types/jest
+   ```
+2. **Configurer Jest :**
+   Ajouter un fichier `jest.config.js` avec des commentaires :
+   ```javascript
+   module.exports = {
+     // Utilise ts-jest pour la transpilation TypeScript
+     preset: 'ts-jest',
+     // Environnement Node pour les tests frontend (peut être changé en node pour le backend)
+     testEnvironment: 'jsdom',
+     // Fichiers de test ciblés avec une extension .test.ts
+     testMatch: ['**/*.test.ts'],
+   };
+   ```
+---
+## Écrire un test unitaire simple avec Jest
+
+3. Exemple de fonction à tester :
+   ```typescript
+   export function sum(a: number, b: number): number {
+     return a + b;
+   }
+   ```
+4. Exemple de fichier de test (`sum.test.ts`) :
+   ```typescript
+   import { sum } from './sum';
+   import { describe, expect, test } from '@jest/globals';
+
+   test('sum adds two numbers', () => {
+     expect(sum(1, 2)).toBe(3);
+   });
+
+   test('sum with negative numbers', () => {
+     expect(sum(-1, -2)).toBe(-3);
+   });
+   ```
+
+---
+
+## Exécuter les tests
+
+5. **Exécuter les tests :**
+   ```bash
+    npx jest
+    ```
+6. Retour d’exécution :
+    ```bash
+    test $ npx jest
+    PASS  src/sum.test.ts
+     ✓ sum adds two number (2 ms)
+     ✓ sum adds two negative numbers (1 ms)
+
+    Test Suites: 1 passed, 1 total
+    Tests:       2 passed, 2 total
+    Snapshots:   0 total
+    Time:        1.497 s, estimated 2 s
+    Ran all test suites.
+    ```
+            </textarea>
+</section>
+
+<section data-markdown>
+            <textarea data-template>
+## Installer et configurer Playwright
+
+1. **Installer les dépendances :**
+   ```bash
+   npm init playwright@latest
+   ```
+
+2. **Configurer Playwright durant l’installation:**
+    ```bash
+    - Where to put your end-to-end tests? · tests
+    - Add a GitHub Actions workflow? (y/N) · false
+    - Install Playwright browsers (...) · true
+    - Install Playwright operating system dependencies (...) · false
+    ```
+
+---
+## Premier test avec Playwright
+
+3. **Créer un test :**
+    - Fichier : `tests/example.spec.ts`
+    ```typescript
+    import { test, expect } from '@playwright/test';
+
+    test('has title', async ({ page }) => {
+      await page.goto('https://playwright.dev/');
+
+      // Expect a title "to contain" a substring.
+      await expect(page).toHaveTitle(/Playwright/);
+    });
+
+    test('get started link', async ({ page }) => {
+      await page.goto('https://playwright.dev/');
+
+      // Click the get started link.
+      await page.getByRole('link', { name: 'Get started' }).click();
+
+      // Expects page to have a heading with the name of Installation.
+      await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+    });
+
+    ```
+
+4. **Exécuter le test :**
+   ```bash
+   npx playwright test
+   ```
+---
+## Premier test avec Playwright
+
+```bash
+test $ npx playwright test
+
+Running 4 tests using 4 workers
+  4 passed (2.9s)
+
+To open last HTML report run:
+
+  npx playwright show-report
+                ```
+
+![Rapport Playwright](./images/playwright_report.png)
+            </textarea>
+</section>
+
+<section>
+    <h2>Tests : récapitulatif</h2>
+    <ul>
+        <li>
+            Typescript est compatible avec plusieurs frameworks de tests
+        </li>
+        <li>
+            Typescript : vérification des types ≠ outils de tests : vérification des cas limites, règles métiers, etc.
+        </li>
+        <li>
+            Jest : tests unitaires
+        </li>
+        <li>
+            Playwright : tests UI
+        </li>
+    </ul>
+</section>

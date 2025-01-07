@@ -1,0 +1,238 @@
+<section>
+    <h1 class="r-fit-text">Mixins</h1>
+    <h2>Des blocs légos pour Typescript</h2>
+</section>
+
+<section>
+    <h2>Introduction aux mixins</h2>
+
+    <h3>Qu’est-ce qu’un mixin ?</h3>
+    <ul>
+        <li class="fragment">Réutlisation du code entre plusieurs classes</li>
+        <li class="fragment">Composition de fonctionnalités</li>
+    </ul>
+
+    <h3>Comparaison</h3>
+    <ul>
+        <li class="fragment">
+            <strong>Héritage classique</strong> : relation parent-enfant stricte
+        </li>
+        <li class="fragment">
+            <strong>Mixins</strong> : combinaison flexibles sans hiérarchie
+        </li>
+    </ul>
+
+    <h3>Cas d’utilisations</h3>
+    <ul>
+        <li class="fragment">Ajout de fonctionnalité réutilisables</li>
+        <li class="fragment">Modularisation de comportements partagés</li>
+    </ul>
+
+    <aside class="notes">
+        Pensez aux mixins comme des blocs LEGO. Chaque bloc ajoute une fonctionnalité, et vous assemblez les blocs nécessaires pour créer l'objet final.
+    </aside>
+</section>
+
+<section>
+    <h2>Créer des mixins en Typescript</h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1-6|8-14|16|17-18|20-31">
+                    <script type="text/template">
+                    class Animal {
+                    name: string;
+                    constructor(name: string) {
+                    this.name = name;
+                    }
+                    }
+
+                    function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
+                      return class extends Base {
+                        fly() {
+                          console.log(`${this.name} is flying!`);
+                        }
+                      };
+                    }
+
+                    const Bird = CanFly(Animal);
+                    const eagle = new Bird("Eagle");
+                    eagle.fly(); // "Eagle is flying!"
+
+                    class Vehicule {
+                      name: string;
+
+                      constructor(name: string) {
+                        this.name = name;
+                      }
+                    }
+
+                    const Plane = CanFly(Vehicule);
+                    const airbus = new Plane("Airbus");
+
+                    airbus.fly(); // Airbus is flying!
+                    </script>
+                </code>
+            </pre>
+    <aside class="notes">
+        Pour créer un mixin, cela demande plusieurs étapes :
+        - Créer une fonction qui prend une classe et retourne une classe qui étend la première
+        - Créer la classe qui nous intéresse en appelant notre mixin avec notre classe de base
+        - Utiliser cette classe pour instancier un objet
+
+        Dans le cas présent, nous aurions pu simplement créer une classe Bird qui étend de Animal…
+        Mais mettons que l’on souhaite avoir un véhicule qui peut voler :
+
+        Nous pourrions appliquer le mixin CanFly à une classe Vehicule et obtenir des avions, ou bien à une classe Personne, et avoir Superman, etc.
+    </aside>
+</section>
+
+<section>
+    <h2>Créer des mixins en Typescript</h2>
+    <ul>
+        <li class="fragment">
+            Déclarer une fonction qui prend une classe comme argument
+            <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                               function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {}
+                            </script>
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            La fonction retourne une nouvelle classe qui étend la classe passée en paramètre avec des fonctionnalités supplémentaires
+            <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers="">
+                            <script type="text/template">
+                            function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
+                              return class extends Base {
+                                fly() {}
+                              };
+                            }
+                            </script>
+                        </code>
+                    </pre>
+        </li>
+        <li class="fragment">
+            Obtenir la nouvelle classe en appelant le mixin et l’instancier
+            <pre class="w-full">
+                        <code data-trim data-noescape class="typescript" data-line-numbers>
+                            <script type="text/template">
+                            const Bird = CanFly(Animal);
+                            const eagle = new Bird("Eagle");
+                            eagle.fly(); // "Eagle is flying!"
+
+                            const Plane = CanFly(Vehicule);
+                            const airbus = new Plane("Airbus");
+                            airbus.fly(); // Airbus is flying!
+                            </script>
+                        </code>
+                    </pre>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h2>Composition de mixins</h2>
+
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    function CanSwim<TBase extends new (...args: any[]) => { name: string }>(Base: TBase) {
+                      return class extends Base {
+                        swim() {
+                          console.log(`${this.name} is swimming!`);
+                        }
+                      };
+                    }
+
+                    const Amphibian = CanSwim(CanFly(Animal));
+                    const frog = new Amphibian("Frog");
+                    frog.fly();  // "Frog is flying!"
+                    frog.swim(); // "Frog is swimming!"
+                    </script>
+                </code>
+            </pre>
+    <aside class="notes">
+        Il est tout à fait possible d’enchaîner les mixins comme des couches successives.
+    </aside>
+</section>
+
+<section>
+    <h2>Avantages des mixins</h2>
+    <ul>
+        <li class="fragment">
+            <strong>Réutilisabilité</strong> : encapsulation de fonctionnalités spécifiques, facilement applicables à différentes classes
+        </li>
+        <li class="fragment">
+            <strong>Flexibilité</strong> : pas de hiérarchie rigide
+        </li>
+        <li class="fragment">
+            <strong>Découplage</strong> : chaque mixin est indépendant des uns des autres
+        </li>
+    </ul>
+    <aside class="notes">
+        Les mixins permettent d’éviter la complexité de l’héritage profond ou permet de pallier l’absence d’héritage multiple.
+    </aside>
+</section>
+
+<section>
+    <h2>Limites des mixins</h2>
+    <ul>
+        <li class="fragment">
+            <strong>Complexité</strong> : plusieurs mixins peuvent compliquer la compréhension de la classe finale
+        </li>
+        <li class="fragment">
+            <strong>Conflits</strong> : un mixin peut venir écraser une méthode déjà implementée par un mixin précédent ou la classe originale
+        </li>
+        <li class="fragment">
+            <strong>Performance</strong> : alourdit les classes
+        </li>
+    </ul>
+    <aside class="notes">
+        Comme tout outil, les mixins doivent être utilisés avec modération et intelligence pour éviter une surcharge cognitive ou des conflits de noms.
+    </aside>
+</section>
+
+<section>
+    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+    <h3 class="r-fit-text">
+        Intégrer les mixins à notre projet
+    </h3>
+
+    <p class="text-left">
+        <em>Consigne : </em> gérer des réductions sur une commande à l’aide de mixins
+    </p>
+    <ol>
+        <li>
+            <strong>En groupe</strong> : quels types de réductions pourraient utiles à un restaurant ? avec quelles conditions ?
+        </li>
+        <li>
+            <strong>En individuel</strong> : implémentez un mixins qui permet de créer une réduction sur une commande
+        </li>
+        <li>
+            <em>Facultatif</em> : écrivez des tests pour vérifier que votre code fonctionne, même les cas limites.
+        </li>
+    </ol>
+
+    <aside class="notes">
+
+        Quelques pistes pour aider les apprenants :
+
+        Créez une interface Plat pour modéliser un plat.
+        Implémentez une classe Commande pour gérer les commandes des clients. Cette classe doit :
+        - Permettre d’ajouter des plats (avec une méthode générique).
+        - Calculer le total de la commande.
+
+        Refactorisez le code des exercices précédents pour intégrer cette structure orientée objet.
+
+    </aside>
+</section>
+
+<section>
+    <h2>Mixins - récapitulatif</h2>
+    <ul>
+        <li>Apporter des modifications réutilisables qui ne modifient pas la logique principale</li>
+        <li>Ils sont réutilisables et flexibles, et peuvent être combiner.</li>
+        <li>Cependant, ils peuvent apporter une charge cognitive supplémentaire</li>
+    </ul>
+</section>

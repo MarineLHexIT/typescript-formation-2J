@@ -1,0 +1,435 @@
+<section>
+    <h1 class="r-fix-text">Concepts avancés</h1>
+    <h2>Pour aller plus loin, et pour mieux comprendre les bibliothèques qu’on utilise…</h2>
+</section>
+
+<section>
+    <h2>
+        Les décorateurs
+    </h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="||6" data-fragment-index="1">
+                    <script type="text/template">
+                        function Log(target: any, key: string) {
+                        console.log(`${key} a été accédé`);
+                        }
+
+                        class Exemple {
+                        @Log // import du décorateur
+                        prop: string = 'Hello';
+                        }
+
+                        const example = new Exemple();
+                        example.prop = "World"; // prop a été accédé
+                    </script>
+                </code>
+            </pre>
+    <ul>
+        <li class="fragment" data-fragment-index="1">
+            Un <strong>décorateur</strong> est une fonction spéciale annotant une classe, méthode ou propriété
+        </li>
+        <li class="fragment" data-fragment-index="2">
+            <strong>Syntaxe</strong> : préfixée par <code>@</code>
+        </li>
+    </ul>
+    <aside class="notes">
+        Les décorateurs permettent d’ajouter ou de modifier des comportements sans altérer directement le code annoté. Leur principal usage se trouve dans les frameworks comme Angular pour gérer des métadonnées ou des injections de dépendance. En revanche, ils nécessitent une configuration avancée, car ils ne sont disponibles qu’en mode expérimental.
+    </aside>
+</section>
+
+<section>
+    <h2>Une fonction expérimentale</h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="json">
+                    <script type="text/template">
+                       {
+                       "compilerOptions": {
+                       "target": "ES5",
+                       "experimentalDecorators": true
+                       }
+                       }
+                    </script>
+                </code>
+            </pre>
+    <aside class="notes">
+        Pour faire fonctionner les décorateurs, il est nécessaire d’activer l’option experimentalDecorators dans les options.
+    </aside>
+</section>
+
+<section>
+    <h2>Les <em>Decorator Factory</em></h2>
+
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-9|13,18" data-fragment-index="1">
+                    <script type="text/template">
+                        function logFactory(output: string) {
+                        return function (target: any, key: string) {
+                        if (output === "console") {
+                        console.log(`${key} a été accédé`);
+                        }
+                        else if (output === "file") {
+                        // another thing
+                        }
+                        }
+                        }
+
+                        class Exemple {
+                        @logFactory("console")
+                        prop: string = 'Hello';
+                        }
+
+                        const example = new Exemple();
+                        example.prop = "World"; // prop a été accédé
+                    </script>
+                </code>
+            </pre>
+
+    <ul>
+        <li class="fragment" data-fragment-index="1">
+            <strong>Factory</strong> : une fonction retournant un décorateur
+        </li>
+        <li class="fragment" data-fragment-index="2">
+            <strong>Objectif</strong> : personnaliser le décorateur
+        </li>
+    </ul>
+    <aside class="notes">
+        Les décorateurs peuvent être paramétrés afin de répondre à un besoin plutôt qu’un autre. Un outil de log qui écrit dans un fichier ou dans la console ?
+    </aside>
+</section>
+
+<section>
+    <h2>Pros and cons</h2>
+    <table class="w-full">
+        <thead>
+        <tr>
+            <th>Pros</th>
+            <th>Cons</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <ul class="fragment">
+                    <li>Réduction de code</li>
+                    <li>Extensibilité via de simples annotations</li>
+                    <li>Idéal dans les frameworks</li>
+                </ul>
+            </td>
+            <td>
+                <ul class="fragment">
+                    <li>Syntaxe peu intuitive</li>
+                    <li>Nécessite un support expérimental</li>
+                    <li>Pas adapté à tous les projets</li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <aside class="notes">
+        Les décorateurs sont recommandés dans des contextes standardisés et ne seront sûrement pas utilisé dans un projet Typescript relativement simple.
+    </aside>
+</section>
+
+<section>
+    <h2>Type "Union"</h2>
+
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1|3|" data-fragment-index="1">
+                    <script type="text/template">
+                        type ID = number | string;
+
+                        function printId(id: ID) {
+                        if (typeof id === 'string') {
+                        console.log(id.toUpperCase());
+                        } else {
+                        console.log(id);
+                        }
+                        }
+                    </script>
+                </code>
+            </pre>
+
+    <ul>
+        <li>
+            <strong>Union</strong> : type combinant plusieurs possibilités
+        </li>
+        <li class="fragment" data-fragment-index="1">
+            <strong>Syntaxe</strong> : le symbole <code>|</code>
+        </li>
+        <li class="fragment" data-fragment-index="2">
+            <strong>Simplification</strong> des signatures de fonction et <strong>flexibilité</strong>
+        </li>
+        <li class="fragment" data-fragment-index="3">Le <code>|</code> doit se lire comme un <strong>"ou"</strong></li>
+    </ul>
+
+    <aside class="notes">
+        L’union est un élément que l’on retrouver très souvent car il simplifie les signatures ; cependant, cela impose plus de contrôle, donc il faut faire attention à ne pas combiner trop de type.
+
+        Il est bien sûr possible de combiner des types complexes.
+    </aside>
+</section>
+
+<section>
+    <h2>Type "Intersection"</h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|10|12-21" data-fragment-index="1">
+                    <script type="text/template">
+                        type Circle = {
+                        radius: number;
+                        center: [number, number]
+                        }
+
+                        type Colorful = {
+                        color: string
+                        }
+
+                        type ColorfulCircle = Circle & Colorful;
+
+                        const c:ColorfulCircle = {
+                        center: [0, 0],
+                        radius: 10,
+                        color: "blue"
+                        };
+
+                        const colorfulSquare: {width: number} & Colorful = {
+                        width: 10,
+                        color: "red"
+                        }
+                    </script>
+                </code>
+            </pre>
+    <ul>
+        <li>Type s’accaparant l’ensemble des propriétés des types combinés</li>
+        <li class="fragment" data-fragment-index="1">
+            <strong>Syntaxe</strong> : le symbole <code>&</code>
+        </li>
+        <li class="fragment" data-fragment-index="2">
+            Une <strong>intersection</strong> créé un nouveau type
+        </li>
+    </ul>
+    <aside class="notes">
+        L’intersection est un autre moyen de combiner les types mais cette fois-ci, en créant un nouveau type à partir de l’ensemble de toutes les caractéristiques des types combinés.
+        Cela peut être utile pour réutiliser des types existants.
+    </aside>
+</section>
+
+<section>
+    <h2>Types conditionnels</h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="1|3-4">
+                    <script type="text/template">
+                        type IsString<T> = T extends string ? true : false;
+
+                        type Test1 = IsString<string>; // true
+                        type Test2 = IsString<number>; // false
+                    </script>
+                </code>
+            </pre>
+    <ul>
+        <li class="fragment">Type déterminé dynamiquement selon une condition</li>
+        <li class="fragment"><strong>Syntaxe</strong> : une condition ternaire <code>T extends U ? X : Y</code>
+        <li class="fragment">Utile particulièrement avec les générique</li>
+    </ul>
+    <aside class="notes">
+        Les types conditionnels permettent de rendre les types dynamiques en fonction de règles spécifiques. Ils sont très puissants dans des bibliothèques génériques et des outils fortement typés, mais leur lisibilité peut rapidement devenir un problème.
+    </aside>
+</section>
+
+<section>
+    <h2>Types conditionnels et <code>never</code></h2>
+    <figure>
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|11|13-15|17-19" data-fragment-index="1">
+                    <script type="text/template">
+                    interface Email {
+                    message: string;
+                    }
+
+                    class Dog {
+                    bark() {
+                    console.log("Waf");
+                    }
+                    }
+
+                    type MessageOf<T> = T['message']; // ❌ erreur : "type 'message' cannot be used to index type 'T'"
+
+                    type MessageOf<T extends { message: string}> = T['message']; // ✅ ça fonctionne
+                    type MessageOfEmail = MessageOf<Email>; // ✅ type MessageOfEmail = string;
+                    type MessageOfDog = MessageOf<Dog>; // ❌ Type 'Dog' does not satisfy the constraint '{ message: string; }'
+
+                    type MessageOf<T> = T extends { message: string } ? T['message'] : never;
+                    type MessageOfEmail = MessageOf<Email>; // ✅ type MessageOfEmail = string;
+                    type MessageOfDog = MessageOf<Dog>; // ✅ type MessageOfDog = never
+                    </script>
+                </code>
+            </pre>
+        <figcaption>
+            Cas pratique : extraire le type d’un message
+        </figcaption>
+    </figure>
+    <ul>
+        <li class="fragment" data-fragment-index="1">
+            Première étape : erreur, <code>message</code> n’est pas nécessairement défini sur notre type générique <code>T</code>.
+        </li>
+        <li class="fragment" data-fragment-index="2">
+            Avec <code>extends</code> : mieux, mais déclenche une erreur si on passe un type qui ne satisfait pas l’extension
+        </li>
+        <li class="fragment" data-fragment-index="3">
+            Avec un type conditionnel et <code>never</code> : plus d’erreur pour Typescript
+        </li>
+    </ul>
+    <aside class="notes">
+        Lorsque nous avons parcouru les types, nous avons rapidement abordé le type <code>never</code>, qui indique une fonction qui ne parviendrait pas à son terme, ou comme on pourrait le dire autrement, une "fausse route". J’utilise ce terme car dans le cas d’un type conditionnel, on voit ce que peut être une "fausse route" : une route lorsque la condition est <em>fausse</em>.
+    </aside>
+</section>
+
+<section>
+    <h2>Types mappés</h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-6" data-fragment-index="1">
+                    <script type="text/template">
+                        type ReadOnly<T> = {
+                            readonly [K in keyof T]: T[K];
+                        };
+
+                        type Point = { x: number; y: number };
+                        type ReadOnlyPoint = ReadOnly<Point>;
+                    </script>
+                </code>
+            </pre>
+    <ul>
+        <li class="fragment" data-fragment-index="0">
+            Transforme un type en appliquant des modifications à ses clefs ou valeurs
+        </li>
+        <li class="fragment" data-fragment-index="1">
+            <strong>Syntaxe</strong> : <code>{ [K in keys]: ValueType }</code>
+        </li>
+        <li class="fragment" data-fragment-index="2">
+            Cas d’utilisation :
+            <ul>
+                <li>Rendre toutes les propriétés optionnelles</li>
+                <li>Rendre toutes les propriétés immuables</li>
+                <li>Renommer ou préfixer des clefs</li>
+                <li>etc.</li>
+            </ul>
+        </li>
+    </ul>
+    <aside class="notes">
+        Les types mappés sont particulièrement utiles pour créer des variantes des types existants (readonly, optional). Cependant, ils nécessitent de bien comprendre les clés et les indices de TypeScript.
+    </aside>
+</section>
+<section>
+    <h2>Partial, Omit, et types conditionnels</h2>
+    <div class="r-stack">
+        <figure class="w-full fragment fade-in-then-out">
+                <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                            type User = { name: string; email: string };
+                            type UpdateUser = Partial<User>; // Toutes les propriétés deviennent optionnelles
+
+                            type Config = { host: string; port: number };
+                            type ImmutableConfig = Readonly<Config>; // toutes les propriétés deviennent immutables
+                        </script>
+                    </code>
+                </pre>
+            <figcaption>Partial ou Readonly</figcaption>
+        </figure>
+        <figure class="w-full fragment fade-in-then-out">
+                <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                            type User = { name: string; password: string };
+                            type PublicUser = Omit<User, 'password'>; // { name: string}
+                            // ou
+                            type SecureUser = Pick<User, 'name'>; // { name: string}
+                        </script>
+                    </code>
+                </pre>
+            <figcaption>Omit et Pick</figcaption>
+        </figure>
+        <figure class="w-full fragment  fade-in">
+                <pre class="w-full">
+                    <code data-trim data-noescape class="typescript" data-line-numbers>
+                        <script type="text/template">
+                            type FormValues = { name: string; age: number };
+                            type Validation = {
+                            [K in keyof FormValues]: FormValues[K] extends string ? boolean : FormValues[K];
+                            };
+                        </script>
+                    </code>
+                </pre>
+            <figcaption>Utilisation des types conditionnels </figcaption>
+        </figure>
+    </div>
+    <aside class="notes">
+        Il existe des types mappés pré-existant que vous verrez en lisant des fichiers de déclarations ou dont vous pourriez avoir besoin.
+        Partial et ReadOnly appliquent un type à l’ensemble des propriétés de votre type
+        Omit (ou Pick) permettent de sélectionner certains éléments d’un type pour en créer un nouveau
+        Et bien sûr, il est possible d’utiliser les types conditionnels en combinaison avec les types mappés.
+    </aside>
+</section>
+<section>
+    <h2>Infer</h2>
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                        type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+                        function getMessage(): string {
+                            return 'Hello';
+                        }
+
+                        type MessageReturn = ReturnType<typeof getMessage>; // string
+                    </script>
+                </code>
+            </pre>
+    <ul>
+        <li>Extrait des types spécifiques d’un type complexe</li>
+    </ul>
+    <aside class="notes">
+        infer est une fonctionnalité avancée permettant d’extraire des parties spécifiques d’un type, particulièrement utile dans les bibliothèques fortement typées. Toutefois, sa syntaxe peut sembler intimidante pour les débutants.
+    </aside>
+</section>
+
+<section>
+    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
+    <h3 class="r-fit-text">Système de réservation de tables avec les concepts avancés</h3>
+
+    <p class="text-left">
+        <em>Consigne : </em> créer un système de réservation. Le système de réservation doit prendre un nom et un nombre de convives. Dans le cas où le nombre de convive est supérieur à une valeur, la réservation doit avoir un menu sélectionné.
+    </p>
+    <ol>
+        <li>
+            <strong>En groupe</strong> : réflechissez à l’implémentation de la consigne en tenant compte de ce que l’on vient de voir : les types conditionnels, les décorateurs, etc.
+        </li>
+        <li>
+            <strong>En individuel</strong> : créez une classe <code>Reservation</code>, et implémentez ce que vous avez discuté précédemment
+        </li>
+        <li>
+            <em>Facultatif</em> : tester que vos réservations soient valides, en tenant compte du nombre de convives
+        </li>
+    </ol>
+
+    <aside class="notes">
+
+        Quelques pistes pour aider les apprenants :
+
+        Décorateurs pour la validation des réservations de groupe
+        Types conditionnels pour appliquer des règles spécifiques aux groupes de plus de 6 personnes
+        Intersection Types pour combiner des types standard et de groupe
+        Union Types pour gérer les différents types de réservations (standard et groupe)
+        Validation et flexibilité du système de réservation avec TypeScript
+
+    </aside>
+
+</section>
+
+<section>
+    <h2>Concepts avancés : récapitulatif</h2>
+    <ul>
+        <li>Les décorateurs permettent d’annoter une entité Typescript</li>
+        <li>Plusieurs façons de créer des types à partir d’autres types</li>
+        <li>Une panoplie d’outils pour créer des bibliothèques ou des frameworks</li>
+    </ul>
+</section>

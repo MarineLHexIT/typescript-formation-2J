@@ -1,0 +1,44 @@
+<section>
+    <h1 class="r-fit-text">Définition de types</h1>
+    <h2 class="r-fit-text">Typer les bibliothèques externes</h2>
+</section>
+
+<section>
+    <h2>Fichiers de déclaration</h2>
+    <aside class="notes">
+        Souvent dans le cadre de nos projet, nous utilisons des bibliothèques externes, qui sont parfois écrites en Typescript, parfois en Javascript. Dans ce dernier cas, comment Typescript est capable de savoir qui existe ou non ?
+    </aside>
+
+    <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                       // Librarie Math
+                       Math.min(5, 7, 12, 29, 13, 2, 11);
+                       Math.mix(5, 7, 12, 29, 13, 2, 11); // TS2339: Property 'mix' does not exist on type 'Math'.
+                       Math.min("Toto", "Titi", "Tata"); //TS2345: Argument of type 'string' is not assignable to parameter of type 'number'.
+                    </script>
+                </code>
+            </pre>
+
+    <ul>
+        <li class="fragment">
+            <strong>Définition pré-existantes</strong> : Typescript possède des déclarations pour toutes les API standards du moteur Javascript
+        </li>
+        <li class="fragment">
+            <strong>Installer des types</strong> : dans le cadre de bibliothèques externes, il est possible d’installer les types avec <code>npm install @types/&lt;package&gt;</code>
+        </li>
+        <li class="fragment">
+            <strong>Créer son propre fichier <code>.d.ts</code></strong> :
+            <pre class="w-full">
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                       // my-library.d.ts
+                       declare module 'my-library' {
+                       export function myFunction(param: string): boolean;
+                       }
+                    </script>
+                </code>
+            </pre>
+        </li>
+    </ul>
+</section>
