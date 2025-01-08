@@ -80,6 +80,7 @@
 <script src="plugin/markdown/markdown.js"></script>
 <script src="plugin/highlight/highlight.js"></script>
 <script src="plugin/simplemenu/simplemenu.js"></script>
+<script src="plugin/appearance/appearance.js"></script>
 <script>
     // More info about initialization & config:
     // - https://revealjs.com/initialization/
@@ -100,7 +101,16 @@
         height: 970,
 
         // Learn about plugins: https://revealjs.com/plugins/
-        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, Simplemenu]
+        plugins: [RevealMarkdown, RevealHighlight, RevealNotes, Simplemenu, Appearance],
+        appearance: {
+            autoappear: true,
+            autoelements: {
+                'ul li': 'animate__fadeInLeft',
+                'ol li': 'animate__fadeInLeft',
+                'h2': 'animate__skidLeft'
+            }
+        }
+
     });
 </script>
 </body>
