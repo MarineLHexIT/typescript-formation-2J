@@ -80,137 +80,180 @@
     </aside>
 </section>
 
-<section data-markdown>
-            <textarea data-template>
-## Installer et configurer **Jest**
+<section>
+    <h2>Environnement de test avec <strong>Jest</strong></h2>
+    <ul class="w-full">
+        <li>
+            Installer <strong>Jest</strong> et ses dépendances<br />
+            <code>
+                npm install --save-dev jest ts-jest @types/jest
+            </code>
+        </li>
 
-1. **Installer Jest et ses dépendances :**
-   ```bash
-   npm install --save-dev jest ts-jest @types/jest
-   ```
-2. **Configurer Jest :**
-   Ajouter un fichier `jest.config.js` avec des commentaires :
-   ```javascript
-   module.exports = {
-     // Utilise ts-jest pour la transpilation TypeScript
-     preset: 'ts-jest',
-     // Environnement Node pour les tests frontend (peut être changé en node pour le backend)
-     testEnvironment: 'jsdom',
-     // Fichiers de test ciblés avec une extension .test.ts
-     testMatch: ['**/*.test.ts'],
-   };
-   ```
----
-## Écrire un test unitaire simple avec Jest
-
-3. Exemple de fonction à tester :
-   ```typescript
-   export function sum(a: number, b: number): number {
-     return a + b;
-   }
-   ```
-4. Exemple de fichier de test (`sum.test.ts`) :
-   ```typescript
-   import { sum } from './sum';
-   import { describe, expect, test } from '@jest/globals';
-
-   test('sum adds two numbers', () => {
-     expect(sum(1, 2)).toBe(3);
-   });
-
-   test('sum with negative numbers', () => {
-     expect(sum(-1, -2)).toBe(-3);
-   });
-   ```
-
----
-
-## Exécuter les tests
-
-5. **Exécuter les tests :**
-   ```bash
-    npx jest
-    ```
-6. Retour d’exécution :
-    ```bash
-    test $ npx jest
-    PASS  src/sum.test.ts
-     ✓ sum adds two number (2 ms)
-     ✓ sum adds two negative numbers (1 ms)
-
-    Test Suites: 1 passed, 1 total
-    Tests:       2 passed, 2 total
-    Snapshots:   0 total
-    Time:        1.497 s, estimated 2 s
-    Ran all test suites.
-    ```
-            </textarea>
+        <li>
+            Configurer Jest : ajouter un fichier <code>jest.config.js</code> :
+            <pre>
+                <code data-trim data-noescape data-line-numbers="" class="json javascript">
+                module.exports = {
+                    // Utilise ts-jest pour la transpilation TypeScript
+                    preset: 'ts-jest',
+                    // Environnement Node pour les tests frontend (peut être changé en node pour le backend)
+                    testEnvironment: 'jsdom',
+                    // Fichiers de test ciblés avec une extension .test.ts
+                    testMatch: ['**/*.test.ts'],
+                };
+                </code>
+            </pre>
+        </li>
+    </ul>
 </section>
 
-<section data-markdown>
-            <textarea data-template>
-## Installer et configurer Playwright
+<section>
+    <h2>Écrire un test unitaire avec <strong>Jest</strong></h2>
+    <ul class="w-full">
+        <li>
+            Exemple de fonction à tester
+            <figure>
+                <pre>
+                    <code data-trim data-noescape data-line-numbers="" class="typescript">
+                    // sum.ts
+                    export function sum(a: number, b: number): number {
+                        return a + b;
+                    }
+                    </code>
+                </pre>
+            </figure>
+        </li>
 
-1. **Installer les dépendances :**
-   ```bash
-   npm init playwright@latest
-   ```
+        <li>
+            Exemple de fichier de test
+            <figure>
+                <pre>
+                    <code data-trim data-noescape data-line-numbers class="typescript">
+                    // sum.test.ts
+                    import { sum } from './sum';
+                    import { describe, expect, test } from '@jest/globals';
 
-2. **Configurer Playwright durant l’installation:**
-    ```bash
-    - Where to put your end-to-end tests? · tests
-    - Add a GitHub Actions workflow? (y/N) · false
-    - Install Playwright browsers (...) · true
-    - Install Playwright operating system dependencies (...) · false
-    ```
+                    test('sum adds two numbers', () => {
+                        expect(sum(1, 2)).toBe(3); // la somme de 1 et 2 doit être égale à 3
+                    });
 
----
-## Premier test avec Playwright
+                    test('sum with negative numbers', () => {
+                        expect(sum(-1, -2)).toBe(-3); // la somme de -1 et -2 doit être égale à -3
+                    });
+                    </code>
+                </pre>
+            </figure>
+        </li>
+    </ul>
+</section>
 
-3. **Créer un test :**
-    - Fichier : `tests/example.spec.ts`
-    ```typescript
-    import { test, expect } from '@playwright/test';
+<section>
+    <h2>Exécuter les tests avec <strong>Jest</strong></h2>
+    <ul class="w-full">
+        <li>
+            <code>npx jest</code>
+        </li>
+        <li>
+            Un exemple de retour :
+            <figure>
+                <pre>
+                    <code data-noescape="" data-trim="" data-line-numbers="" class="bash">
+                    $ npx jest
+                    PASS  src/sum.test.ts
+                     ✓ sum adds two number (2 ms)
+                     ✓ sum adds two negative numbers (1 ms)
 
-    test('has title', async ({ page }) => {
-      await page.goto('https://playwright.dev/');
+                    Test Suites: 1 passed, 1 total
+                    Tests:       2 passed, 2 total
+                    Snapshots:   0 total
+                    Time:        1.497 s, estimated 2 s
+                    Ran all test suites.
+                </code>
+                </pre>
+            </figure>
+        </li>
+    </ul>
+</section>
 
-      // Expect a title "to contain" a substring.
-      await expect(page).toHaveTitle(/Playwright/);
-    });
+<section>
+    <h2>Installer et configurer Playwright</h2>
 
-    test('get started link', async ({ page }) => {
-      await page.goto('https://playwright.dev/');
+    <ul class="w-full">
+        <li>
+            Installer les dépendances
+            <code>npm init playwright@latest</code>
+        </li>
 
-      // Click the get started link.
-      await page.getByRole('link', { name: 'Get started' }).click();
+        <li>
+            Configurer Playwright durant l’installation
+            <pre>
+                <code data-trim="" data-noescape="" class="bash">
+                    - Where to put your end-to-end tests? · tests
+                    - Add a GitHub Actions workflow? (y/N) · false
+                    - Install Playwright browsers (...) · true
+                    - Install Playwright operating system dependencies (...) · false
+                </code>
+            </pre>
+        </li>
+    </ul>
+</section>
 
-      // Expects page to have a heading with the name of Installation.
-      await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-    });
+<section>
+    <h2>Premiers tests avec Playwright</h2>
+    <aside class="notes">Plasywright fournit un fichier de tests à son installation que vous pouvez tester immédiatement et analyser pour comprendre les différentes structures de tests</aside>
+    <ul class="w-full">
+        <li>
+            Ouvrir le fichier <code>tests/example.spec.ts</code><br>
+            <pre>
+                <code data-trim="" data-noescape="" data-line-numbers="" class="typescript">
+                    import { test, expect } from '@playwright/test';
 
-    ```
+                    test('has title', async ({ page }) => {
+                      await page.goto('https://playwright.dev/');
 
-4. **Exécuter le test :**
-   ```bash
-   npx playwright test
-   ```
----
-## Premier test avec Playwright
+                      // Expect a title "to contain" a substring.
+                      await expect(page).toHaveTitle(/Playwright/);
+                    });
 
-```bash
-test $ npx playwright test
+                    test('get started link', async ({ page }) => {
+                      await page.goto('https://playwright.dev/');
 
-Running 4 tests using 4 workers
-  4 passed (2.9s)
+                      // Click the get started link.
+                      await page.getByRole('link', { name: 'Get started' }).click();
 
-To open last HTML report run:
+                      // Expects page to have a heading with the name of Installation.
+                      await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
+                    });
+                </code>
+            </pre>
+        </li>
+    </ul>
+</section>
 
-  npx playwright show-report
-                ```
+<section>
+    <h2>Exécuter les tests avec <strong>Playwright</strong></h2>
+    <ul class="w-full">
+        <li class="fragment">
+            Résultats dans le terminal <br>
+            <pre>
+                <code data-trim="" data-noescape="" class="bash">
+                $ npx playwright test
 
-![Rapport Playwright](./images/playwright_report.png)
-            </textarea>
+                Running 4 tests using 4 workers
+                  4 passed (2.9s)
+
+                To open last HTML report run:
+
+                  npx playwright show-report
+                </code>
+            </pre>
+        </li>
+        <li>
+            Exemple de rapport généré <br>
+            <img src="../images/playwright_report.png" alt="Rapport Playwright"/>
+        </li>
+    </ul>
 </section>
 
 <section>
