@@ -92,6 +92,10 @@
                 condition: function() {
                     return !!document.querySelector( '[data-external],[data-external-replace]' );
                 }
+            },
+            {
+                src: 'plugin/countdown/countdown.js',
+
             }
         ],
 
@@ -106,10 +110,12 @@
             autoappear: true,
             autoelements: {
                 'ul li': 'animate__fadeInLeft',
-                'ol li': 'animate__fadeInLeft',
-                'h2': 'animate__skidLeft'
+                // 'ol li': 'animate__fadeInLeft',
+                'h2': 'animate__skidLeft',
+                'figure': 'animate__fadeInLeft'
             }
-        }
+        },
+        countdown: { defaultTime: 600, autostart: "no" }
 
     });
 </script>

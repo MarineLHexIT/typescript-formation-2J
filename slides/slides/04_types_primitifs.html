@@ -13,81 +13,106 @@
     </aside>
     <ul>
         <li class="fragment">
-            <strong>Javascript</strong> est un langage dynamiquement typé.
+            <strong>Javascript</strong> est un langage <em>dynamiquement</em> typé.
             <pre>
-                        <code class="language-javascript javascript" data-trim data-noescape>
-                        let x = 42; // x est un nombre
-                        x = "hello"; // x devient une chaîne de caractères
-                    </code>
-                    </pre>
+                <code class="language-javascript javascript" data-trim data-noescape>
+                    let x = 42; // x est un nombre
+                    x = "hello"; // x devient une chaîne de caractères
+                </code>
+            </pre>
         </li>
         <li class="fragment">
-            <strong>Typescript</strong> est un langage statiquement type.
-            <ul>
-                <li>
-                    Détecte les erreurs à la compilation, pas seulement à l’exécution
-                    <pre>
-                                <code class="hljs language-typescript typescript" data-trim data-noescape>
-                                    let x = 42; // x est un nombre
-                                    x = "hello"; // déclenche une erreur
-                                </code>
-                            </pre>
-                </li>
-            </ul>
+            <strong>Typescript</strong> est un langage <em>statiquement</em> typé.
+            <pre>
+                <code class="hljs language-typescript typescript" data-trim data-noescape>
+                    let x = 42; // x est un nombre
+                    x = "hello"; // déclenche une erreur
+                </code>
+            </pre>
+        </li>
+    </ul>
+</section>
+
+<section>
+    <h2>Les types de bases</h2>
+
+    <aside class="notes">
+        En Javascript, on a déjà l’habitude de manipuler des objets tels que des String, des Number, des Object. Mais ce ne sont pas des types, qu’il ne faut donc pas confondre avec les types de Typescript.
+    </aside>
+
+    <ul>
+        <li>
+            <code>number</code> : pour les nombres entiers et décimaux
+        </li>
+        <li>
+            <code>biging</code> : pour les très grands nombres
+        </li>
+        <li>
+            <code>string</code> : pour les chaînes de caractères
+        </li>
+        <li>
+            <code>boolean</code> : pour les valeux vrai/faux
+        </li>
+        <li>
+            <code>symbol</code> : pour les propriétés uniques et immutables dans les objets
+        </li>
+        <li>
+            <code>null</code> et <code>undefined</code> : représentent l’absence de valeur
+        </li>
+        <li>
+            <code>any</code> : accepte n’importe quel type (sauf <code>never</code>) sans vérification
+        </li>
+        <li>
+            <code>unknown</code> : accepte n’importe quel type mais impose des vérifications
+        </li>
+        <li>
+            <code>never</code> : un type particulier pour des fonctions qui ne rende jamais la main
         </li>
     </ul>
 </section>
 
 <section class="pt-[56px]">
-    <h2>Les types de bases en Typescript</h2>
+    <h2>La hiérarchie des types</h2>
+    <figure>
+        <img src="./images/type_hierarchy.svg" class="animate__shrinkIn animate__animated"
+             alt="Hiérarchie des types" />
+    </figure>
     <aside class="notes">
         Ces types primitifs permettent déjà de couvrir beaucoup de cas d'usage. Notez que TypeScript impose
         d’assigner des valeurs conformes au type déclaré. Essayez d’assigner une chaîne de caractères à une
         variable typée number et observez l’erreur.
+
+        Ce que l’on peut constater aussi, par ailleurs, c’est que sous les types comme <code>string</code> ou <code>number</code>, il y a des <em>valeurs</em>.
+        Typescript considère qu’une valeur peut être un type à part entière.
     </aside>
-    <div class="r-stack r-stretch">
-        <div class="fragment fade-out h-full" data-fragment-index="1">
-            <img src="./images/type_hierarchy.svg"
-                 alt="Hiérarchie des types" />
-        </div>
-        <ul class="fragment current-visible" data-fragment-index="1">
-            <li>
-                <code>number</code> : pour les nombres entiers et décimaux
-            </li>
-            <li>
-                <code>biging</code> :
-            </li>
-            <li>
-                <code>string</code> : pour les chaînes de caractères
-            </li>
-            <li>
-                <code>boolean</code> : pour les valeux vrai/faux
-            </li>
-            <li>
-                <code>symbol</code> :
-            </li>
-            <li>
-                <code>null</code> et <code>undefined</code> : représentent l’absence de valeur
-            </li>
-        </ul>
-        <pre class="fragment">
-                    <code class="hljs typescript language-typescript" data-trim data-noescape>
-                        let age: number = 30; // Un nombre
-                        let firstName: string = "Alice"; // Une chaîne
-                        let isAdmin: boolean = true; // Un booléen
-                        let unknownValue: null = null; // Null
-                        let notAssigned: undefined = undefined; // Undefined
-
-                        // /!\ Le type `number` n’accepte pas les nombres dans une chaîne de caractères
-                        let invalidAge: number = "30"; // Erreur : Type 'string' n'est pas assignable à 'number'
-
-                        // Le type `any` peut être n’importe quelle valeur à tout moment
-                        let anyValue: any = "30"; // j’assigne une chaîne de caractères
-                        anyValue = 30; // j’assigne un nombre
-                    </code>
-                </pre>
-    </div>
 </section>
+
+<section>
+    <h2>Exemples</h2>
+    <figure>
+        <pre>
+            <code class="hljs typescript language-typescript" data-trim data-noescape>
+                let age: number = 30; // Un nombre
+                let firstName: string = "Alice"; // Une chaîne
+                let isAdmin: boolean = true; // Un booléen
+                let unknownValue: null = null; // Null
+                let notAssigned: undefined = undefined; // Undefined
+
+                // /!\ Le type `number` n’accepte pas les nombres dans une chaîne de caractères
+                let invalidAge: number = "30"; // Erreur : Type 'string' n'est pas assignable à 'number'
+
+                // Le type `any` peut être n’importe quelle valeur à tout moment
+                let anyValue: any = "30"; // j’assigne une chaîne de caractères
+                anyValue = 30; // j’assigne un nombre
+            </code>
+        </pre>
+    </figure>
+
+    <aside class="notes">
+        Il peut être tentant quand on débute avec Typescript et que l’on a des erreurs de typages partout de mettre <code>any</code> pour supprimer les avertissements. Mais ce faisant, on perd une bonne partie de l’intérêt de Typescript, donc il vaut mieux éviter, et chercher à comprendre ce que le code attend.
+    </aside>
+</section>
+
 
 <section>
     <h2>Un code allégé et plus simple à maintenir</h2>
@@ -133,7 +158,7 @@
         <h3>
             Quel type utilisez-vous pour une valeur vraie ou fausse ?
         </h3>
-        <ol>
+        <ol data-autoappear="false">
             <li class="fragment strike" data-fragment-index="1">
                 <code>number</code>
             </li>
@@ -153,11 +178,11 @@
         <h3>
             Quel erreur Typescript détecterait ici?
             <pre>
-                        <code data-trim data-noescape class="typescript">
-                            let temperature: number = 25;
-                            temperature = "chaud";
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript">
+                    let temperature: number = 25;
+                    temperature = "chaud";
+                </code>
+            </pre>
         </h3>
         <ol>
             <li class="fragment strike" data-fragment-index="1">
@@ -171,35 +196,6 @@
             </li>
         </ol>
     </section>
-</section>
-
-<section>
-    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
-    <h3 class="r-fit-text">Mise en place d’un projet et premières lignes de code</h3>
-
-    <p class="text-left">
-        <em>Consigne : </em> vous êtes chargés de modéliser les commandes d’un restaurant.
-    </p>
-    <ol>
-        <li>
-            <strong>En groupe</strong> : déterminez les éléments que vous souhaitez modéliser, et utilisez les types primitifs pour leur attribuer un type.
-        </li>
-        <li>
-            <strong>En individuel</strong> : dans un fichier <code>main.ts</code>, déclarez les variables
-        </li>
-        <li>
-            <em>Facultatif</em> : dans un fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider que les valeurs respectent les types et les attentes fixées lors de la discussion.
-        </li>
-    </ol>
-
-    <aside class="notes">
-
-        Quelques pistes pour aider les apprenants :
-        - Le nom du restaurant. (string)
-        - Le nombre de tables disponibles. (number)
-        - Si le restaurant est ouvert ou non. (string)
-        etc.
-    </aside>
 </section>
 
 <section>
@@ -240,25 +236,25 @@
         <li class="fragment">
             Typescript infère également le type de retour d’une fonction :
             <pre>
-                        <code data-trim data-noescape class="typescript">
-                            function sum(a: number, b: number) {
-                              return a + b; // Type inféré : "number"
-                            }
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript">
+                    function sum(a: number, b: number) {
+                      return a + b; // Type inféré : "number"
+                    }
+                </code>
+            </pre>
         </li>
         <li class="fragment">
             Typescript peut aussi déduire du contexte :
             <pre>
-                        <code data-trim data-noescape class="typescript">
+                <code data-trim data-noescape class="typescript">
 
-                            window.onmousedown = function (mouseEvent) {
-                              console.log(mouseEvent.button);
-                              console.log(mouseEvent.kangaroo); // error
-                              // Property kangaroo does not exist on MouseEvent type
-                            };
-                        </code>
-                    </pre>
+                    window.onmousedown = function (mouseEvent) {
+                      console.log(mouseEvent.button);
+                      console.log(mouseEvent.kangaroo); // error
+                      // Property kangaroo does not exist on MouseEvent type
+                    };
+                </code>
+            </pre>
         </li>
     </ul>
 
@@ -271,13 +267,13 @@
 
 <section>
     <h2>Déclaration et typage des fonctions</h2>
-    <pre>
-                <code data-trim data-noescape class="typescript" data-line-numbers>
-                    function greet(name: string): string {
-                      return `Hello, ${name}!`;
-                    }
-                </code>
-            </pre>
+    <pre class="animate__shrinkInBig">
+        <code data-trim data-noescape class="typescript" data-line-numbers>
+            function greet(name: string): string {
+              return `Hello, ${name}!`;
+            }
+        </code>
+    </pre>
 
     <ul>
         <li class="fragment">
@@ -302,21 +298,21 @@
     <figure>
         <figcaption>Fonction normale</figcaption>
         <pre>
-                <code data-trim data-noescape class="typescript" data-line-numbers>
-                    function addNormal(a: number, b: number): number {
-                      return a + b;
-                    }
-                </code>
-            </pre>
+            <code data-trim data-noescape class="typescript" data-line-numbers>
+                function addNormal(a: number, b: number): number {
+                  return a + b;
+                }
+            </code>
+        </pre>
     </figure>
 
     <figure>
         <figcaption>Fonction fléchée</figcaption>
         <pre>
-                <code data-trim data-noescape class="typescript" data-line-numbers>
-                    const add = (a: number, b: number): number => a + b;
-                </code>
-            </pre>
+            <code data-trim data-noescape class="typescript" data-line-numbers>
+                const add = (a: number, b: number): number => a + b;
+            </code>
+        </pre>
     </figure>
 
     <aside class="notes">
@@ -364,79 +360,137 @@
     </aside>
 </section>
 
-<section>
-    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
-    <h3 class="r-fit-text">Utilisation des fonctions</h3>
+<section class="quizz">
+    <section>
+        <h1 class="r-fit-text">Mini quizz</h1>
+        <h2>Inférence et fonctions</h2>
+    </section>
 
-    <p class="text-left">
-        <em>Consigne : </em> Créer des fonctions pour simuler des interactions clientes
-    </p>
-    <ol>
-        <li>
-            <strong>En groupe</strong> : réfléchissez à des fonctions pour gérer certaines fonctionnalités simples du restaurant. Ces fonctions utiliseront les paramètres optionnels, les paramètres par défaut, et l'inférence de type.
-        </li>
-        <li>
-            <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, écrivez les fonctions
-        </li>
-        <li>
-            <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, écrivez un jeu de tests avec Jest pour valider les retours de vos fonctions
-        </li>
-    </ol>
+    <section>
+        <h3>
+            Ce code est-il valide ?
+        </h3>
+        <pre>
+            <code data-trim="" data-noescape="" data-line-numbers="" class="typescript">
+                function totalLength(words: string[]) {
+                  return words.reduce((sum, word) => sum + word.length, 0);
+                }
 
-    <aside class="notes">
+                // Utilisation
+                const fruits = ["pomme", "banane", "cerise"];
+                const length = totalLength(fruits); // Type inféré : number
+                console.log(`Longueur totale : ${length}`); // Affiche : Longueur totale : 18
+            </code>
+        </pre>
+        <ol>
+            <li class="fragment strike" data-fragment-index="1">
+                Non, ce code n’est pas valide, car il manque le type <code>number</code> sur le retour de la fonction.
+            </li>
+            <li>
+                Oui, ce code est valide.
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Non, ce code n’est pas valide car il manque le type <code>number</code> associé à <code>length</code>.
 
-        Quelques pistes pour aider les apprenants :
-        - Calculer le nombre de clients restants à placer dans le restaurant.
-        - Vérifier si une réservation peut être acceptée selon le nombre de tables disponibles.
-        - Gérer une addition en ajoutant des taxes ou un pourboire optionnel.
-    </aside>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Non, ce code n’est pas valide car on ignore le type du retour de <code>words.reduce(…)</code>.
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>
+            Est-ce que je peux écrire :
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    const prenom = "Marine";
+                </code>
+            </pre>
+        </h3>
+        <ol>
+            <li>
+                Je peux
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Je peux, mais c’est déconseillé.
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Cela ne compilera pas.
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>
+            Qu’est-ce que l’inférence de type ?
+        </h3>
+        <ol>
+            <li class="fragment strike" data-fragment-index="1">
+                C’est le mécanisme d’erreur quand un type n’est pas déclaré.
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                C’est le mécanisme qui transforme un type en un autre type.
+            </li>
+            <li>
+                C’est le mécanisme de détection d’un type quand il n’est pas explicitement déclaré.
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>
+            Comment déclarer un paramètre optionnel ?
+        </h3>
+        <ol>
+            <li class="fragment strike" data-fragment-index="1">
+                Avec une valeur par défaut, e.g. <code>param: string = ""</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Avec <code>null</code> ou <code>undefined</code>, e.g. <code>param: null</code>
+            </li>
+            <li>
+                Avec un <code>?</code>, e.g. <code>param?: string</code>
+            </li>
+        </ol>
+    </section>
 </section>
 
 <section>
     <h2>Le typage des tableaux</h2>
     <ul>
-        <li class="fragment">
+        <li>
             Un tableau : regroupe plusieurs valeurs sous une même variable.
         </li>
-        <li class="fragment">
+        <li>
             Deux syntaxes possibles en Typescript :
             <ul>
-                <li class="fragment">
+                <li>
                     Type suivi de <code>[]</code> : <code>number[]</code>
                     <pre>
-                                <code data-trim data-noescape class="typescript" data-line-numbers>
-                                    let numbers: number[] = [1, 2, 3];
-                                </code>
-                            </pre>
-                </li>
-                <li class="fragment">
-                    Avec <code>Array&lt;type&gt;</code> : <code>Array&lt;number&gt;</code>
-                    <pre>
-                                <code class="typescript" data-line-numbers data-trim>
-                                      <script type="text/template">
-                                          let numbers: Array<number> = [1, 2, 3];
-                                      </script>
-                                </code>
-                            </pre>
-                </li>
-            </ul>
-        </li>
-        <li class="fragment">
-            Type prédéfini <code>readonly</code> pour empêcher les modifications
-            <pre>
                         <code data-trim data-noescape class="typescript" data-line-numbers>
-                            const readonlyNumbers: readonly number[] = [1, 2, 3];
+                            let numbers: number[] = [1, 2, 3];
                         </code>
                     </pre>
+                </li>
+                <li>
+                    Avec <code>Array&lt;type&gt;</code> : <code>Array&lt;number&gt;</code>
+                    <pre>
+                        <code class="typescript" data-line-numbers data-trim>
+                              <script type="text/template">
+                                  let numbers: Array<number> = [1, 2, 3];
+                              </script>
+                        </code>
+                    </pre>
+                </li>
+            </ul>
         </li>
     </ul>
     <aside class="notes">
         En TypeScript, les tableaux sont des collections de valeurs du même type. Il existe deux façons de
-        déclarer un tableau : avec type[] ou Array
-        &lt;type&gt;. Ces deux syntaxes sont équivalentes."
+        déclarer un tableau : avec type[] ou Array&lt;type&gt;. Ces deux syntaxes sont équivalentes.
 
-        Les tableaux peuvent contenir des types complexes, comme des objets ou des unions. Vous pouvez aussi
-        les rendre immuables grâce au mot-clé readonly.
+        Les tableaux peuvent contenir des types complexes, comme des objets ou des unions, que nous verrons plus tard.
     </aside>
 </section>
 
@@ -480,33 +534,33 @@
 
 <section>
     <h2>Introduction aux Tuples</h2>
+    <pre class="animate__shrinkInBig">
+        <code data-trim data-noescape class="typescript" data-line-numbers>
+            let user: [string, number] = ["Alice", 25];
+        </code>
+    </pre>
     <ul>
-        <li>
+        <li class="fragment">
             Un tuple est un tableau dont la longueur et les types de chaque élément sont prédéfinis
-            <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            let user: [string, number] = ["Alice", 25];
-                        </code>
-                    </pre>
         </li>
 
 
         <li class="fragment">
-            Accéder aux éléments :
+            Pour accéder aux élements :
             <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            console.log(user[0]); // Alice
-                            console.log(user[1]); // 25
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    console.log(user[0]); // Alice
+                    console.log(user[1]); // 25
+                </code>
+            </pre>
         </li>
         <li class="fragment">
             Le tuple peut permettre de représenter des types complexes
             <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            let config: [string, number, boolean] = ["localhost", 8080, true];
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    let config: [string, number, boolean] = ["localhost", 8080, true];
+                </code>
+            </pre>
         </li>
     </ul>
     <aside class="notes">
@@ -518,23 +572,31 @@
 <section>
     <h2>Tuples et Typescript avancé</h2>
     <ul>
-        <li class="fragment">
+        <li>
             Les tuples peuvent inclure des spreads pour des longueurs dynamiques&nbsp;:
             <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            let log: [string, ...number[]] = ["INFO", 200, 300];
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    let log: [string, ...number[]] = ["INFO", 200, 300];
+                    console.log(log); // ["INFO", 200, 300]
+
+                    let [data, ...remaining] = log; // destructuration du tuple
+                    console.log(data); // "INFO"
+                    console.log(remaining); // [200, 300]
+                </code>
+            </pre>
         </li>
-        <li class="fragment">
+        <li>
             Les tuples sont couramment utilisés pour des fonctions renvoyant plusieurs valeurs&nbsp;:
             <pre>
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            function getUser(): [string, number] {
-                                return ["Bob", 30];
-                            }
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    function getUser():[string, number] { // Comment définir un tuple de retour
+                        return ["Bob", 30];
+                    }
+
+                    // Ou par exemple, le hook "useState" de React
+                    const [count, setCount] = useState(0);
+                </code>
+            </pre>
         </li>
     </ul>
     <aside class="notes">
@@ -545,6 +607,15 @@
 
 <section>
     <h2>Introduction aux Enums</h2>
+    <pre>
+        <code data-noescape="" data-trim="" data-line-numbers="" class="typescript animate__shrinkInBig">
+            enum TrafficSignal {
+                Red,
+                Orange,
+                Green
+            }
+        </code>
+    </pre>
     <ul>
         <li class="fragment">
             Un <strong>enum</strong> est un moyen de définir un groupe de valeurs constantes liées
@@ -552,10 +623,10 @@
         <li class="fragment">
             Pourquoi utiliser des Enums ?
             <ul>
-                <li class="fragment">
+                <li>
                     Meilleur lisibilité et maintenance du code
                 </li>
-                <li class="fragment">
+                <li>
                     Facilite la gestion des valeurs limitées pour des propriétés ou des états
                 </li>
             </ul>
@@ -571,40 +642,30 @@
     <h2>Deux types d’enum</h2>
     <ul>
         <li>
-            Enum numérique
-            <ul>
-                <li class="fragment">
-                    Les valeurs sont des entiers implicites (autoincrémentés) ou explicites
-                    <pre>
-                                <code data-trim data-noescape class="typescript" data-line-numbers>
-                                    enum Direction {
-                                      North, // = 0
-                                      East, // = 1
-                                      South, // = 2
-                                      West // = 3,
-                                    }
-                                </code>
-                            </pre>
-                </li>
-            </ul>
+            <code>Enum</code> numérique : les valeurs sont des entiers implicites (autoincrémentés) ou explicites
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    enum Direction {
+                      North, // = 0
+                      East, // = 1
+                      South, // = 2
+                      West // = 3,
+                    }
+                </code>
+            </pre>
         </li>
         <li>
-            Enum chaînes de caractères
-            <ul>
-                <li class="fragment">
-                    Chaque valeur est une chaîne explicitement définie.
-                    <pre>
-                                <code data-trim data-noescape class="typescript" data-line-numbers>
-                                    enum Direction {
-                                      North = "North",
-                                      East = "East",
-                                      South = "South",
-                                      West = "West",
-                                    }
-                                </code>
-                            </pre>
-                </li>
-            </ul>
+            <code>Enum</code> chaînes de caractères : chaque valeur est une chaîne explicitement définie.
+            <pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    enum Direction {
+                      North = "North",
+                      East = "East",
+                      South = "South",
+                      West = "West",
+                    }
+                </code>
+            </pre>
         </li>
     </ul>
     <aside class="notes">
@@ -615,29 +676,29 @@
 <section>
     <h2>Comment utiliser un enum</h2>
 
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="|1-5|7-8|10-19" data-fragment-index="0">
-                    enum Status {
-                      Pending = "Pending",
-                      InProgress = "In Progress",
-                      Completed = "Completed"
-                    }
+    <pre class="w-full animate__shrinkInBig">
+        <code data-trim data-noescape class="typescript" data-line-numbers="|1-5|7-8|10-19" data-fragment-index="0">
+            enum Status {
+              Pending = "Pending",
+              InProgress = "In Progress",
+              Completed = "Completed"
+            }
 
-                    const currentStatus: Status = Status.Pending;
-                    console.log(currentStatus); // "Pending"
+            const currentStatus: Status = Status.Pending;
+            console.log(currentStatus); // "Pending"
 
-                    function getStatusMessage(status: Status): string {
-                      switch (status) {
-                        case Status.Pending:
-                          return "En attente...";
-                        case Status.InProgress:
-                          return "En cours...";
-                        case Status.Completed:
-                          return "Terminé !";
-                      }
-                    }
-                </code>
-            </pre>
+            function getStatusMessage(status: Status): string {
+              switch (status) {
+                case Status.Pending:
+                  return "En attente...";
+                case Status.InProgress:
+                  return "En cours...";
+                case Status.Completed:
+                  return "Terminé !";
+              }
+            }
+        </code>
+    </pre>
 
     <ul class="r-stack list-none w-full">
         <li class="fragment fade-in-then-out w-full" data-fragment-index="0">
@@ -667,20 +728,20 @@
         <tbody>
         <tr>
             <td>
-                <ul class="fragment">
+                <ul>
                     <li>
                         Idéal avec des ensembles fermés de valeurs constantes
                     </li>
                     <li>
-                        Évite les erreurs liées à des typos ou des modifications ultérieures
+                        Évite les erreurs liées à des erreurs typographiques ou des modifications ultérieures
                     </li>
                 </ul>
             </td>
             <td>
-                <ul class="fragment">
+                <ul>
                     <li>Flexibilité limitée dans des cas complexes</li>
                     <li>Augmentation de la taille des bundles JS</li>
-                    <li>Moins ergonomiques que des alternatives comme les <strong>type union</strong></li>
+                    <li>Moins ergonomiques que des alternatives comme les <code>type union</code></li>
                 </ul>
             </td>
         </tr>
@@ -699,38 +760,38 @@
         Typescript possède aussi un type <code>never</code> qui représente une valeur impossible à atteindre. Ce type n’est utilisé que pour flager les zones qui ne devraient jamais être atteintes ou pour les types conditionnels que nous verrons plus tard.
     </aside>
 
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-7|13,24,25,26" data-fragment-index="1">
-                    function throwError(e: Error):never {
-                      throw new Error(e.message);
-                    }
+    <pre class="w-full animate__shrinkInBig">
+        <code data-trim data-noescape class="typescript" data-line-numbers="|1-3|5-7|13,24,25,26" data-fragment-index="1">
+            function throwError(e: Error):never {
+              throw new Error(e.message);
+            }
 
-                    function logError(e:Error):void {
-                      console.log(e.message);
-                    }
+            function logError(e:Error):void {
+              console.log(e.message);
+            }
 
-                    enum Status {
-                      Pending = "pending",
-                      InProgress = "in progress",
-                      Done = "done",
-                      Cancelled = "cancelled"
-                    };
+            enum Status {
+              Pending = "pending",
+              InProgress = "in progress",
+              Done = "done",
+              Cancelled = "cancelled"
+            };
 
-                    function logStatus(s: Status):void {
-                      switch (s) {
-                        case Status.Pending:
-                          //...
-                        case Status.InProgress:
-                          // ...
-                        case Status.Done:
-                          // ...
-                        default:
-                          const _exhaustiveCheck: never = s;
-                          return _exhaustiveCheck // Typescript affiche une erreur, il manque un type
-                      }
-                    }
-                </code>
-            </pre>
+            function logStatus(s: Status):void {
+              switch (s) {
+                case Status.Pending:
+                  //...
+                case Status.InProgress:
+                  // ...
+                case Status.Done:
+                  // ...
+                default:
+                  const _exhaustiveCheck: never = s;
+                  return _exhaustiveCheck // Typescript affiche une erreur, il manque un type
+              }
+            }
+        </code>
+    </pre>
 
     <ul class="r-stack w-full">
         <li class="fragment fade-in-then-out w-full" data-fragment-index="1">
@@ -745,35 +806,128 @@
     </ul>
 </section>
 
-<section>
-    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
-    <h3 class="r-fit-text">Modéliser avec des <code>Arrays</code>, <code>Enums</code> et <code>Tuples</code></h3>
+<section class="quizz">
+    <section>
+        <h1 class="r-fit-text">Mini quizz</h1>
+        <h2 class="r-fit-text">Array, Enum, Tuples</h2>
+    </section>
 
-    <p class="text-left">
-        <em>Consigne : </em> écrire des structures plus complexes pour modéliser un type de plat, une liste, des retours de fonctions
-    </p>
-    <ol>
-        <li>
-            <strong>En groupe</strong> : quels éléments d’un restaurant peuvent-être représentés sous la forme d’un tableau ? d’une énumération ?
-        </li>
-        <li>
-            <strong>En individuel</strong> : dans votre fichier <code>main.ts</code>, ajoutez ou modifiez les fonctions et les structures dont vous avez parlé entre vous.
-        </li>
-        <li>
-            <em>Facultatif</em> : dans votre fichier <code>main.test.ts</code>, ajoutez ou modifiez vos jeux de tests.
-        </li>
-    </ol>
+    <section>
+        <h3>
+            Quelle est cette structure ?
+        </h3>
+        <pre>
+            <code data-noescape="" data-trim="" data-line-numbers="" class="typescript">
+                const livre:[string, string] = ["Terry Pratchett", "Le Disque-Monde"]
+            </code>
+        </pre>
 
-    <aside class="notes">
 
-        Quelques pistes pour aider les apprenants :
-        - Un tableau contenant les prix des plats et une fonction pour calculer leur somme totale.
-        - Une énumération pour les catégories de plats (entrée, plat principal, dessert).
-        - Un tuple pour représenter un plat (nom, catégorie, prix).
-        - Une fonction qui renvoie un tuple contenant le nom et le prix du plat le moins cher.
+        <ol data-autoappear="false">
+            <li class="fragment strike" data-fragment-index="1">
+                Un tableau <code>Array</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Une chaîne de caractères <code>string</code>
+            </li>
+            <li>
+                Un <code>tuple</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Un <code>enum</code>
+            </li>
+        </ol>
+    </section>
 
-    </aside>
+    <section>
+        <h3>
+            Quelle(s) réponse(s) permet(tent) de déclarer un tableau
+        </h3>
+        <ol class="w-full">
+            <li class="fragment strike" data-fragment-index="1">
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="" class="typescript">
+                        const monTableau = "toto", "tata", "titi";
+                    </code>
+                </pre>
+            </li>
+            <li>
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="" class="typescript">
+                        const monTableau = ["huwey", "dewey", "lewis"]
+                    </code>
+                </pre>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+               <pre>
+                   <code data-noescape data-trim data-line-numbers="" class="typescript">
+                       <script type="text/template">
+                           const monTableau: Array<string>;
+                       </script>
+                   </code>
+               </pre>
+            </li>
+            <li>
+               <pre>
+                   <code data-noescape data-trim data-line-numbers="" class="typescript">
+                       <script type="text/template">
+                           const monTableau: Array<string> = ["riri", "fifi", "loulou"];
+                       </script>
+                   </code>
+               </pre>
+            </li>
+        </ol>
+    </section>
+
+    <section>
+        <h3>
+            Comment rendre cette fonction plus robuste ?
+        </h3>
+        <pre>
+            <code data-noescape data-trim data-line-numbers="" class="typescript">
+                function getConfig(kind: string) {
+
+                    if (kind === "local") {
+                        return //...;
+                    }
+
+                    if (kind === "api") {
+                        return //...;
+                    }
+
+                    // etc.
+                }
+            </code>
+        </pre>
+        <ol class="w-full">
+            <li class="fragment strike" data-fragment-index="1">
+                Typescript s’occupe déjà de la validation, il n’y a rien à faire.
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Avec des constantes :
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="" class="typescript">
+                        const CONFIG_KIND_LOCAL = "local";
+                        const CONFIG_KIND_API = "api";
+                    </code>
+                </pre>
+            </li>
+            <li>
+                Avec un enum :
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="" class="typescript">
+                        enum CONFIG_KIND {
+                            LOCAL = "local",
+                            API = "api"
+                        };
+                    </code>
+                </pre>
+            </li>
+        </ol>
+    </section>
 </section>
+
+
 
 <section>
     <h2>Récapitulatif</h2>

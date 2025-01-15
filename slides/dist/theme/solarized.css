@@ -51,6 +51,11 @@ html * {
   list-style-type: upper-alpha;
 }
 
+.reveal ul,
+.reveal ol {
+  width: 100%;
+}
+
 .reveal-viewport {
   background: #fdf6e3;
   background-color: var(--r-background-color);
