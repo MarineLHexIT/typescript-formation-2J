@@ -6,27 +6,27 @@
 <section>
     <h2>Introduction aux mixins</h2>
 
-    <h3>Qu’est-ce qu’un mixin ?</h3>
     <ul>
-        <li class="fragment">Réutlisation du code entre plusieurs classes</li>
-        <li class="fragment">Composition de fonctionnalités</li>
+        <li>
+            <strong>Qu’est-ce qu’un mixin ?</strong> <br />
+            <ul>
+                <li>Composition de fonctionnalités</li>
+                <li>Réutilisation du code entre plusieurs classes</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Mixin ≠ héritage classique</strong> <br />
+            Mixin = combinaison flexibles sans hiérarchie
+        </li>
+        <li>
+            <strong>Cas d’utilisation : </strong> <br />
+            <ul>
+                <li>Ajout de fonctionnalités réutilisables</li>
+                <li>Modularisation de comportements partagés</li>
+            </ul>
+        </li>
     </ul>
 
-    <h3>Comparaison</h3>
-    <ul>
-        <li class="fragment">
-            <strong>Héritage classique</strong> : relation parent-enfant stricte
-        </li>
-        <li class="fragment">
-            <strong>Mixins</strong> : combinaison flexibles sans hiérarchie
-        </li>
-    </ul>
-
-    <h3>Cas d’utilisations</h3>
-    <ul>
-        <li class="fragment">Ajout de fonctionnalité réutilisables</li>
-        <li class="fragment">Modularisation de comportements partagés</li>
-    </ul>
 
     <aside class="notes">
         Pensez aux mixins comme des blocs LEGO. Chaque bloc ajoute une fonctionnalité, et vous assemblez les blocs nécessaires pour créer l'objet final.
@@ -35,43 +35,54 @@
 
 <section>
     <h2>Créer des mixins en Typescript</h2>
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-6|8-14|16|17-18|20-31">
-                    <script type="text/template">
-                    class Animal {
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape class="typescript" data-line-numbers="|1-6|8-14|16|17-18|20-31" data-fragment-index="1">
+                <script type="text/template">
+                class Animal {
                     name: string;
                     constructor(name: string) {
+                       this.name = name;
+                    }
+                }
+
+                function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
+                  return class extends Base {
+                    fly() {
+                      console.log(`${this.name} is flying!`);
+                    }
+                  };
+                }
+
+                const Bird = CanFly(Animal);
+                const eagle = new Bird("Eagle");
+                eagle.fly(); // "Eagle is flying!"
+
+                class Vehicule {
+                  name: string;
+
+                  constructor(name: string) {
                     this.name = name;
-                    }
-                    }
+                  }
+                }
 
-                    function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
-                      return class extends Base {
-                        fly() {
-                          console.log(`${this.name} is flying!`);
-                        }
-                      };
-                    }
+                const Plane = CanFly(Vehicule);
+                const airbus = new Plane("Airbus");
 
-                    const Bird = CanFly(Animal);
-                    const eagle = new Bird("Eagle");
-                    eagle.fly(); // "Eagle is flying!"
+                airbus.fly(); // Airbus is flying!
+                </script>
+            </code>
+        </pre>
+        <figcaption class="r-stack">
+            <span class="fragment current-visible" data-fragment-index="0">Exemple d’un mixin</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="1">Définition d’une classe</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="2">Définition d’un comportement "peut voler" via un <code>mixin</code></span>
+            <span class="fragment fade-in-then-out" data-fragment-index="3">Création d’une nouvelle classe <code>Oiseau</code></span>
+            <span class="fragment fade-in-then-out" data-fragment-index="4">Instanciation et utilisation</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="5">Création d’une nouvelle classe <code>Avion</code> avec la même logique</span>
 
-                    class Vehicule {
-                      name: string;
-
-                      constructor(name: string) {
-                        this.name = name;
-                      }
-                    }
-
-                    const Plane = CanFly(Vehicule);
-                    const airbus = new Plane("Airbus");
-
-                    airbus.fly(); // Airbus is flying!
-                    </script>
-                </code>
-            </pre>
+        </figcaption>
+    </figure>
     <aside class="notes">
         Pour créer un mixin, cela demande plusieurs étapes :
         - Créer une fonction qui prend une classe et retourne une classe qui étend la première
@@ -88,45 +99,45 @@
 <section>
     <h2>Créer des mixins en Typescript</h2>
     <ul>
-        <li class="fragment">
+        <li>
             Déclarer une fonction qui prend une classe comme argument
             <pre class="w-full">
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            <script type="text/template">
-                               function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {}
-                            </script>
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                       function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {}
+                    </script>
+                </code>
+            </pre>
         </li>
-        <li class="fragment">
+        <li>
             La fonction retourne une nouvelle classe qui étend la classe passée en paramètre avec des fonctionnalités supplémentaires
             <pre class="w-full">
-                        <code data-trim data-noescape class="typescript" data-line-numbers="">
-                            <script type="text/template">
-                            function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
-                              return class extends Base {
-                                fly() {}
-                              };
-                            }
-                            </script>
-                        </code>
-                    </pre>
+                <code data-trim data-noescape class="typescript" data-line-numbers="">
+                    <script type="text/template">
+                    function CanFly<TBase extends new (...args: any[]) => { name: string; }>(Base: TBase) {
+                      return class extends Base {
+                        fly() {}
+                      };
+                    }
+                    </script>
+                </code>
+            </pre>
         </li>
-        <li class="fragment">
+        <li>
             Obtenir la nouvelle classe en appelant le mixin et l’instancier
             <pre class="w-full">
-                        <code data-trim data-noescape class="typescript" data-line-numbers>
-                            <script type="text/template">
-                            const Bird = CanFly(Animal);
-                            const eagle = new Bird("Eagle");
-                            eagle.fly(); // "Eagle is flying!"
+                <code data-trim data-noescape class="typescript" data-line-numbers>
+                    <script type="text/template">
+                    const Bird = CanFly(Animal);
+                    const eagle = new Bird("Eagle");
+                    eagle.fly(); // "Eagle is flying!"
 
-                            const Plane = CanFly(Vehicule);
-                            const airbus = new Plane("Airbus");
-                            airbus.fly(); // Airbus is flying!
-                            </script>
-                        </code>
-                    </pre>
+                    const Plane = CanFly(Vehicule);
+                    const airbus = new Plane("Airbus");
+                    airbus.fly(); // Airbus is flying!
+                    </script>
+                </code>
+            </pre>
         </li>
     </ul>
 </section>
@@ -134,24 +145,26 @@
 <section>
     <h2>Composition de mixins</h2>
 
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers>
-                    <script type="text/template">
-                    function CanSwim<TBase extends new (...args: any[]) => { name: string }>(Base: TBase) {
-                      return class extends Base {
-                        swim() {
-                          console.log(`${this.name} is swimming!`);
-                        }
-                      };
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape class="typescript" data-line-numbers>
+                <script type="text/template">
+                function CanSwim<TBase extends new (...args: any[]) => { name: string }>(Base: TBase) {
+                  return class extends Base {
+                    swim() {
+                      console.log(`${this.name} is swimming!`);
                     }
+                  };
+                }
 
-                    const Amphibian = CanSwim(CanFly(Animal));
-                    const frog = new Amphibian("Frog");
-                    frog.fly();  // "Frog is flying!"
-                    frog.swim(); // "Frog is swimming!"
-                    </script>
-                </code>
-            </pre>
+                const Amphibian = CanSwim(CanFly(Animal));
+                const frog = new Amphibian("Frog");
+                frog.fly();  // "Frog is flying!"
+                frog.swim(); // "Frog is swimming!"
+                </script>
+            </code>
+        </pre>
+    </figure>
     <aside class="notes">
         Il est tout à fait possible d’enchaîner les mixins comme des couches successives.
     </aside>
@@ -160,13 +173,13 @@
 <section>
     <h2>Avantages des mixins</h2>
     <ul>
-        <li class="fragment">
+        <li>
             <strong>Réutilisabilité</strong> : encapsulation de fonctionnalités spécifiques, facilement applicables à différentes classes
         </li>
-        <li class="fragment">
+        <li>
             <strong>Flexibilité</strong> : pas de hiérarchie rigide
         </li>
-        <li class="fragment">
+        <li>
             <strong>Découplage</strong> : chaque mixin est indépendant des uns des autres
         </li>
     </ul>
@@ -178,13 +191,13 @@
 <section>
     <h2>Limites des mixins</h2>
     <ul>
-        <li class="fragment">
+        <li>
             <strong>Complexité</strong> : plusieurs mixins peuvent compliquer la compréhension de la classe finale
         </li>
-        <li class="fragment">
+        <li>
             <strong>Conflits</strong> : un mixin peut venir écraser une méthode déjà implementée par un mixin précédent ou la classe originale
         </li>
-        <li class="fragment">
+        <li>
             <strong>Performance</strong> : alourdit les classes
         </li>
     </ul>
