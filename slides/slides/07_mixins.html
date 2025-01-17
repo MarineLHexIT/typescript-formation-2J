@@ -193,39 +193,102 @@
     </aside>
 </section>
 
-<section>
-    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
-    <h3 class="r-fit-text">
-        Intégrer les mixins à notre projet
-    </h3>
+<section class="quizz">
+    <section>
+        <h1 class="r-fit-text">Mini quizz</h1>
+        <h2 class="r-fit-text">Mixins</h2>
+    </section>
 
-    <p class="text-left">
-        <em>Consigne : </em> gérer des réductions sur une commande à l’aide de mixins
-    </p>
-    <ol>
-        <li>
-            <strong>En groupe</strong> : quels types de réductions pourraient utiles à un restaurant ? avec quelles conditions ?
-        </li>
-        <li>
-            <strong>En individuel</strong> : implémentez un mixins qui permet de créer une réduction sur une commande
-        </li>
-        <li>
-            <em>Facultatif</em> : écrivez des tests pour vérifier que votre code fonctionne, même les cas limites.
-        </li>
-    </ol>
+    <section>
+        <h3>
+            Que sont les mixins en Typescript
+        </h3>
+        <ol data-autoappear="false">
+            <li class="fragment strike" data-fragment-index="1">
+                Un mécanisme pour créer des types complexes à partir de types existants
+            </li>
+            <li>
+                Une méthode pour combiner des comportements entre classes
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Une manière d’étendre une interface
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                Une fonctionnalité spécifique au typage de fonctions
+            </li>
+        </ol>
+    </section>
 
-    <aside class="notes">
+    <section>
+        <h3>
+            Quel mot-clef est utilisé pour appliquer un mixin à une classe ?
+        </h3>
+        <ol>
+            <li class="fragment strike" data-fragment-index="1">
+                <code>mixin</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                <code>apply</code>
+            </li>
+            <li class="fragment strike" data-fragment-index="1">
+                <code>extend</code>
+            </li>
+            <li>
+                Aucun
+            </li>
+        </ol>
+        <aside class="notes">
+            En TypeScript, les mixins sont appliqués via des fonctions qui reçoivent une classe et la modifient en ajoutant des comportements.
+        </aside>
+    </section>
 
-        Quelques pistes pour aider les apprenants :
+    <section>
+        <h3>
+            Que fait le mixin <code>Timestamped</code> ?
+        </h3>
+        <figure>
+            <pre>
+                <code data-noescape data-trim data-line-numbers="|9-15" class="typescript" data-fragment-index="1">
+                    <script type="text/template">
+                    type Constructor = new (...args: any[]) => {};
 
-        Créez une interface Plat pour modéliser un plat.
-        Implémentez une classe Commande pour gérer les commandes des clients. Cette classe doit :
-        - Permettre d’ajouter des plats (avec une méthode générique).
-        - Calculer le total de la commande.
+                    class Logger {
+                        log(message: string) {
+                            console.log(`[LOG]: ${message}`);
+                        }
+                    }
 
-        Refactorisez le code des exercices précédents pour intégrer cette structure orientée objet.
+                    function Timestamped<TBase extends Constructor>(Base: TBase) {
+                        return class extends Base {
+                            timestamp = new Date();
+                        };
+                    }
 
-    </aside>
+                    const TimestampedLogger = Timestamped(Logger);
+
+                    const logger = new TimestampedLogger();
+                    logger.log("Hello World");
+                    console.log(logger.timestamp);
+
+                    </script>
+                </code>
+            </pre>
+        </figure>
+        <ol>
+            <li class="fragment strike" data-fragment-index="2">
+                Il ajoute une méthode de journalisation à toutes les classes qui l'utilisent.
+            </li>
+            <li>
+                Il ajoute un comportement lié aux horodatages à toutes les classes qui l'utilisent.
+            </li>
+            <li class="fragment strike" data-fragment-index="2">
+                Il remplace le constructeur de la classe de base.
+            </li>
+            <li class="fragment strike" data-fragment-index="2">
+                Rien, car il est mal utilisé.
+            </li>
+        </ol>
+    </section>
 </section>
 
 <section>
