@@ -6,10 +6,10 @@
 <section>
     <h2>Qu’est-ce qu’un module ?</h2>
     <ul>
-        <li class="fragment">
+        <li>
             Un <strong>module</strong> est un fichier contenant du code réutilisable
         </li>
-        <li class="fragment">
+        <li>
             Cela permet de
             <ul>
                 <li>découper le code en blocs logiques</li>
@@ -17,7 +17,7 @@
                 <li>Faciliter la maintenance et la collaboration</li>
             </ul>
         </li>
-        <li class="fragment">
+        <li>
             Les modules favorisent :
             <ul>
                 <li>
@@ -43,7 +43,7 @@
     <h2>Comprendre les types de modules</h2>
 
     <ul class="r-stack">
-        <li class="fragment fade-in-then-out">
+        <li class="fragment current-visible">
             <strong>CommonJS (CJS)</strong>
             <ul>
                 <li>
@@ -127,7 +127,7 @@
     <h2>Import / Export nommé</h2>
 
     <ul>
-        <li class="fragment">
+        <li>
             <strong>Export nommé</strong> : exporte plusieurs entités d’un module
             <pre class="w-full">
                     <code data-trim data-noescape class="typescript" data-line-numbers>
@@ -140,7 +140,7 @@
                     </code>
                 </pre>
         </li>
-        <li class="fragment">
+        <li>
             <strong>Import nommé</strong> : importer les entités nécessaires :
             <pre class="w-full">
                     <code data-trim data-noescape class="typescript" data-line-numbers>
@@ -160,17 +160,22 @@
 
 <section>
     <h2>Importer tout le contenu d’un module</h2>
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers>
-                    <script type="text/template">
-                    import * as Utils from './utils';
-                    console.log(Utils.add(2, 3)); // 5
-                    console.log(Utils.PI); // 3.14
-                    </script>
-                </code>
-            </pre>
-    <p>À utiliser quand un fichier contient plusieurs utilitaires liés.<br/>
-        Mais attention aux performances. </p>
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape class="typescript" data-line-numbers>
+                <script type="text/template">
+                import * as Utils from './utils';
+                console.log(Utils.add(2, 3)); // 5
+                console.log(Utils.PI); // 3.14
+                </script>
+            </code>
+        </pre>
+        <figcaption>
+            À utiliser quand un fichier contient plusieurs utilitaires liés.<br/>
+            Mais attention aux performances.
+        </figcaption>
+    </figure>
+
     <aside class="notes">
         L’import global est utile pour regrouper tout ce qu’un module offre, mais peut réduire la clarté si vous
         importez trop d’éléments.
@@ -181,7 +186,7 @@
     <h2>Import / Export par défaut</h2>
 
     <ul>
-        <li class="fragment">
+        <li>
             <strong>Export par défaut</strong> : exporter une entité unique (souvent une classe ou une fonction principale)
             <pre class="w-full">
                     <code data-trim data-noescape class="typescript" data-line-numbers>
@@ -195,7 +200,7 @@
                     </code>
                 </pre>
         </li>
-        <li class="fragment">
+        <li>
             <strong>Import par défaut</strong> : import sans accolades
             <pre class="w-full">
                     <code data-trim data-noescape class="typescript" data-line-numbers>
@@ -215,24 +220,26 @@
 
 <section>
     <h2>Mélanger les types d’export</h2>
-    <p>
-        Il est possible de mélanger <strong>exports nommés</strong> et <strong>export par défaut</strong> dans un même fichier.
-    </p>
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers>
-                    <script type="text/template">
-                    // Export
-                    export const PI = 3.14;
-                    export const add = (a: number, b: number): number => a + b;
-                    export default function subtract(a: number, b: number): number {
-                    return a - b;
-                    }
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape class="typescript" data-line-numbers>
+                <script type="text/template">
+                // Export
+                export const PI = 3.14;
+                export const add = (a: number, b: number): number => a + b;
+                export default function subtract(a: number, b: number): number {
+                return a - b;
+                }
 
-                    // Import
-                    import subtract, { PI, add } from './math';
-                    </script>
-                </code>
-            </pre>
+                // Import
+                import subtract, { PI, add } from './math';
+                </script>
+            </code>
+        </pre>
+        <figcaption>
+            Il est possible de mélanger <strong>exports nommés</strong> et <strong>export par défaut</strong> dans un même fichier.
+        </figcaption>
+    </figure>
     <aside class="notes">
         Dans certains cas, vous pouvez combiner les deux types d’exports. Cependant, pour plus de lisibilité, évitez les mélanges dans des modules complexes.
     </aside>
@@ -243,70 +250,75 @@
     <aside class="notes">
         Parfois, les modules peuvent exporter des fonctions ou des objets qui portent les mêmes noms. Pour éviter d’écraser nos imports nous pouvons renommer les entités.
     </aside>
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape class="typescript" data-line-numbers="1-4|6-9|11-16">
+                <script type="text/template">
+                // math.ts
+                export function sum(a: number, b: number): number {
+                return a + b;
+                }
 
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="1-4|6-9|11-16">
-                    <script type="text/template">
-                    // math.ts
-                    export function sum(a: number, b: number): number {
-                    return a + b;
-                    }
+                // utils.ts
+                export function sum(numbers: number[]): number {
+                return numbers.reduce((number, sum) => sum + number, 0);
+                }
 
-                    // utils.ts
-                    export function sum(numbers: number[]): number {
-                    return numbers.reduce((number, sum) => sum + number, 0);
-                    }
+                // index.ts
+                import { sum } from "./math";
+                import { sum as arraySum } from "./utils";
 
-                    // index.ts
-                    import { sum } from "./math";
-                    import { sum as arraySum } from "./utils";
-
-                    sum(3, 4);
-                    arraySum([3, 4, 5, 7]);
-                    </script>
-                </code>
-            </pre>
+                sum(3, 4);
+                arraySum([3, 4, 5, 7]);
+                </script>
+            </code>
+        </pre>
+    </figure>
 </section>
 
 <section>
     <h2>Structurer un projet Typescript</h2>
-    <pre class="w-full">
-                <code data-trim data-noescape>
-                    ├── src/            // Fichiers source TypeScript
-                    │   ├── modules/    // Sous-modules organisés
-                    │   │   ├── math.ts
-                    │   │   ├── string.ts
-                    │   └── index.ts    // Point d’entrée
-                    ├── tests/          // Tests unitaires
-                    ├── dist/           // Fichiers compilés JavaScript
-                    ├── tsconfig.json   // Configuration TypeScript
-                    └── package.json    // Dépendances du projet
-                </code>
-            </pre>
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape>
+                ├── src/            // Fichiers source TypeScript
+                │   ├── modules/    // Sous-modules organisés
+                │   │   ├── math.ts
+                │   │   ├── string.ts
+                │   └── index.ts    // Point d’entrée
+                ├── tests/          // Tests unitaires
+                ├── dist/           // Fichiers compilés JavaScript
+                ├── tsconfig.json   // Configuration TypeScript
+                └── package.json    // Dépendances du projet
+            </code>
+        </pre>
+    </figure>
     <ul>
-        <li class="fragment">Une bonne structure simplifie la navigation dans le code</li>
-        <li class="fragment">Elle facilite la collaboration en équipe</li>
-        <li class="fragment">Elle prépare à l’intégration avec des outils comme Jest ou ESLint</li>
+        <li>Une bonne structure simplifie la navigation dans le code</li>
+        <li>Elle facilite la collaboration en équipe</li>
+        <li>Elle prépare à l’intégration avec des outils comme Jest ou ESLint</li>
     </ul>
     <aside class="notes">Organiser un projet de manière logique rend le développement plus fluide et facilite le partage du code. Voici une structure standard qui fonctionne pour des projets simples comme complexes.</aside>
 </section>
 
 <section>
     <h2>Structurer un projet Typescript</h2>
-    <h3>Configurer <code>tsconfig.json</code></h3>
-    <pre class="w-full">
-        <code data-trim data-noescape class="json">
-        {
-            "compilerOptions": {
-                …
-                rootDir: "./src",
-                outDir: "./dist",
-            },
-            "include": ["./src/**/*.ts", "./test/**/*.ts"], // Inclure le code source et les tests
-            "exclude": ["node_modules", "dist"]
-        }
-        </code>
-    </pre>
+    <figure>
+        <pre class="w-full">
+            <code data-trim data-noescape class="json">
+            {
+                "compilerOptions": {
+                    …
+                    rootDir: "./src", // dossier où se trouvent les fichiers *.ts et *.tsx
+                    outDir: "./dist", // dossier où seront placés les fichiers compilés *.js et =.jsx
+                },
+                "include": ["./src/**/*.ts", "./test/**/*.ts"], // Inclure le code source et les tests
+                "exclude": ["node_modules", "dist"] // exclure les dossiers d’installation et de compilation
+            }
+            </code>
+        </pre>
+        <figcaption>Configurer <code>tsconfig.json</code></figcaption>
+    </figure>
     <aside class="notes">
         Avec une configuration semblable à celle-ci, vous pouvez structurer vos fichiers sources dans un dossier <code>/src</code>, vos fichiers tests dans un dossier <code>/tests</code> et la compilation de ces fichiers sera dans le dossier <code>/dist</code>
     </aside>
