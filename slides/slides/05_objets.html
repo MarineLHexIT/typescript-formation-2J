@@ -528,8 +528,143 @@
         </li>
     </ul>
     <aside class="notes">
-        Les contraites permettent de conserver la flexibilité tout en limitant les erreurs d’usage.
+        Les contraintes permettent de conserver la flexibilité tout en limitant les erreurs d’usage.
     </aside>
+</section>
+
+<section>
+    <section>
+        <h3>Cas pratique</h3>
+        <h2>React et les Tuples, les Génériques et les interfaces</h2>
+
+        <ul>
+            <li>React et Typescript : une combinaison puissante</li>
+            <li>React entièrement compatible avec Typescript</li>
+            <li><code>create-react-app</code> ou <code>npm create vite@latest</code> pour créer une nouvelle application React</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>React et Typescript - Mise en place</h2>
+        <figure>
+            <pre>
+                <code data-noescape data-trim data-line-numbers="|1-5|7-14|" class="typescript" data-fragment-index="1">
+                    <script type="text/template">
+                    enum TaskPriority {
+                        low = 'low',
+                        medium = 'medium',
+                        high = 'high',
+                    };
+
+                    type Task = {
+                        id: string;
+                        name: string;
+                        description: string;
+                        priority: TaskPriority;
+                        done: boolean;
+                        deadline?: Date;
+                    }
+
+                    const TaskList: FC = () => {
+                        …
+                        return <></>
+                    }
+                    </script>
+                </code>
+            </pre>
+            <figcaption>Début d’une liste de tâches</figcaption>
+        </figure>
+
+        <ul>
+            <li class="fragment" data-fragment-index="1">
+                Mettre en place un enum pour gérer, ici, une priorité
+            </li>
+            <li class="fragment" data-fragment-index="2">
+                Utilisation du <code>type</code> pour définir à quoi ressemble une Task
+            </li>
+        </ul>
+
+        <aside class="notes">
+            Voici un code de base d’une application React. On définit ainsi le modèle d’une tâche.
+        </aside>
+    </section>
+
+    <section>
+        <h2>React et les Tuples</h2>
+        <figure>
+            <pre>
+                <code data-noescape data-trim data-line-numbers="3" class="typescript">
+                    <script type="text/template">
+                    const TaskList: FC = () => {
+
+                        const [tasks, setTasks] = useState([]);
+
+                        return <></>
+                    }
+                    </script>
+                </code>
+            </pre>
+            <figcaption>Les <code>tuples</code> dans React : <code>useState</code></figcaption>
+        </figure>
+        <aside class="notes">
+            Les tuples peuvent sembler un peu étranges à utiliser, mais toute personne qui a déjà utilisé React et le <em>hook</em> <code>useState</code> a déjà utilisé des tuples, peut-être sans le savoir
+        </aside>
+    </section>
+
+    <section>
+        <h2>React et les génériques</h2>
+            <figure>
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="7,13" class="typescript">
+                        <script type="text/template">
+                        type Task = {
+                            // ...
+                        }
+
+                        const TaskList: FC = () => {
+
+                            const [tasks, setTasks] = useState<Task[]>([]);
+
+                            return <></>
+                        }
+
+                        // définition de useState
+                        function useState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>];
+                        </script>
+                    </code>
+                </pre>
+                <figcaption>Contraindre la gestion d’état à notre type <code>Task</code></figcaption>
+            </figure>
+            <aside class="notes">
+                React propose déjà l’utilisation des génériques, sans les forcer. Cela permet, entre autre, de créer des états qui sont dédiés à un type bien précis (impossible donc de mettre à jour l’état avec une valeur non valide) ou pour gérer les propriétés d’un composants ; pratique pour l’autocomplétion.
+            </aside>
+    </section>
+    <section>
+        <h2>React et les interfaces</h2>
+        <figure class="fragment w-full">
+            <pre>
+                <code data-noescape data-trim data-line-numbers="5,10" class="typescript">
+                    <script type="text/template">
+                    interface TaskItemProps {
+                        task: Task;
+                        key: string;
+                    }
+                    const TaskItem: FC<TaskItemProps> = ({task, key}) => {
+                        return <div id={key}>…</div>;
+                    }
+
+                    // définition de FC (Function Component)
+                    type FC<P = {}> = FunctionComponent<P>;
+                    </script>
+                </code>
+            </pre>
+            <figcaption>Paramétrer les propriétés d’un composant</figcaption>
+        </figure>
+        <aside class="notes">
+            React intègre aussi l’utilisation des interfaces et des types pour notamment mieux documenter les composants et leurs propriétés.
+        </aside>
+    </section>
+
 </section>
 
 <section class="quizz">

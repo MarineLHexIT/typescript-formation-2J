@@ -489,6 +489,89 @@ Visual Studio Code est extrêmement bien intégré avec TypeScript. L’installa
     </aside>
 </section>
 <section>
+    <h2><code>tsconfig.json</code></h2>
+    <figure>
+        <pre>
+            <code data-noescape data-trim data-line-numbers="" class="json">
+            {
+              "compilerOptions": {
+                "target": "es2016", // version de Javascript
+                /* Modules */
+                "module": "ESNext", // module code generation
+                "rootDir": "src",   // chemin racine des fichiers sources
+                /* Type Checking */
+                "strict": true,     // vérification strict des types
+                /* Emit */
+                "sourceMap": true,  // génération du fichier SourceMap
+                "outDir": "dist",   // chemin de destination pour les fichiers compilés
+                …
+
+              },
+              "include": ["src/**/*"],
+              "exclude": ["node_modules", "dist"]
+            }
+            </code>
+        </pre>
+        <figcaption>Un exemple de fichier <code>tsconfig.json</code></figcaption>
+    </figure>
+    <ul class="fragment">
+        <li>Généré automatiquement avec <code>tsc --init</code></li>
+        <li>Indique la racine d’un dossier contenant un projet typescript</li>
+        <li>Configure les options du compilateur TS ⇒ JS</li>
+    </ul>
+    <aside class="notes">
+        Le fichier tsconfig.json est le cœur de la configuration TypeScript. Les options comme strict renforcent la sécurité des types, tandis que des options comme target permettent de générer du JavaScript compatible avec différentes versions des navigateurs. Une bonne configuration est essentielle pour éviter les erreurs et structurer efficacement votre projet.
+    </aside>
+</section>
+<section>
+    <section>
+        <h3>Cas pratique</h3>
+        <h2>Passer de Javascript à Typescript - Les bases</h2>
+
+        <ul>
+            <li>Migration progressive</li>
+            <li>Configuration stricte dès le départ</li>
+            <li>Priorité aux fichiers critiques et/ou fréquemment utilisés</li>
+        </ul>
+    </section>
+    <section>
+        <ul>
+            <li>
+                Ajouter Typescript <br />
+                <code>npm install typescript @types/node --save-dev.</code>
+            </li>
+            <li>
+                Générer un fichier <code>tsconfig.json</code><br />
+                <code>npx tsc --init --allowJs</code><br />
+                <em>ou</em> modifier le fichier <code>tsconfig.json</code> s’il existe déjà :
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="" class="json">
+                        // ...
+                        "allowJs": true, // autorise l’importation des fichiers JS dans les fichiers TS
+                        "checkJs": false // n’effectue pas de vérification sur les fichiers JS
+                    </code>
+                </pre>
+            </li>
+            <li>
+                Identifier les fichiers prioritaires (API, logique métier, etc.), puis les renommer en <code>.ts</code> et ajouter le typage et corriger les erreurs.
+            </li>
+            <li>
+                Activer des options plus strictes dans <code>tsconfig.json</code> une fois la migration achevée.
+                <pre>
+                    <code data-noescape data-trim data-line-numbers="" class="json">
+                        // ...
+                        "allowJs": false,
+                        "checkJs": false
+                    </code>
+                </pre>
+            </li>
+        </ul>
+        <aside class="notes">
+            Une migration réussie repose sur une approche progressive. En utilisant les options allowJs et checkJs, vous pouvez intégrer vos fichiers JavaScript existants sans perturber immédiatement l’ensemble du projet. Le renforcement des types doit se faire par priorité : commencez par les fichiers où les erreurs peuvent avoir un impact majeur.
+        </aside>
+    </section>
+</section>
+<section>
     <h2>Atelier</h2>
     <p class="r-fix-text">
         À partir de ce que l’on vient de voir, mettre en place des dossiers de travail pour Typescript.
