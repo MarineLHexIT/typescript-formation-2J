@@ -295,62 +295,20 @@
     <h2>Structurer un projet Typescript</h2>
     <h3>Configurer <code>tsconfig.json</code></h3>
     <pre class="w-full">
-                <code data-trim data-noescape class="json">
-                {
-                    "compilerOptions": {
-                        …
-                        rootDir: "./src",
-                        outDir: "./dist",
-                    },
-                    "include": ["./src/**/*.ts", "./test/**/*.ts"], // Inclure le code source et les tests
-                    "exclude": ["node_modules", "dist"]
-                }
-                </code>
-            </pre>
+        <code data-trim data-noescape class="json">
+        {
+            "compilerOptions": {
+                …
+                rootDir: "./src",
+                outDir: "./dist",
+            },
+            "include": ["./src/**/*.ts", "./test/**/*.ts"], // Inclure le code source et les tests
+            "exclude": ["node_modules", "dist"]
+        }
+        </code>
+    </pre>
     <aside class="notes">
         Avec une configuration semblable à celle-ci, vous pouvez structurer vos fichiers sources dans un dossier <code>/src</code>, vos fichiers tests dans un dossier <code>/tests</code> et la compilation de ces fichiers sera dans le dossier <code>/dist</code>
-    </aside>
-</section>
-
-<section>
-    <h2 class="r-fit-text">Atelier : gestion d’un restaurant</h2>
-    <h3 class="r-fit-text">Import et export - organiser votre projet</h3>
-
-    <p class="text-left">
-        <em>Consigne : </em> réorganiser votre projet
-    </p>
-    <ol>
-        <li>
-            <strong>En groupe</strong> : identifiez les différentes entités de votre projet et discutez de la meilleure façon de les structurer.
-        </li>
-        <li>
-            <strong>En individuel</strong> : réorganisez votre projet.
-        </li>
-        <li>
-            <em>Facultatif</em> : corrigez les imports dans vos fichiers tests et vérifiez que les tests fonctionnent toujours.
-        </li>
-    </ol>
-
-    <aside class="notes">
-
-        Quelques pistes pour aider les apprenants :
-
-        La modification de la structure va impliquer des modifications au niveau du fichier tsconfig. Ne pas hésiter à faire un rappel sur outDir, rootDir, exclude, include.
-
-        Pour la phase de réflexion :
-
-        Pourquoi est-il utile de diviser le code en plusieurs fichiers ?
-        Quels avantages apportent les modules import/export par rapport à un code monolithique ?
-
-        Pour la phase de codage :
-
-        Utilisez des chemins relatifs pour importer les modules (./).
-        Assurez-vous que chaque fichier a une responsabilité claire.
-
-        Pour les tests :
-
-        Exécutez les tests après chaque modification pour vérifier que tout fonctionne.
-
     </aside>
 </section>
 
