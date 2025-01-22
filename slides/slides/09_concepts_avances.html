@@ -7,23 +7,36 @@
     <h2>
         Les décorateurs
     </h2>
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="||6" data-fragment-index="1">
-                    <script type="text/template">
-                        function Log(target: any, key: string) {
-                        console.log(`${key} a été accédé`);
-                        }
+    <figure>
+        <pre>
+            <code data-trim data-noescape class="typescript" data-line-numbers="||13|" data-fragment-index="1">
+                <script type="text/template">
+                    function logger(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
+                        const original = descriptor.value;
 
-                        class Exemple {
-                        @Log // import du décorateur
-                        prop: string = 'Hello';
+                        descriptor.value = function (...args) {
+                            console.log('params: ', ...args);
+                            const result = original.call(this, ...args);
+                            console.log('result: ', result);
+                            return result;
                         }
+                    }
 
-                        const example = new Exemple();
-                        example.prop = "World"; // prop a été accédé
-                    </script>
-                </code>
-            </pre>
+                    class C {
+                        @logger
+                        add(x: number, y:number ) {
+                            return x + y;
+                        }
+                    }
+
+                    const c = new C();
+                    c.add(1, 2);
+                    // -> params: 1, 2
+                    // -> result: 3
+                </script>
+            </code>
+        </pre>
+    </figure>
     <ul>
         <li class="fragment" data-fragment-index="1">
             Un <strong>décorateur</strong> est une fonction spéciale annotant une classe, méthode ou propriété
@@ -39,18 +52,21 @@
 
 <section>
     <h2>Une fonction expérimentale</h2>
-    <pre class="w-full">
-                <code data-trim data-noescape class="json">
-                    <script type="text/template">
-                       {
+    <figure>
+        <pre>
+            <code data-trim data-noescape class="json">
+                <script type="text/template">
+                   {
                        "compilerOptions": {
-                       "target": "ES5",
-                       "experimentalDecorators": true
+                           "target": "ES5", // ou ESNext
+                           "experimentalDecorators": true
                        }
-                       }
-                    </script>
-                </code>
-            </pre>
+                   }
+                </script>
+            </code>
+        </pre>
+        <figcaption>À activer dans <code>tsconfig.json</code></figcaption>
+    </figure>
     <aside class="notes">
         Pour faire fonctionner les décorateurs, il est nécessaire d’activer l’option experimentalDecorators dans les options.
     </aside>
@@ -59,30 +75,32 @@
 <section>
     <h2>Les <em>Decorator Factory</em></h2>
 
-    <pre class="w-full">
-                <code data-trim data-noescape class="typescript" data-line-numbers="|1-9|13,18" data-fragment-index="1">
-                    <script type="text/template">
-                        function logFactory(output: string) {
+    <figure>
+        <pre>
+            <code data-trim data-noescape class="typescript" data-line-numbers="|1-10|13,18|" data-fragment-index="1">
+                <script type="text/template">
+                    function logFactory(output: string) {
                         return function (target: any, key: string) {
-                        if (output === "console") {
-                        console.log(`${key} a été accédé`);
+                            if (output === "console") {
+                                console.log(`${key} a été accédé`);
+                            }
+                            else if (output === "file") {
+                                // another thing
+                            }
                         }
-                        else if (output === "file") {
-                        // another thing
-                        }
-                        }
-                        }
+                    }
 
-                        class Exemple {
+                    class Exemple {
                         @logFactory("console")
                         prop: string = 'Hello';
-                        }
+                    }
 
-                        const example = new Exemple();
-                        example.prop = "World"; // prop a été accédé
-                    </script>
-                </code>
-            </pre>
+                    const example = new Exemple();
+                    example.prop = "World"; // prop a été accédé
+                </script>
+            </code>
+        </pre>
+    </figure>
 
     <ul>
         <li class="fragment" data-fragment-index="1">
@@ -95,6 +113,42 @@
     <aside class="notes">
         Les décorateurs peuvent être paramétrés afin de répondre à un besoin plutôt qu’un autre. Un outil de log qui écrit dans un fichier ou dans la console ?
     </aside>
+</section>
+
+<section>
+    <h2>Les différents types de décorateurs</h2>
+    <figure>
+        <pre>
+            <code data-noescape data-trim data-line-numbers="|1|3|6|8|12|" class="typescript" data-fragment-index="1">
+                @classDecorator
+                class Bird {
+                    @propertyDecorator
+                    name: string;
+
+                    @methodDecorator
+                    fly(
+                    @parameterDecorator
+                        meters: number
+                    ) {}
+
+                    @accessorDecorator
+                    get egg() {}
+                }
+            </code>
+        </pre>
+        <figcaption class="r-stack">
+            <span class="fragment current-visible" data-fragment-index="1">Décorateur de classe</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="2">Décorateur de propriété</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="3">Décorateur de méthode</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="4">Décorateur de paramètre</span>
+            <span class="fragment fade-in-then-out" data-fragment-index="5">Décorateur d’accesseur</span>
+        </figcaption>
+    </figure>
+    <aside class="notes">
+        Les décorateurs peuvent être affectés à différents éléments d’une classe Typescript.
+    </aside>
+
+    <aside class="notes"></aside>
 </section>
 
 <section>
